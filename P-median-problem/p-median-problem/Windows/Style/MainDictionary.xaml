@@ -1,0 +1,160 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="http://schemas.panthernet.ru/graphx/">
+
+    <!-- COLORS SETUP -->
+    <LinearGradientBrush x:Key="VertexBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFFFFFFF" Offset="0"/>
+        <GradientStop Color="#FFE3E4E6" Offset="0.1"/>
+        <GradientStop Color="#FFBCC5D5" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VertexBorderBrush" EndPoint="0.5,0" StartPoint="0.5,1">
+        <GradientStop Color="#FF8B8B8B" Offset="0"/>
+        <GradientStop Color="#FFADADAD" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VertexBorderBrushHighlited" EndPoint="0.5,0" StartPoint="0.5,1">
+        <GradientStop Color="#FFF4D00E" Offset="0"/>
+        <GradientStop Color="#FFF7D311" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VertexBorderBrushSelected" EndPoint="0.5,0" StartPoint="0.5,1">
+        <GradientStop Color="#FFF40E0E" Offset="0"/>
+        <GradientStop Color="#FFF71111" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VertexBorderBrushFirstGroup" EndPoint="0.5,0" StartPoint="0.5,1">
+        <GradientStop Color="#FF1C1CE8" Offset="0"/>
+        <GradientStop Color="#FF2222EE" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VertexBorderBrushSecondGroup" EndPoint="0.5,0" StartPoint="0.5,1">
+        <GradientStop Color="#FF007600" Offset="0"/>
+        <GradientStop Color="#FF008000" Offset="1"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="EdgeBrush" Color="Black"/>
+    <SolidColorBrush x:Key="EdgeArrowBrush" Color="Black"/>
+
+    <!-- MAIN WINDOW STYLE -->
+    <Style x:Key="MainWindow" TargetType="Window">
+        <Setter Property="Height" Value="600"/>
+        <Setter Property="Width" Value="900"/>
+        <Setter Property="MinHeight" Value="300"/>
+        <Setter Property="MinWidth" Value="200"/>
+    </Style>
+
+    <!-- MAIN MENU STYLE -->
+    <Style x:Key="MainWindowMenu" TargetType="Menu">
+        <Setter Property="Height" Value="23"/>
+    </Style>
+
+    <!-- STATUS BAR STYLE -->
+    <Style x:Key="MainWindowStatusBar" TargetType="StatusBar">
+        <Setter Property="Height" Value="12"/>
+    </Style>
+
+    <!-- DOCK PANEL STYLE -->
+    <Style x:Key="MainWindowDockPanel" TargetType="DockPanel">
+        <Setter Property="Margin" Value="3"/>
+    </Style>
+
+    <Style x:Key="MainWindowDockPanelBorder" TargetType="Border">
+        <Setter Property="Background" Value="#FFF1EDED"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Width" Value="2"/>
+    </Style>
+
+    <Style x:Key="MainWindowStackPanel" TargetType="StackPanel">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="DockPanel.Dock" Value="Top"/>
+        <Setter Property="Margin" Value="3,0,0,0"/>
+    </Style>
+
+    <Style x:Key="MainWindowStackPanelButton" TargetType="Button">
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="DockPanel.Dock" Value="Top"/>
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Width" Value="50"/>
+        <Setter Property="Margin" Value="3"/>
+    </Style>
+
+    <Style x:Key="MainWindowStackPanelToggleButton" TargetType="ToggleButton">
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="DockPanel.Dock" Value="Top"/>
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Width" Value="50"/>
+        <Setter Property="Margin" Value="3"/>
+    </Style>
+
+    <Style x:Key="MainWindowStackPanelSeparator" TargetType="Separator">
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="DockPanel.Dock" Value="Top"/>
+        <Setter Property="Width" Value="50"/>
+        <Setter Property="Margin" Value="3"/>
+    </Style>
+
+    <!-- VERTEX CONTROL -->
+    <Style x:Key="DefaultVertex" TargetType="{x:Type controls:VertexControl}">
+        <Setter Property="Background" Value="{StaticResource VertexBrush}"/>
+        <Setter Property="Padding" Value="10,5,10,5"/>
+        <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:VertexControl}">
+                    <Grid>
+                        <Border x:Name="BackgroundNorm" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="25" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"/>
+                        <Rectangle VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <!-- VERTEX DRAGGING CONTROL -->
+        <Setter Property="controls:DragBehaviour.IsDragEnabled"
+                Value="True" />
+        <Setter Property="controls:DragBehaviour.UpdateEdgesOnMove"
+                Value="True" />
+
+        <!-- VERTEX STYLE TRIGGERS -->
+        <Style.Triggers>
+            <Trigger Property="controls:HighlightBehaviour.Highlighted" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrushHighlited}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="SelectedVertex" BasedOn="{StaticResource DefaultVertex}" TargetType="{x:Type controls:VertexControl}">
+        <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrushSelected}"/>
+    </Style>
+
+    <Style x:Key="FirstGroupVertex" BasedOn="{StaticResource DefaultVertex}" TargetType="{x:Type controls:VertexControl}">
+        <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrushFirstGroup}"/>
+    </Style>
+
+    <Style x:Key="SecondGroupVertex" BasedOn="{StaticResource DefaultVertex}" TargetType="{x:Type controls:VertexControl}">
+        <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrushSecondGroup}"/>
+    </Style>
+
+    <!-- EDGE CONTROL -->
+    <Style TargetType="{x:Type controls:EdgeControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:EdgeControl}">
+                    <Grid>
+                        <Path Stroke="{StaticResource EdgeBrush}"
+                          StrokeThickness="2" MinWidth="1" MinHeight="1"
+                          ToolTip="{TemplateBinding ToolTip}" 
+                          x:Name="PART_edgePath"/>
+                        <controls:DefaultEdgePointer NeedRotation="true" x:Name="PART_EdgePointerForTarget" >
+                            <Path Data="M0,0.5 L1,1 1,0" Fill="Black" Stretch="Uniform" Width="0" Height="0"/>
+                        </controls:DefaultEdgePointer>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
+    
