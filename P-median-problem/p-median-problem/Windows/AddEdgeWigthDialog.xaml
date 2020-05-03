@@ -1,30 +1,30 @@
-﻿<Window x:Class="ClusteringViz.Windows.AddEdgeWigthDialog"
+﻿<Window x:Class="p_median_problem.Windows.AddEdgeWigthDialog"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-      xmlns:model="clr-namespace:ClusteringViz.Models.Enums"
-      xmlns:local="clr-namespace:ClusteringViz.Windows"
-      mc:Ignorable="d" Style="{StaticResource DialogWindow}"
+      xmlns:model="clr-namespace:p_median_problem.Models.Enums"
+      xmlns:local="clr-namespace:p_median_problem.Windows"
+      mc:Ignorable="d"
       Title="Input Edge Value">
 
-    <StackPanel Style="{StaticResource DialogMainPanel}">
-        <StackPanel Style="{StaticResource DialogStackPanel}">
-            <TextBlock Text="Road length" Style="{StaticResource DialogInputLabel}"/>
+    <StackPanel >
+        <StackPanel >
+            <TextBlock Text="Road length" />
             <xctk:DoubleUpDown Name="RoadUpDown" Style="{StaticResource DialogInputField}" Value="1.0" Minimum="0.1" Maximum="10000.0" Increment="0.1"/>
         </StackPanel>
-        <StackPanel Style="{StaticResource DialogStackPanel}">
-            <TextBlock Text="Ambulator time" Style="{StaticResource DialogInputLabel}"/>
+        <StackPanel >
+            <TextBlock Text="Ambulator time" />
             <xctk:DoubleUpDown Name="AmbulatorUpDown" Style="{StaticResource DialogInputField}" Value="1.0" Minimum="0.1" Maximum="10000.0" Increment="0.1"/>
         </StackPanel>
-        <StackPanel Style="{StaticResource DialogStackPanel}">
-            <TextBlock Text="Medic time" Style="{StaticResource DialogInputLabel}"/>
+        <StackPanel >
+            <TextBlock Text="Medic time"/>
             <xctk:DoubleUpDown Name="MedicUpDown" Style="{StaticResource DialogInputField}" Value="1.0" Minimum="0.1" Maximum="10000.0" Increment="0.1"/>
         </StackPanel>
-        <StackPanel Style="{StaticResource DialogActionPanel}">
-            <Button Click="buttonOK_Click" Style="{StaticResource DialogOKButton}"/>
-            <Button Click="buttonCancel_Click" Style="{StaticResource DialogCancelButton}"/>
+        <StackPanel >
+            <Button Click="buttonOK_Click" />
+            <Button Click="buttonCancel_Click"/>
         </StackPanel>
     </StackPanel>
 </Window>

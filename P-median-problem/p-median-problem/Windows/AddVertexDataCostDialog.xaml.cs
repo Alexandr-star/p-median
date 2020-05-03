@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace ClusteringViz.Windows
+namespace p_median_problem.Windows
 {
     /// <summary>
     /// Interaction logic for AddVertexDataCostDialog.xaml

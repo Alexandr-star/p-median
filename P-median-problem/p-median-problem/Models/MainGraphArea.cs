@@ -1,10 +1,10 @@
-﻿using ClusteringViz.Models.Enums;
+﻿using p_median_problem.Models.Enums;
 using GraphX.Controls;
 using QuickGraph;
 using System.Linq;
 using System.Windows;
 
-namespace ClusteringViz.Models
+namespace p_median_problem.Models
 {
     /// <summary>
     /// Класс, описывающий панель отображения графа с использованием заданных типов данных.

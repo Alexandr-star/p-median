@@ -1,10 +1,8 @@
-﻿using ClusteringViz.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xceed.Wpf.AvalonDock.Converters;
 
-namespace ClusteringViz.Core
+namespace p_median_problem.Core
 {
     /// <summary>
     /// Класс, реализующий граф, задаваемый списком смежности.

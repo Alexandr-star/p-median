@@ -1,6 +1,6 @@
-﻿using ClusteringViz.Models;
-using ClusteringViz.Models.Enums;
-using ClusteringViz.Windows;
+﻿using p_median_problem.Models;
+using p_median_problem.Models.Enums;
+using p_median_problem.Windows;
 using GraphX.Controls;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Windows.Media;
 
-namespace ClusteringViz.Core
+namespace p_median_problem.Core
 {
     /// <summary>
     /// Класс, реализующий таблицу затрат, задаваемым матрицей.

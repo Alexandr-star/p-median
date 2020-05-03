@@ -1,11 +1,11 @@
-﻿using ClusteringViz.Core;
-using ClusteringViz.FileSerialization;
-using ClusteringViz.Models;
-using ClusteringViz.Models.Enums;
+﻿using p_median_problem.Core;
+using p_median_problem.FileSerialization;
+using p_median_problem.Models;
+using p_median_problem.Models.Enums;
 using GraphX.Controls;
 using GraphX.Controls.Models;
-using GraphX.PCL.Common.Enums;
-using GraphX.PCL.Logic.Algorithms.LayoutAlgorithms;
+using GraphX.Common.Enums;
+using GraphX.Logic.Algorithms.LayoutAlgorithms;
 using Microsoft.Win32;
 using System;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
-namespace ClusteringViz.Windows
+namespace p_median_problem.Windows
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml

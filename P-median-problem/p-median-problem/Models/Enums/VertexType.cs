@@ -1,5 +1,5 @@
 ﻿
-namespace ClusteringViz.Models.Enums
+namespace p_median_problem.Models.Enums
 {
     /// <summary>
     /// Типы вершин графа

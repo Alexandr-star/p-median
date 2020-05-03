@@ -1,9 +1,9 @@
-﻿using GraphX.PCL.Common.Models;
+﻿using GraphX.Common.Models;
 using System.Collections.Generic;
 using System.IO;
 using YAXLib;
 
-namespace ClusteringViz.FileSerialization
+namespace p_median_problem.FileSerialization
 {
     /// <summary>
     /// Вспомогательный инструмент для сериализации и десериализации файлов.

@@ -1,7 +1,7 @@
-﻿using GraphX.PCL.Logic.Models;
+﻿using GraphX.Logic.Models;
 using QuickGraph;
 
-namespace ClusteringViz.Models
+namespace p_median_problem.Models
 {
     /// <summary>
     /// Класс, описывающий различные алгоритмы, необходимые для визуализации.

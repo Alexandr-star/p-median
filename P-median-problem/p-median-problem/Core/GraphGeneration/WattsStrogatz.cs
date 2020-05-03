@@ -1,7 +1,7 @@
-﻿using ClusteringViz.Models;
+﻿using p_median_problem.Models;
 using System;
 
-namespace ClusteringViz.Core.GraphGeneration
+namespace p_median_problem.Core.GraphGeneration
 {
     /// <summary>
     /// Реализация генерации случайного графа по модели Watt–Strogatz.

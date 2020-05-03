@@ -1,4 +1,4 @@
-﻿namespace ClusteringViz.Models.Enums
+﻿namespace p_median_problem.Models.Enums
 {
     /// <summary>
     /// Режимы окна редактора графов.

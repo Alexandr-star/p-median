@@ -1,9 +1,9 @@
-﻿using ClusteringViz.Core.GraphGeneration;
-using ClusteringViz.Models.Enums;
+﻿using p_median_problem.Core.GraphGeneration;
+using p_median_problem.Models.Enums;
 using System;
 using System.Windows;
 
-namespace ClusteringViz.Windows
+namespace p_median_problem.Windows
 {
     /// <summary>
     /// Логика взаимодействия для GraphGeneratorDialog.xaml

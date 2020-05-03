@@ -1,8 +1,8 @@
-﻿using ClusteringViz.Models;
+﻿using p_median_problem.Models;
 using System;
 using System.Collections.Generic;
 
-namespace ClusteringViz.Core.GraphGeneration
+namespace p_median_problem.Core.GraphGeneration
 {
     /// <summary>
     /// Реализация простого алгоритма генерации случайного графа с точным указанием количества ребер.

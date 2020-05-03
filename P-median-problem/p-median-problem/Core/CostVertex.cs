@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClusteringViz.Core
+namespace p_median_problem.Core
 {
     class CostVertex
     {

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Markup;
 
-namespace ClusteringViz.Models.Enums
+namespace p_median_problem.Models.Enums
 {
     /// <summary>
     /// Вспомогательные инструменты для связи значений перечисляемых типов и их дополнительных полей.

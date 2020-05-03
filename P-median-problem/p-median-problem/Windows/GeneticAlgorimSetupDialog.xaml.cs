@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ClusteringViz.Windows
+namespace p_median_problem.Windows
 {
     /// <summary>
     /// Interaction logic for GeneticAlgorimSetupDialog.xaml

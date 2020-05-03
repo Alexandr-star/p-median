@@ -1,6 +1,6 @@
-﻿using ClusteringViz.Models;
+﻿using p_median_problem.Models;
 
-namespace ClusteringViz.Core.GraphGeneration
+namespace p_median_problem.Core.GraphGeneration
 {
     /// <summary>
     /// Интерфейс для алгоритмов генерации графов.

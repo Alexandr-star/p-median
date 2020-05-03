@@ -1,8 +1,8 @@
-﻿using ClusteringViz.Models.Enums;
-using GraphX.PCL.Common.Models;
-using GraphX.PCL.Logic.Algorithms.LayoutAlgorithms;
+﻿using p_median_problem.Models.Enums;
+using GraphX.Common.Models;
+using GraphX.Logic.Algorithms.LayoutAlgorithms;
 
-namespace ClusteringViz.Models
+namespace p_median_problem.Models
 {
     /// <summary>
     /// Класс данных для вершин.

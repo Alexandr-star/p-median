@@ -1,11 +1,11 @@
-﻿<Window x:Class="ClusteringViz.Windows.MainWindow"
+﻿<Window x:Class="p_median_problem.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://schemas.panthernet.ru/graphx/"
-        xmlns:models="clr-namespace:ClusteringViz.Models"
-        xmlns:local="clr-namespace:ClusteringViz.Windows"
+        xmlns:models="clr-namespace:p_median_problem.Models"
+        xmlns:local="clr-namespace:p_median_problem.Windows"
         mc:Ignorable="d" Style="{StaticResource MainWindow}"
         Title="Clustering Algorithms Visualization">
     <Grid>

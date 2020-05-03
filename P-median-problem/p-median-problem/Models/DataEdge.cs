@@ -1,14 +1,12 @@
-﻿using GraphX.PCL.Common.Models;
+﻿using GraphX.Common.Models;
 
-namespace ClusteringViz.Models
+namespace p_median_problem.Models
 {
     /// <summary>
     /// Класс данных для ребер.
     /// </summary>
     public class DataEdge : EdgeBase<DataVertex>
     {
-
-
         public double weigthR { get; set; }
         public double weigthA { get; set; }
         public double weigthM { get; set; }

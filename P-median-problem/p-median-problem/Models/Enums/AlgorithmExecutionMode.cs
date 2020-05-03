@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ClusteringViz.Models.Enums
+namespace p_median_problem.Models.Enums
 {
     /// <summary>
     /// Режим выполнения алгоритма.
