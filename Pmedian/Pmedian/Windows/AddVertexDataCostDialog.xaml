@@ -6,7 +6,16 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:Pmedian.Windows"
       mc:Ignorable="d" 
+      SizeToContent="WidthAndHeight"
+      MinWidth="300"
+      MinHeight="100"
+      WindowStyle="SingleBorderWindow"
+      ResizeMode="CanMinimize"
       Title="Input сost point">
+
+    <Window.Resources>
+        <ResourceDictionary Source="pack://application:,,,/Windows/Style/DialogWindowDictionary.xaml"/>
+    </Window.Resources>
 
     <StackPanel>
         <StackPanel>

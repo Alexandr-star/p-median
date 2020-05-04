@@ -6,9 +6,18 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:model="clr-namespace:Pmedian.Model.Enums"
       xmlns:local="clr-namespace:Pmedian.Windows"
-      mc:Ignorable="d" Style="{StaticResource DialogWindow}"
+      mc:Ignorable="d"
+      SizeToContent="WidthAndHeight"
+      MinWidth="300"
+      MinHeight="100"
+      WindowStyle="SingleBorderWindow"
+      ResizeMode="CanMinimize"
       Title="Generate Graph" WindowStartupLocation="CenterScreen">
-    
+
+    <Window.Resources>
+        <ResourceDictionary Source="pack://application:,,,/Windows/Style/DialogWindowDictionary.xaml"/>
+    </Window.Resources>
+
     <StackPanel Style="{StaticResource DialogMainPanel}">
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Method" Style="{StaticResource DialogInputLabel}"/>

@@ -4,10 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://schemas.panthernet.ru/graphx/"
-        xmlns:models="clr-namespace:Pmedian.Model.Enums"
+        xmlns:models="clr-namespace:Pmedian.Model"
         xmlns:local="clr-namespace:Pmedian"
-        mc:Ignorable="d" Style="{StaticResource MainWindow}"
-        Title="Clustering Algorithms Visualization">
+        mc:Ignorable="d" 
+        Height="600"
+        Width="900"
+        MinHeight="300"
+        MinWidth="200"
+        Title="P-median problem">
+    
+    <Window.Resources>
+        <ResourceDictionary Source="pack://application:,,,/Windows/Style/MainDictionary.xaml"/>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
