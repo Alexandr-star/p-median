@@ -592,9 +592,12 @@ namespace Pmedian
                 return;
             }
 
+            var dlg = new GeneticAlgorithmSetupDialog(this);
+            if (dlg.ShowDialog() != true) return;
+
             EnableSelectMode();
-            AdjacencyList.GenerateList(graphArea.LogicCore.Graph as MainGraph);
-            Сost.CreateCostArray(graphArea.LogicCore.Graph as MainGraph);
+
+            dlg.Algorithm.GeneticAlgorithm(graphArea.LogicCore.Graph as MainGraph);
         }
 
         private void menuSettingProblem_Click(object sender, RoutedEventArgs e)

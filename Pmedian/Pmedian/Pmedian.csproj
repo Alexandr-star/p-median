@@ -103,6 +103,9 @@
     <Compile Include="CoreData\DataStruct\CostEdge.cs" />
     <Compile Include="CoreData\DataStruct\CostVertex.cs" />
     <Compile Include="CoreData\DataStruct\Сost.cs" />
+    <Compile Include="CoreData\Genetic\Algorithm\Algor.cs" />
+    <Compile Include="CoreData\Genetic\Chromosome.cs" />
+    <Compile Include="CoreData\Genetic\Algorithm\IGeneticAlgorithm.cs" />
     <Compile Include="CoreData\GraphGeneration\ErdosRenyi.cs" />
     <Compile Include="CoreData\GraphGeneration\IGraphGenerator.cs" />
     <Compile Include="CoreData\GraphGeneration\SimplePrecise.cs" />

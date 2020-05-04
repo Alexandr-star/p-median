@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pmedian.CoreData.Genetic.Algorithm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +21,14 @@ namespace Pmedian.Windows
     /// </summary>
     public partial class GeneticAlgorithmSetupDialog : Window
     {
-        public GeneticAlgorithmSetupDialog()
+        /// <summary>
+        /// Выбранный генетический алгоритм.
+        /// </summary>
+        public IGeneticAlgorithm Algorithm { get; private set; }
+
+        public GeneticAlgorithmSetupDialog(Window owner)
         {
+            Owner = owner;
             InitializeComponent();
         }
 
@@ -34,7 +41,7 @@ namespace Pmedian.Windows
         {
             try
             {
-
+                Algorithm = new Algor();
             }
             catch (Exception ex)
             {
