@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Pmedian.Windows">
+    <!-- WINDOW STYLE -->
+    <Style x:Key="ControlWindow" TargetType="Window">
+        <Setter Property="MinWidth" Value="100"/>
+        <Setter Property="MinHeight" Value="100"/>
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="ResizeMode" Value="NoResize"/>
+        <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+        <Setter Property="ShowInTaskbar" Value="False"/>
+    </Style>
+
+    <!-- CONTAINERS STYLE -->
+    <Style x:Key="ControlWindowStackPanel" TargetType="StackPanel">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- ELEMENTS STYLE -->
+    <Style x:Key="ControlWindowStackPanelLabel" TargetType="Label">
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Width" Value="105"/>
+        <Setter Property="Padding" Value="0,0,0,2"/>
+    </Style>
+
+    <Style x:Key="ControlWindowStackPanelLabelBorder" TargetType="Border">
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Width" Value="105"/>
+    </Style>
+
+    <Style x:Key="ControlWindowStackPanelButton" TargetType="Button">
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="DockPanel.Dock" Value="Top"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Width" Value="105"/>
+        <Setter Property="Margin" Value="3"/>
+    </Style>
+
+    <Style x:Key="ControlWindowStackPanelButtonShort" TargetType="Button" BasedOn="{StaticResource ControlWindowStackPanelButton}">
+        <Setter Property="Width" Value="50"/>
+        <Setter Property="Margin" Value="2,3,3,3"/>
+    </Style>
+
+</ResourceDictionary>

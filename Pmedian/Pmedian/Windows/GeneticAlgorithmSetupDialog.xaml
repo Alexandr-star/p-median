@@ -1,0 +1,53 @@
+﻿<Window x:Class="Pmedian.Windows.GeneticAlgorithmSetupDialog"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:model="clr-namespace:Pmedian.Model.Enums"
+      xmlns:local="clr-namespace:Pmedian.Windows"
+      mc:Ignorable="d"
+      Title="Genetic algorithm setting" WindowStartupLocation="CenterScreen">
+
+    <StackPanel>
+        <StackPanel>
+            <TextBlock Text="Algorithm" />
+            <ComboBox Name="AlgorithmBox"  HorizontalContentAlignment="Right"
+                     ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
+                SelectedValuePath="Value" SelectedIndex="0"/>
+        </StackPanel>
+
+        <StackPanel>
+            <TextBlock Text="Crossingover" />
+            <ComboBox Name="CrossingoverBox" HorizontalContentAlignment="Right"
+                     ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
+                SelectedValuePath="Value" SelectedIndex="0"/>
+        </StackPanel>
+        <StackPanel >
+            <Slider Name="CrossingoverSlider" />
+        </StackPanel>
+        <StackPanel>
+            <TextBlock Text="Mutation"/>
+            <ComboBox Name="MutationBox" HorizontalContentAlignment="Right"
+                     ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
+                SelectedValuePath="Value" SelectedIndex="0"/>
+        </StackPanel>
+        <StackPanel>
+            <Slider Name="MutationSlider"/>
+        </StackPanel>
+        <StackPanel >
+            <TextBlock Text="Selection" />
+            <ComboBox Name="SelectionBox" HorizontalContentAlignment="Right"
+                     ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
+                SelectedValuePath="Value" SelectedIndex="0"/>
+        </StackPanel>
+        <StackPanel >
+            <Slider Name="SelectionSlider"/>
+        </StackPanel>
+        <StackPanel >
+            <Button Click="buttonOK_Click"/>
+            <Button Click="buttonCancel_Click"/>
+        </StackPanel>
+
+    </StackPanel>
+</Window>
