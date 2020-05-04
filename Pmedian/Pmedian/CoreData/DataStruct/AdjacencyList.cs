@@ -1,8 +1,10 @@
 ﻿using Pmedian.Model;
+using Pmedian.Model.Enums;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
-
+using System.Runtime.InteropServices;
 
 namespace Pmedian.CoreData.DataStruct
 {
@@ -16,10 +18,17 @@ namespace Pmedian.CoreData.DataStruct
         /// </summary>
         private List<List<int>> adjacencyList = new List<List<int>>();
 
+        private List<List<int>> typeListVertex = new List<List<int>>();
+
         /// <summary>
         /// Количество вершин в графе.
         /// </summary>
         public int VertexCount => adjacencyList.Count;
+
+        /// <summary>
+        /// Максимальное количество вершин в списке смежности.
+        /// </summary>
+        public int VertexCountInMaxList => adjacencyList.Max().Count;
 
         /// <summary>
         /// Связность графа.
@@ -80,6 +89,15 @@ namespace Pmedian.CoreData.DataStruct
         }
 
         /// <summary>
+        /// Возращает список с деревнями
+        /// </summary>
+        /// <returns></returns>
+        public List<int> GetVillageList()
+        {
+            return typeListVertex[0];
+        }
+
+        /// <summary>
         /// Список смежных к исходной вершин.
         /// </summary>
         /// <param name="source">Исходная вершина.</param>
@@ -96,8 +114,48 @@ namespace Pmedian.CoreData.DataStruct
         private void InitializeList(int vertexCount)
         {
             adjacencyList = new List<List<int>>();
+            typeListVertex = new List<List<int>>();
             for (int i = 0; i < vertexCount; i++)
                 adjacencyList.Add(new List<int>());
+            for (int i = 0; i < 3; i++)
+                typeListVertex.Add(new List<int>());
+        }
+
+        /// <summary>
+        /// Добавить вершину в список вершинын распределенных по типу.
+        /// </summary>
+        /// <param name="type">Тип вершины.</param>
+        /// <param name="vertex">Вершина.</param>
+        private void AddVertexInTypeList(int type, int vertex)
+        {
+            typeListVertex[type].Add(vertex);
+        }
+
+        /// <summary>
+        /// Возвратить количество вершин определенного типа.
+        /// </summary>
+        /// <param name="type">Тип вершины.</param>
+        /// <returns>Количество вершин.</returns>
+        public int GetCountTypeVertex(int type)
+        {
+            if (type == 0)
+                return typeListVertex.ElementAt(type).Count;
+            else if (type == 1)
+                return typeListVertex.ElementAt(type).Count;
+            else if (type == 2)
+                return typeListVertex.ElementAt(type).Count;
+            else
+                return 0;
+        }
+
+        private int MaxCountListInAdj()
+        {
+            List<int> countList = new List<int>();
+            foreach(var list in adjacencyList)
+            {
+                countList.Add(list.Count);
+            }
+            return countList.Max();
         }
 
         /// <summary>
@@ -138,6 +196,17 @@ namespace Pmedian.CoreData.DataStruct
             var list = new AdjacencyList(graph.VertexCount);
 
             var vertices = graph.Vertices.ToList();
+
+
+            foreach (var vertex in vertices)
+            {
+                if (vertex.Type == VertexType.GroupeVillage)               
+                    list.AddVertexInTypeList(0, vertices.IndexOf(vertex));               
+                if (vertex.Type == VertexType.GroupeClinic)                 
+                    list.AddVertexInTypeList(1, vertices.IndexOf(vertex));             
+                if (vertex.Type == VertexType.GroupeMedic) 
+                    list.AddVertexInTypeList(2, vertices.IndexOf(vertex));
+            }
 
             foreach (var edge in graph.Edges)
             {

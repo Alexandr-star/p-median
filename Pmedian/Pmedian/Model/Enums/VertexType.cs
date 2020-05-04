@@ -6,8 +6,8 @@ namespace Pmedian.Model.Enums
     /// </summary>
     public enum VertexType
     {
-        GroupeVillage = 0,
-        GroupeClinic = 0,
-        GroupeMedic = 0
+        GroupeVillage,
+        GroupeClinic,
+        GroupeMedic
     }
 }
