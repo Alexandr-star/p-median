@@ -27,9 +27,11 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             Chromosome chromosome = new Chromosome(adjacencyList);
             chromosome.InitializeChromosome();
             Console.WriteLine("chromosome");
-            for (int i = 0; i < chromosome.chromosome.Length; i++)
+            int[] chrom = chromosome.GetArrayGensCromosome();
+            for (int i = 0; i < chrom.Length; i++)
             {
-                Console.Write($"  {chromosome.chromosome[i]}");
+                int gen = chrom[i];
+                Console.WriteLine(gen);
             }
         }
     }

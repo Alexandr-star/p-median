@@ -64,7 +64,7 @@ namespace Pmedian
 
             graphArea.SetEdgesDashStyle(EdgeDashStyle.Solid);
             graphArea.ShowAllEdgesArrows(false);
-            graphArea.ShowAllEdgesLabels(false);
+            graphArea.ShowAllEdgesLabels(true);
 
             EnableSelectMode();
         }
@@ -393,6 +393,7 @@ namespace Pmedian
 
             var data = new DataEdge((DataVertex)sourceVertex.Vertex, (DataVertex)targetVertex.Vertex, 1, weidthR, weidthA, weidthM);
             var control = new EdgeControl(sourceVertex, targetVertex, data);
+          
             graphArea.InsertEdgeAndData(data, control, 0, true);
 
             HighlightBehaviour.SetHighlighted(sourceVertex, false);

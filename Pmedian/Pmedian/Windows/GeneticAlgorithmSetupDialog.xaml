@@ -18,44 +18,43 @@
         <ResourceDictionary Source="pack://application:,,,/Windows/Style/DialogWindowDictionary.xaml"/>
     </Window.Resources>
 
-    <StackPanel>
-        <StackPanel>
-            <TextBlock Text="Algorithm" />
+    <StackPanel Style="{StaticResource DialogMainPanel}">
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="Algorithm" Style="{StaticResource DialogInputLabel}"/>
             <ComboBox Name="AlgorithmBox"  HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
         </StackPanel>
-
-        <StackPanel>
-            <TextBlock Text="Crossingover" />
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="Crossingover" Style="{StaticResource DialogInputLabel}"/>
             <ComboBox Name="CrossingoverBox" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
         </StackPanel>
-        <StackPanel >
-            <Slider Name="CrossingoverSlider" />
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <Slider Name="CrossingoverSlider" Style="{StaticResource DialogSliderProbability}"/>
         </StackPanel>
-        <StackPanel>
-            <TextBlock Text="Mutation"/>
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="Mutation" Style="{StaticResource DialogInputLabel}"/>
             <ComboBox Name="MutationBox" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
         </StackPanel>
-        <StackPanel>
-            <Slider Name="MutationSlider"/>
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <Slider Name="MutationSlider" Style="{StaticResource DialogSliderProbability}"/>
         </StackPanel>
-        <StackPanel >
-            <TextBlock Text="Selection" />
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="Selection" Style="{StaticResource DialogInputLabel}"/>
             <ComboBox Name="SelectionBox" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
         </StackPanel>
-        <StackPanel >
-            <Slider Name="SelectionSlider"/>
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <Slider Name="SelectionSlider" Style="{StaticResource DialogSliderProbability}"/>
         </StackPanel>
-        <StackPanel >
-            <Button Click="buttonOK_Click"/>
-            <Button Click="buttonCancel_Click"/>
+        <StackPanel Style="{StaticResource DialogActionPanel}">
+            <Button Click="buttonOK_Click" Style="{StaticResource DialogOKButton}"/>
+            <Button Click="buttonCancel_Click" Style="{StaticResource DialogCancelButton}"/>
         </StackPanel>
 
     </StackPanel>

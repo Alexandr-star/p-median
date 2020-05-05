@@ -11,20 +11,21 @@
       MinHeight="100"
       WindowStyle="SingleBorderWindow"
       ResizeMode="CanMinimize"
+      WindowStartupLocation="CenterScreen"
       Title="Input сost point">
 
     <Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/Windows/Style/DialogWindowDictionary.xaml"/>
     </Window.Resources>
 
-    <StackPanel>
-        <StackPanel>
-            <TextBlock Text="Cost point"/>
+    <StackPanel Style="{StaticResource DialogMainPanel}">
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="Cost point" Style="{StaticResource DialogInputLabel}"/>
             <xctk:DoubleUpDown Name="CostUpDown" Style="{StaticResource DialogInputField}" Value="1.0" Minimum="0.1" Maximum="10000.0" Increment="0.1"/>
         </StackPanel>
-        <StackPanel >
-            <Button Click="buttonOK_Click"/>
-            <Button Click="buttonCancel_Click"/>
+        <StackPanel Style="{StaticResource DialogActionPanel}">
+            <Button Click="buttonOK_Click" Style="{StaticResource DialogOKButton}"/>
+            <Button Click="buttonCancel_Click" Style="{StaticResource DialogCancelButton}"/>
         </StackPanel>
     </StackPanel>
 </Window>

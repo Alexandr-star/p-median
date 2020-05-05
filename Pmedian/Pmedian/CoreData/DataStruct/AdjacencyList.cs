@@ -28,6 +28,7 @@ namespace Pmedian.CoreData.DataStruct
         /// <summary>
         /// Максимальное количество вершин в списке смежности.
         /// </summary>
+        /// TODO: ошибка вылетает, надо исправить
         public int VertexCountInMaxList => adjacencyList.Max().Count;
 
         /// <summary>

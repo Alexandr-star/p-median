@@ -28,12 +28,12 @@ namespace Pmedian.CoreData.Genetic
         /// <summary>
         /// Хромосома, представляющая из себя массив
         /// </summary>
-        public int[] chromosome;
+        private int[] chromosome;
 
         /// <summary>
         /// Конструктор с параметрами.
         /// </summary>
-        /// <param name="adjacencyList"></param>
+        /// <param name="adjacencyList">Список смености графа.</param>
         public Chromosome(AdjacencyList adjacencyList)
         {
             this.adjacencyList = adjacencyList;
@@ -42,9 +42,24 @@ namespace Pmedian.CoreData.Genetic
             this.chromosome = new int[SIZE_CROMOSOME];
         }
 
+        /// <summary>
+        /// Конструктор с параметром.
+        /// </summary>
+        /// <param name="size">Размер хромосомы.</param>
         public Chromosome(int size)
         {
             this.SIZE_CROMOSOME = size;
+            this.chromosome = new int[SIZE_CROMOSOME];
+        }
+
+        /// <summary>
+        /// Конструктор с параметром.
+        /// </summary>
+        /// <param name="chromosome">Массив int[] хромосомы.</param>
+        public Chromosome(int[] arrayChromosome)
+        {
+            this.chromosome = arrayChromosome;
+            this.SIZE_CROMOSOME = chromosome.Length;
         }
 
         public void InitializeChromosome()
@@ -64,6 +79,16 @@ namespace Pmedian.CoreData.Genetic
                 jStep = jStep + 2;
             }
            
+        }
+
+        public int[] GetArrayGensCromosome()
+        {
+            return chromosome;
+        }
+
+        public int Size()
+        {
+            return SIZE_CROMOSOME;
         }
     }
 }

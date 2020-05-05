@@ -1,10 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="http://schemas.panthernet.ru/graphx/"
-                    xmlns:local="clr-namespace:Pmedian.Windows.Style">
+                    xmlns:controls="http://schemas.panthernet.ru/graphx/">
     
     <!-- COLORS SETUP -->
     <LinearGradientBrush x:Key="VertexBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFFFFFFF" Offset="0"/>
         <GradientStop Color="#FFFFFFFF" Offset="0"/>
         <GradientStop Color="#FFE3E4E6" Offset="0.1"/>
         <GradientStop Color="#FFBCC5D5" Offset="1"/>

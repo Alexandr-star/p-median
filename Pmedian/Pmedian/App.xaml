@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:Pmedian"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Windows/Style/MainDictionary.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Windows/Style/DialogWindowDictionary.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Windows/Style/ControlWindowDictionary.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
