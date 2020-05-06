@@ -21,31 +21,38 @@
     <StackPanel Style="{StaticResource DialogMainPanel}">
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Algorithm" Style="{StaticResource DialogInputLabel}"/>
-            <ComboBox Name="AlgorithmBox"  HorizontalContentAlignment="Right"
-                     ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
+            <ComboBox Name="AlgorithmBox" Style="{StaticResource DialogInputField}"  HorizontalContentAlignment="Right"
+                     ItemsSource="{Binding Source={model:Enumeration {x:Type model:GeneticAlgotithmMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="Number of iterations" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:IntegerUpDown Name="IterSize" Style="{StaticResource DialogInputField}" Value="1000" Minimum="1" Maximum="10000" Increment="10"/>
+        </StackPanel>
+        <Separator/>
+        <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Crossingover" Style="{StaticResource DialogInputLabel}"/>
-            <ComboBox Name="CrossingoverBox" HorizontalContentAlignment="Right"
+            <ComboBox Name="CrossingoverBox" Style="{StaticResource DialogInputField}" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <Slider Name="CrossingoverSlider" Style="{StaticResource DialogSliderProbability}"/>
         </StackPanel>
+        <Separator/>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Mutation" Style="{StaticResource DialogInputLabel}"/>
-            <ComboBox Name="MutationBox" HorizontalContentAlignment="Right"
+            <ComboBox Name="MutationBox" Style="{StaticResource DialogInputField}" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <Slider Name="MutationSlider" Style="{StaticResource DialogSliderProbability}"/>
         </StackPanel>
+        <Separator/>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Selection" Style="{StaticResource DialogInputLabel}"/>
-            <ComboBox Name="SelectionBox" HorizontalContentAlignment="Right"
+            <ComboBox Name="SelectionBox" Style="{StaticResource DialogInputField}" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
         </StackPanel>

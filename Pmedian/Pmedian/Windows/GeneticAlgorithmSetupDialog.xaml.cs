@@ -1,4 +1,6 @@
-﻿using Pmedian.CoreData.Genetic.Algorithm;
+﻿using Pmedian.CoreData.DataStruct;
+using Pmedian.CoreData.Genetic.Algorithm;
+using Pmedian.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +24,19 @@ namespace Pmedian.Windows
     public partial class GeneticAlgorithmSetupDialog : Window
     {
         /// <summary>
+        /// Выбранный генетический алгоритм. 
+        /// </summary>
+        public GeneticAlgotithmMethod Method => (GeneticAlgotithmMethod)AlgorithmBox.SelectedValue;
+
+        /// <summary>
+        /// Количество итераций генетического алгоритма.
+        /// </summary>
+        public int IterationSize => IterSize.Value ?? 0;
+
+        /// <summary>
         /// Выбранный генетический алгоритм.
         /// </summary>
-        public IGeneticAlgorithm Algorithm { get; private set; }
+        public IGeneticAlgorithm GA { get; private set; }
 
         public GeneticAlgorithmSetupDialog(Window owner)
         {
@@ -41,7 +53,18 @@ namespace Pmedian.Windows
         {
             try
             {
-                Algorithm = new Algor();
+                switch (Method)
+                {
+                    case GeneticAlgotithmMethod.GenitorGA:
+                        ErrorMessageZeroIterationSize();
+                        GA = new GenitorGA(IterationSize);
+                        break;
+                    default:
+                        ErrorMessageZeroIterationSize();
+                        GA = new GenitorGA(IterationSize);
+                        break;
+
+                }
             }
             catch (Exception ex)
             {
@@ -51,6 +74,18 @@ namespace Pmedian.Windows
 
             DialogResult = true;
             Close();
+        }
+
+        /// <summary>
+        /// Метод, выводящий сообщенеи об ошибке о том, что количество итераци ГА равно 0.
+        /// </summary>
+        private void ErrorMessageZeroIterationSize()
+        {
+            if (IterationSize == 0)
+            {
+                MessageBox.Show("Whoops, something went wrong.", "Iteration size = 0. \n Error");
+                return;
+            }
         }
 
         /// <summary>

@@ -12,13 +12,13 @@ namespace Pmedian.CoreData.Genetic
         /// <summary>
         /// Длинна хромосомы.
         /// </summary>
-        private int SIZE_CROMOSOME = 0;
+        public int SizeChromosome { get; }
 
         /// <summary>
         /// Колическо деревьев штейнера в хромосоме.
         /// Считается, как количество деревень в графе.
         /// </summary>
-        private int countSteinerTree = 0;
+        private int countSteinerTree;
 
         /// <summary>
         /// Список смежности графа.
@@ -28,7 +28,7 @@ namespace Pmedian.CoreData.Genetic
         /// <summary>
         /// Хромосома, представляющая из себя массив
         /// </summary>
-        private int[] chromosome;
+        public int[] chromosomeArray { get; }
 
         /// <summary>
         /// Конструктор с параметрами.
@@ -38,8 +38,8 @@ namespace Pmedian.CoreData.Genetic
         {
             this.adjacencyList = adjacencyList;
             this.countSteinerTree = adjacencyList.GetCountTypeVertex(0);
-            this.SIZE_CROMOSOME = countSteinerTree * 2;
-            this.chromosome = new int[SIZE_CROMOSOME];
+            this.SizeChromosome = countSteinerTree * 2;
+            this.chromosomeArray = InitializeChromosome();
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace Pmedian.CoreData.Genetic
         /// <param name="size">Размер хромосомы.</param>
         public Chromosome(int size)
         {
-            this.SIZE_CROMOSOME = size;
-            this.chromosome = new int[SIZE_CROMOSOME];
+            this.SizeChromosome = size;
+            this.chromosomeArray = new int[SizeChromosome];
         }
 
         /// <summary>
@@ -58,14 +58,16 @@ namespace Pmedian.CoreData.Genetic
         /// <param name="chromosome">Массив int[] хромосомы.</param>
         public Chromosome(int[] arrayChromosome)
         {
-            this.chromosome = arrayChromosome;
-            this.SIZE_CROMOSOME = chromosome.Length;
+            this.chromosomeArray = arrayChromosome;
+            this.SizeChromosome = chromosomeArray.Length;
         }
 
-        public void InitializeChromosome()
+        private int[] InitializeChromosome()
         {
             var list = adjacencyList.GetVillageList();
+            int[] chromosome = new int[SizeChromosome];
             Random random = new Random();
+            
             int jStep = 0;
             for (int i = 0; i < list.Count; i++)
             {
@@ -78,17 +80,8 @@ namespace Pmedian.CoreData.Genetic
                 }
                 jStep = jStep + 2;
             }
-           
-        }
 
-        public int[] GetArrayGensCromosome()
-        {
             return chromosome;
-        }
-
-        public int Size()
-        {
-            return SIZE_CROMOSOME;
         }
     }
 }

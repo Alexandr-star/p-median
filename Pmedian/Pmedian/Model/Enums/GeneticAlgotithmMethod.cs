@@ -7,11 +7,11 @@ namespace Pmedian.Model.Enums
     /// </summary>
     public enum GeneticAlgotithmMethod
     {
-        [Description("1 algorithm")]
-        One,
-        [Description("2 algorithm")]
-        Two,
-        [Description("3 algorithm")]
-        Three
+        [Description("Classic GA")]
+        ClassicGA,
+        [Description("Genitor GA")]
+        GenitorGA,
+        [Description("CHC GA")]
+        CHCGA
     }
 }

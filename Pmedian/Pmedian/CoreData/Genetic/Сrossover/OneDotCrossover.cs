@@ -27,7 +27,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         }
 
         public List<Chromosome> Crossover(List<Chromosome> parents)
-        {           
+        {
             if (PROBABILITY_CROSSOVER == 0)
                 throw new NotImplementedException();
 
@@ -68,7 +68,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             }
 
             return childrenList;
-        }
+        }       
 
         private int[] ShuffleIndexes(int size, Random random)
         {

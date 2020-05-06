@@ -4,6 +4,7 @@ using GraphX.Controls.Models;
 using GraphX.Logic.Algorithms.LayoutAlgorithms;
 using Microsoft.Win32;
 using Pmedian.CoreData.DataStruct;
+using Pmedian.Exceptions;
 using Pmedian.FileSeralization;
 using Pmedian.Model;
 using Pmedian.Model.Enums;
@@ -598,7 +599,20 @@ namespace Pmedian
 
             EnableSelectMode();
 
-            dlg.Algorithm.GeneticAlgorithm(graphArea.LogicCore.Graph as MainGraph);
+            try
+            {
+                dlg.GA.GeneticAlgorithm(graphArea.LogicCore.Graph as MainGraph);
+            }
+            catch (GeneticAlgorithmException ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+                return;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Whoops, something went wrong.", "Error");
+                return;
+            }
         }
 
         private void menuSettingProblem_Click(object sender, RoutedEventArgs e)
