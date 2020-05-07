@@ -62,23 +62,19 @@ namespace Pmedian.CoreData.Genetic
             this.SizeChromosome = chromosomeArray.Length;
         }
 
+        /// <summary>
+        /// Тестовая реализация инициализации хромосомы,
+        /// не зависящей от графа.
+        /// </summary>
+        /// <returns>Инициализированную хромосому</returns>
         private int[] InitializeChromosome()
         {
-            var list = adjacencyList.GetVillageList();
-            int[] chromosome = new int[SizeChromosome];
+            int[] chromosome = new int[50];
             Random random = new Random();
             
-            int jStep = 0;
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < 50; i++)
             {
-                int village = list.ElementAt(i);
-                for (int j = jStep; j < 2; j++)
-                {
-                    List<int> listVillage = adjacencyList.GetAdjacent(village);
-                    int count = listVillage.Count;
-                    chromosome[j] = listVillage.ElementAt(random.Next(count));
-                }
-                jStep = jStep + 2;
+                chromosome[i] = random.Next(50);
             }
 
             return chromosome;

@@ -13,11 +13,11 @@ namespace Pmedian.CoreData.Genetic.Сrossover
     {
         /// <summary>
         /// Кроссовер двух родителей.
-        /// </summary>
-        /// <param name="firstParant">Первый родитель.</param>
+        /// </summary
+        /// <param name="firstParant">Первый родитель.</param>       
         /// <param name="secondParent">Второй родитель.</param>
         /// <returns></returns>
         List<Chromosome> Crossover(List<Chromosome> parents);
 
-    }
+    }       
 }

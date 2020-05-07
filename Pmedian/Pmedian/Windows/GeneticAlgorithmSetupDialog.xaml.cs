@@ -26,7 +26,7 @@ namespace Pmedian.Windows
         /// <summary>
         /// Выбранный генетический алгоритм. 
         /// </summary>
-        public GeneticAlgotithmMethod Method => (GeneticAlgotithmMethod)AlgorithmBox.SelectedValue;
+        public GeneticAlgotithmMethod AMethod => (GeneticAlgotithmMethod)AlgorithmBox.SelectedValue;
 
         /// <summary>
         /// Количество итераций генетического алгоритма.
@@ -34,10 +34,29 @@ namespace Pmedian.Windows
         public int IterationSize => IterSize.Value ?? 0;
 
         /// <summary>
+        /// Размер популяции.
+        /// </summary>
+        public int PopulationSize => PopSize.Value ?? 0;
+
+        /// <summary>
+        /// Выбранный кроссовер.
+        /// </summary>
+        public CrossoverMethod CMethod => (CrossoverMethod)CrossoverBox.SelectedValue;
+
+        /// <summary>
+        /// Вероятность кроссовера.
+        /// </summary>
+        public double CrossoverProbability => CrossoverSlider.Value;
+
+        /// <summary>
         /// Выбранный генетический алгоритм.
         /// </summary>
         public IGeneticAlgorithm GA { get; private set; }
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="owner"></param>
         public GeneticAlgorithmSetupDialog(Window owner)
         {
             Owner = owner;
@@ -53,15 +72,19 @@ namespace Pmedian.Windows
         {
             try
             {
-                switch (Method)
+                switch (AMethod)
                 {
                     case GeneticAlgotithmMethod.GenitorGA:
                         ErrorMessageZeroIterationSize();
-                        GA = new GenitorGA(IterationSize);
+                        GA = new GenitorGA(
+                            IterationSize, PopulationSize,
+                            CMethod, CrossoverProbability);
                         break;
                     default:
                         ErrorMessageZeroIterationSize();
-                        GA = new GenitorGA(IterationSize);
+                        GA = new GenitorGA(
+                            IterationSize, PopulationSize,
+                            CMethod, CrossoverProbability);
                         break;
 
                 }

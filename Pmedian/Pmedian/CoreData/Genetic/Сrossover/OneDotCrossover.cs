@@ -11,36 +11,38 @@ namespace Pmedian.CoreData.Genetic.Сrossover
     /// <summary>
     /// Реализация алгоритма одноточечного кроссовера.
     /// </summary>
-    class OneDotCrossover : ICrossover
-    {
+    class OneDotCrossover : AbstractCrossover
+    {   
         /// <summary>
-        /// Вероятность кроссовера.
+        /// Конструктор с параметрами.
         /// </summary>
-        private double PROBABILITY_CROSSOVER = 0;
-
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        public OneDotCrossover(double probabilityCrossover)
+        /// <param name="probability"></param>
+        public OneDotCrossover(double probability) : base(probability)
         {
-            this.PROBABILITY_CROSSOVER = probabilityCrossover;
+
         }
 
-        public List<Chromosome> Crossover(List<Chromosome> parents)
+        /// <summary>
+        /// Одноточечный кроссовер.
+        /// </summary>
+        /// <param name="parents">Список с родителями, который будут скещиваться</param>
+        /// <returns>Список потомков.</returns>
+        public override List<Chromosome> Crossover(List<Chromosome> parents)
         {
-            if (PROBABILITY_CROSSOVER == 0)
+            int Probability = 0;
+            if (Probability == 0)
                 throw new NotImplementedException();
 
             List<Chromosome> childrenList = new List<Chromosome>();
             Random random = new Random();
             double probability = random.NextDouble();
-            if (probability <= PROBABILITY_CROSSOVER)
+            if (probability <= Probability)
             {
                 int[] indexes = ShuffleIndexes(parents.Count, random);
                 for (int i = 0; i < parents.Count; i += 2)
                 {
-                    int[] firstParent = parents.ElementAt(indexes[i]).GetArrayGensCromosome();
-                    int[] secondParent = parents.ElementAt(indexes[i + 1]).GetArrayGensCromosome();
+                    int[] firstParent = parents.ElementAt(indexes[i]).chromosomeArray;
+                    int[] secondParent = parents.ElementAt(indexes[i + 1]).chromosomeArray;
                     int sizeChromosome = firstParent.Length;
 
                     int pointCrossover = random.Next(sizeChromosome - 1) + 1;
@@ -68,9 +70,9 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             }
 
             return childrenList;
-        }       
+        }
 
-        private int[] ShuffleIndexes(int size, Random random)
+        public override int[] ShuffleIndexes(int size, Random random)
         {
             int[] indexes = new int[size];
             int randomIndex = 0;
@@ -84,14 +86,5 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             }
             return indexes;
         }
-
-        /// <summary>
-        /// Одноточечный кроссовер.
-        /// </summary>
-        /// <param name="parents">Список с родителями, который будут скещиваться</param>
-        /// <returns>Список потомков.</returns>
-
-
-
     }
 }
