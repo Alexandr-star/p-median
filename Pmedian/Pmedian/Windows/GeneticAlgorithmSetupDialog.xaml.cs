@@ -49,6 +49,16 @@ namespace Pmedian.Windows
         public double CrossoverProbability => CrossoverSlider.Value;
 
         /// <summary>
+        /// Выбранная мутация.
+        /// </summary>
+        public MutationMethod MMethod => (MutationMethod)MutationBox.SelectedValue;
+
+        /// <summary>
+        /// Вероятность мутации.
+        /// </summary>
+        public double MutationProbability => MutationSlider.Value;
+
+        /// <summary>
         /// Выбранный генетический алгоритм.
         /// </summary>
         public IGeneticAlgorithm GA { get; private set; }
@@ -78,13 +88,15 @@ namespace Pmedian.Windows
                         ErrorMessageZeroIterationSize();
                         GA = new GenitorGA(
                             IterationSize, PopulationSize,
-                            CMethod, CrossoverProbability);
+                            CMethod, CrossoverProbability,
+                            MMethod, MutationProbability);
                         break;
                     default:
                         ErrorMessageZeroIterationSize();
                         GA = new GenitorGA(
                             IterationSize, PopulationSize,
-                            CMethod, CrossoverProbability);
+                            CMethod, CrossoverProbability,
+                            MMethod, MutationProbability);
                         break;
 
                 }

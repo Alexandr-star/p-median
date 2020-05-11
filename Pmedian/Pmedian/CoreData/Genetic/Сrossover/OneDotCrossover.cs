@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,25 +28,23 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// </summary>
         /// <param name="parents">Список с родителями, который будут скещиваться</param>
         /// <returns>Список потомков.</returns>
-        public override List<Chromosome> Crossover(List<Chromosome> parents)
+        public override List<int[]> Crossover(List<int[]> parents)
         {
-            int Probability = 0;
             if (Probability == 0)
                 throw new NotImplementedException();
 
-            List<Chromosome> childrenList = new List<Chromosome>();
-            Random random = new Random();
-            double probability = random.NextDouble();
+            List<int[]> childrenList = new List<int[]>();
+            double probability = Utility.Rand.NextDouble();
             if (probability <= Probability)
             {
-                int[] indexes = ShuffleIndexes(parents.Count, random);
+                int[] indexes = ShuffleIndexes(parents.Count);
                 for (int i = 0; i < parents.Count; i += 2)
                 {
-                    int[] firstParent = parents.ElementAt(indexes[i]).chromosomeArray;
-                    int[] secondParent = parents.ElementAt(indexes[i + 1]).chromosomeArray;
+                    int[] firstParent = parents.ElementAt(indexes[i]);
+                    int[] secondParent = parents.ElementAt(indexes[i + 1]);
                     int sizeChromosome = firstParent.Length;
 
-                    int pointCrossover = random.Next(sizeChromosome - 1) + 1;
+                    int pointCrossover = Utility.Rand.Next(sizeChromosome - 1) + 1;
 
                     int[] firstChild = new int[sizeChromosome];
                     int[] secondChild = new int[sizeChromosome];
@@ -63,8 +62,8 @@ namespace Pmedian.CoreData.Genetic.Сrossover
                         }
                     }
 
-                    childrenList.Add(new Chromosome(firstChild));
-                    childrenList.Add(new Chromosome(secondChild));
+                    childrenList.Add(firstChild);
+                    childrenList.Add(secondChild);
 
                 }
             }
@@ -72,18 +71,48 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             return childrenList;
         }
 
-        public override int[] ShuffleIndexes(int size, Random random)
+        public override int[] Crossover(int[] firstParent, int[] secondParent)
+        {          
+            if (Probability == 0)
+                throw new NotImplementedException();
+            
+            double probability = Utility.Rand.NextDouble();
+                        
+            int sizeChromosome = firstParent.Length;
+            int[] child = new int[sizeChromosome];
+
+            if (probability <= Probability)
+            {                
+                int pointCrossover = Utility.Rand.Next(sizeChromosome - 1) + 1;
+                for (int p = 0; p < sizeChromosome; p++)
+                {
+                    if (p < pointCrossover)
+                    {
+                        child[p] = firstParent[p];
+                    }
+                    else
+                    {
+                        child[p] = secondParent[p];
+                    }                    
+                }
+            }
+
+            return child;
+        }
+
+        public override int[] ShuffleIndexes(int size)
         {
             int[] indexes = new int[size];
+            for (int i = 0; i < size; i++)
+                indexes[i] = i;
+
             int randomIndex = 0;
             for (int i = 0; i < size; i++)
-            {
-                do
-                {
-                    randomIndex = random.Next(size);
-                } while (Array.Exists(indexes, element => element == randomIndex));
-                indexes[i] = randomIndex;
+            { 
+                randomIndex = Utility.Rand.Next(size);
+                Utility.Swap<int>(ref indexes[i], ref indexes[randomIndex]);
             }
+            
             return indexes;
         }
     }
