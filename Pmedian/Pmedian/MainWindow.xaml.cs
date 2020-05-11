@@ -601,6 +601,7 @@ namespace Pmedian
 
             try
             {
+
                 dlg.GA.GeneticAlgorithm(graphArea.LogicCore.Graph as MainGraph);
             }
             catch (GeneticAlgorithmException ex)

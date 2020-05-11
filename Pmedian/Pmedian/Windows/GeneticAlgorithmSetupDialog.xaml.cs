@@ -26,37 +26,37 @@ namespace Pmedian.Windows
         /// <summary>
         /// Выбранный генетический алгоритм. 
         /// </summary>
-        public GeneticAlgotithmMethod AMethod => (GeneticAlgotithmMethod)AlgorithmBox.SelectedValue;
+        private GeneticAlgotithmMethod AMethod => (GeneticAlgotithmMethod)AlgorithmBox.SelectedValue;
 
         /// <summary>
         /// Количество итераций генетического алгоритма.
         /// </summary>
-        public int IterationSize => IterSize.Value ?? 0;
+        private int IterationSize => IterSize.Value ?? 0;
 
         /// <summary>
         /// Размер популяции.
         /// </summary>
-        public int PopulationSize => PopSize.Value ?? 0;
+        private int PopulationSize => PopSize.Value ?? 0;
 
         /// <summary>
         /// Выбранный кроссовер.
         /// </summary>
-        public CrossoverMethod CMethod => (CrossoverMethod)CrossoverBox.SelectedValue;
+        private CrossoverMethod CMethod => (CrossoverMethod)CrossoverBox.SelectedValue;
 
         /// <summary>
         /// Вероятность кроссовера.
         /// </summary>
-        public double CrossoverProbability => CrossoverSlider.Value;
+        private double CrossoverProbability => CrossoverSlider.Value;
 
         /// <summary>
         /// Выбранная мутация.
         /// </summary>
-        public MutationMethod MMethod => (MutationMethod)MutationBox.SelectedValue;
+        private MutationMethod MMethod => (MutationMethod)MutationBox.SelectedValue;
 
         /// <summary>
         /// Вероятность мутации.
         /// </summary>
-        public double MutationProbability => MutationSlider.Value;
+        private double MutationProbability => MutationSlider.Value;
 
         /// <summary>
         /// Выбранный генетический алгоритм.

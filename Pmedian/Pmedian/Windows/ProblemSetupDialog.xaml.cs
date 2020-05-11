@@ -20,8 +20,11 @@ namespace Pmedian.Windows
     /// </summary>
     public partial class ProblemSetupDialog : Window
     {
-        public ProblemSetupDialog()
+        private double CostRoad => OnRoadCostUpDown.Value ?? 0;
+
+        public ProblemSetupDialog(Window owner)
         {
+            Owner = owner;
             InitializeComponent();
         }
         /// <summary>

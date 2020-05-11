@@ -31,6 +31,7 @@
             <TextBlock Text="All medic cost" Style="{StaticResource DialogInputLabel}"/>
             <xctk:DoubleUpDown Name="AllMedicCostUpDown" Style="{StaticResource DialogInputField}" Value="10.0" Minimum="1.0" Maximum="10000.0" />
         </StackPanel>
+        
         <StackPanel Style="{StaticResource DialogActionPanel}">
             <Button Click="buttonOk_Click" Style="{StaticResource DialogOKButton}"/>
             <Button Click="buttonCancel_Click" Style="{StaticResource DialogCancelButton}"/>

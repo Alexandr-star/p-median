@@ -43,8 +43,8 @@ namespace Pmedian.CoreData.DataStruct
         /// <param name="vertexCount">Количество вершин в графе</param>
         public Cost(int vertexCount)
         {
-            this.countVillage = 3;
-            this.countOtherPoint = 5;
+            this.countVillage = 4;
+            this.countOtherPoint = 9;
             InitializeTestCost();
             //InitializeList(vertexCount);
         }
@@ -57,7 +57,7 @@ namespace Pmedian.CoreData.DataStruct
                 TESTcostEdgeArray[i] = new int[countOtherPoint];
                 for (int j = 0; j < countOtherPoint; j++)
                 {
-                    TESTcostEdgeArray[i][j] = random.Next(10000);
+                    TESTcostEdgeArray[i][j] = random.Next(100);
                 }
             }
             PrintCost(TESTcostEdgeArray);
@@ -119,7 +119,7 @@ namespace Pmedian.CoreData.DataStruct
             for (int i = 0; i < arrayCost.Length; i++)
             {
                 Console.WriteLine($"vertex: {i}-costVertexArray[i]");
-                for (int j = 0; j < arrayCost.Length; j++)
+                for (int j = 0; j < arrayCost[i].Length; j++)
                 {
                     Console.Write($" {arrayCost[i][j] }");
                     //Console.Write($"({i}, {j}) ");

@@ -220,6 +220,25 @@ namespace Pmedian.CoreData.DataStruct
             return list;
         }
 
+
+        public static AdjacencyList GenerateList(int[] chromosome, int villageCount, int otherPoint)
+        {
+            var list = new AdjacencyList(villageCount + otherPoint);
+
+            int ch = 0;
+            for (int i = 0; i < villageCount; i++)
+            {
+                for (int j = 0, c = ch; j < otherPoint; j++, c++)
+                {
+                    if (chromosome[j] == 1) 
+                        list.AddEdge(i, j);
+                    ch += c + 1;
+                }
+            }
+            
+            return list;
+        }
+
         /// <summary>
         /// Создание нового экземлпяра графа на основе указанного списка смежности. 
         /// </summary>
@@ -249,7 +268,7 @@ namespace Pmedian.CoreData.DataStruct
             return graph;
         }
 
-        private static void PrintGraph(AdjacencyList list)
+        public static void PrintGraph(AdjacencyList list)
         {
             Console.WriteLine("print adjacency list");
             for (int i = 0; i < list.VertexCount; i++)

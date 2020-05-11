@@ -1,14 +1,11 @@
 ﻿using Pmedian.CoreData.DataStruct;
-using Pmedian.CoreData.Genetic.Mutation;
 using Pmedian.CoreData.Genetic.Selection;
-using Pmedian.CoreData.Genetic.Сrossover;
 using Pmedian.Model;
 using Pmedian.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Pmedian.CoreData.Genetic.Algorithm
 {
@@ -19,7 +16,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// </summary>
         private AdjacencyList adjacencyList;
 
-        private Cost costArray;
+        private Cost cost;
 
 
         /// <summary>
@@ -64,10 +61,8 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         {
             //Инициализация основных структур.
             adjacencyList = AdjacencyList.GenerateList(graph);
-            costArray = new Cost(10);
-            Population startPopulation = new Population(PopulationSize, costArray);
-
-            startPopulation.PrintPopulation();
+            cost = Cost.CreateCostArray(graph);
+            Population startPopulation = new Population(PopulationSize, cost);
             var crossover = GeneticMethod.ChosenCrossoverMethod(crossoverMethod, CrossoverProbability);
             var mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, MutationProbability);
             int[] fitnessChromosomes = new int[PopulationSize];
@@ -75,26 +70,24 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             List<int[]> population = startPopulation.populationList;
 
             int stepGA = 1;
-            while(true)
+            
+            while(stepGA < IterateSize)
             {
 
                 // вычесление пригодности хромосом.
                 for(int i = 0; i < PopulationSize; i++)
                 {
-                    fitnessChromosomes[i] = Fitness.Function(costArray.TESTcostEdgeArray, population[i]);
+                    fitnessChromosomes[i] = Fitness.Function(cost.TESTcostEdgeArray, population[i]);
                 }
-                if (stepGA == IterateSize) return;
                 
-                
-
                 // выбор двух хромосом для скрещивания
                 List<int[]> selectedChromosome = RandomSelection.Selection(population);
                 // полученный потомок после скрещивания
                 int[] child = crossover.Crossover(selectedChromosome[0], selectedChromosome[1]);
                 // пригодность потомка
-                int fitChild = Fitness.Function(costArray.TESTcostEdgeArray, child);
+                int fitChild = Fitness.Function(cost.TESTcostEdgeArray, child);
                 // поиск самой худщей хромосомы
-                int badChrom = fitnessChromosomes.Min();
+                int badChrom = fitnessChromosomes.Max();
                 // замена худшей хромосомы на потомка
                 if (fitChild < badChrom)
                 {
@@ -102,10 +95,23 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     population.RemoveAt(index);
                     population.Insert(index, child);
                 }
+                stepGA++;
+                Console.WriteLine($"step {stepGA}");
 
-            }          
+            }
+            Console.WriteLine("answer");
+            int winCh = fitnessChromosomes.Min();
+            Console.WriteLine(winCh);
+            int indexWin = Array.IndexOf(fitnessChromosomes, winCh);
+
+            
+            int[] win = population.ElementAt(indexWin);
+            foreach(int ch in win) 
+                Console.Write(ch);
+            Console.WriteLine();
+            AdjacencyList list = AdjacencyList.GenerateList(win, cost.countVillage, cost.countOtherPoint);
+            
+            AdjacencyList.PrintGraph(list);
         }
-
-        
     }
 }
