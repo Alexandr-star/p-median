@@ -34,11 +34,19 @@ namespace Pmedian.CoreData.Genetic
                 int sump = 0;
                 for (int j = 0, c = ichrom; j < m; j++, c++)
                 {
+                    if (cost.costEdgeArray[i][j].roadKm == 0.0 & 
+                        cost.costEdgeArray[i][j].timeAmbulance == 0.0 & 
+                        cost.costEdgeArray[i][j].timeMedic == 0.0)
+                        continue;
                     // суммы для проверки на органичения сверху или снизу числом
                     sump += chromosome.chromosomeArray[c];
                     tMedic += cost.costEdgeArray[i][j].timeMedic * chromosome.chromosomeArray[c];
                     tAmbulance += cost.costEdgeArray[i][j].timeAmbulance * chromosome.chromosomeArray[c];
-
+                    
+                    if (tMedic > problemData.TimeMedic)
+                        return badFitness;
+                    else if (tAmbulance > problemData.TimeAmbulance)
+                        return badFitness;
                     //сумма функции
                     fitness += cost.costVertexArray[i] + (cost.costEdgeArray[i][j].roadKm * problemData.RoadCost +
                         cost.costEdgeArray[i][j].timeMedic + 
@@ -47,10 +55,6 @@ namespace Pmedian.CoreData.Genetic
                     ichrom++;
                 }
                 if (sump < problemData.P)
-                    return badFitness;
-                else if (tMedic > problemData.TimeMedic)
-                    return badFitness;
-                else if (tAmbulance > problemData.TimeAmbulance)
                     return badFitness;
             }
 

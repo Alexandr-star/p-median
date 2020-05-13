@@ -61,7 +61,7 @@ namespace Pmedian.CoreData.DataStruct
             for (int i = 0; i < countVillage; i++)
             {
                 costEdgeArray[i] = new CostEdge[countVillage + countMedic + countClinic];                
-                for (int j = 0; j < countVillage + countMedic + countClinic; j++)
+                for (int j = 0; j < countVillage +countMedic + countClinic; j++)
                 {
                     costVertexArray[j] = 0.0;
                     costEdgeArray[i][j] = new CostEdge();
@@ -93,7 +93,10 @@ namespace Pmedian.CoreData.DataStruct
                         break;
                 }
             }
-            
+            Console.WriteLine(countVillage);
+            Console.WriteLine(countClinic);
+            Console.WriteLine(countMedic);
+
             var cost = new Cost(countClinic, countMedic, countVillage);
             foreach (var vertex in vertices)
             {
@@ -113,16 +116,25 @@ namespace Pmedian.CoreData.DataStruct
                     int targetVerex = vertices.IndexOf(vertex);
                     foreach (var edge in graph.Edges)
                     {
+                       
                         int source = vertices.IndexOf(edge.Source);
                         int target = vertices.IndexOf(edge.Target);
-                        var costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
                         if (source == targetVerex)
-                        {                           
-                            cost.costEdgeArray[targetVerex][target] = costEdge;
-                        } else if (target == targetVerex)
                         {
-                            cost.costEdgeArray[targetVerex][source] = costEdge;
-                        }                                              
+                            if (edge.Target.Type != VertexType.GroupeVillage)
+                            { 
+                                var costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
+                                cost.costEdgeArray[targetVerex][target] = costEdge;
+                            }                                
+                        }
+                        else if (target == targetVerex)
+                        {
+                            if (edge.Source.Type != VertexType.GroupeVillage)
+                            {
+                                var costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
+                                cost.costEdgeArray[targetVerex][source] = costEdge;                     
+                            }
+                        }                                                                  
                     }
                 }               
             }
