@@ -28,7 +28,7 @@ namespace Pmedian.CoreData.DataStruct
         /// <summary>
         /// Максимальное количество вершин в списке смежности.
         /// </summary>
-        /// TODO: ошибка вылетает, надо исправить
+        // TODO: ошибка вылетает, надо исправить
         public int VertexCountInMaxList => adjacencyList.Max().Count;
 
         /// <summary>
@@ -163,6 +163,7 @@ namespace Pmedian.CoreData.DataStruct
         /// Проверка связности графа. Истинна, если граф является связным.
         /// </summary>
         /// <returns>Истина, если граф является связным.</returns>
+        /// TODO: Сделать нормальное преобразование в граф.
         private bool CheckConnectivity()
         {
             var nodes = new List<int>(VertexCount);

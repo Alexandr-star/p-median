@@ -20,18 +20,30 @@
 
     <StackPanel Style="{StaticResource DialogMainPanel}">
         <StackPanel Style="{StaticResource DialogStackPanel}">
-            <TextBlock Text="The cost of the road (1 km)" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:DoubleUpDown Name="OnRoadCostUpDown" Style="{StaticResource DialogInputField}" Value="1.0" Minimum="1.0" Maximum="100.0"/>
+            <TextBlock Text="Cost road on 1km" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:DoubleUpDown x:Name="OnRoadCostUpDown" Style="{StaticResource DialogInputField}" Value="1.0" Minimum="1.0" Maximum="100.0"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="Min median" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:IntegerUpDown x:Name="PmedianCostUpDown" Style="{StaticResource DialogInputField}" Value="2" Minimum="1"/>
+        </StackPanel>
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="Time medic" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:DoubleUpDown x:Name="TimeMedicCostUpDown" Style="{StaticResource DialogInputField}" Value="100.0" Minimum="1.0" Maximum="10000.0"/>
+        </StackPanel>
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="Time Ambulance" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:DoubleUpDown x:Name="TimeAmbulanceCostUpDown" Style="{StaticResource DialogInputField}" Value="100.0" Minimum="1.0" Maximum="10000.0"/>
+        </StackPanel>
+        <!--<StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="All clinic cost" Style="{StaticResource DialogInputLabel}"/>
             <xctk:DoubleUpDown Name="AllClinicCostUpDown" Style="{StaticResource DialogInputField}" Value="10.0" Minimum="1.0" Maximum="10000.0" />
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="All medic cost" Style="{StaticResource DialogInputLabel}"/>
             <xctk:DoubleUpDown Name="AllMedicCostUpDown" Style="{StaticResource DialogInputField}" Value="10.0" Minimum="1.0" Maximum="10000.0" />
-        </StackPanel>
-        
+        </StackPanel>-->
+
         <StackPanel Style="{StaticResource DialogActionPanel}">
             <Button Click="buttonOk_Click" Style="{StaticResource DialogOKButton}"/>
             <Button Click="buttonCancel_Click" Style="{StaticResource DialogCancelButton}"/>

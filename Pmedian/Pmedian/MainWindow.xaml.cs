@@ -3,6 +3,7 @@ using GraphX.Controls;
 using GraphX.Controls.Models;
 using GraphX.Logic.Algorithms.LayoutAlgorithms;
 using Microsoft.Win32;
+using Pmedian.CoreData;
 using Pmedian.CoreData.DataStruct;
 using Pmedian.Exceptions;
 using Pmedian.FileSeralization;
@@ -23,11 +24,6 @@ namespace Pmedian
     public partial class MainWindow : Window, IDisposable
     {
         /// <summary>
-        /// Граф, задаваемый списком смежности вершин.
-        /// </summary>
-        private AdjacencyList adjacencyList;
-
-        /// <summary>
         /// Текущая операция редактора графов.
         /// </summary>
         private EditorOperationMode operationMode = EditorOperationMode.Select;
@@ -36,6 +32,26 @@ namespace Pmedian
         /// Объект класса VertexControl, служащий для создания ребер.
         /// </summary>
         private VertexControl sourceVertex;
+
+        /// <summary>
+        /// Параметры задачи.
+        /// </summary>
+        private ProblemData problemData;
+
+        private int countPoint => CountPoint();
+
+        private int CountPoint()
+        {
+            int count = 0;
+            MainGraph graph = graphArea.LogicCore.Graph as MainGraph;
+            foreach (var vertex in graph.Vertices)
+            {
+                if (vertex.Type != VertexType.GroupeVillage)
+                    count++;
+            }
+
+            return count;
+        }
 
         /// <summary>
         /// Конструктор по умолчанию.
@@ -590,7 +606,7 @@ namespace Pmedian
         {
             if (graphArea.VertexList.Count < 1)
             {
-                MessageBox.Show("Clustering algorithm can't be started. Graph should contain at least one vertex.", "Error");
+                MessageBox.Show("Genetic algorithm can't be started. Graph should contain at least one vertex.", "Error");
                 return;
             }
 
@@ -602,7 +618,7 @@ namespace Pmedian
             try
             {
 
-                dlg.GA.GeneticAlgorithm(graphArea.LogicCore.Graph as MainGraph);
+                dlg.GA.GeneticAlgorithm(graphArea.LogicCore.Graph as MainGraph, problemData);
             }
             catch (GeneticAlgorithmException ex)
             {
@@ -618,6 +634,31 @@ namespace Pmedian
 
         private void menuSettingProblem_Click(object sender, RoutedEventArgs e)
         {
+            var dlg = new ProblemSetupDialog(this);
+            if (dlg.ShowDialog() != true) return;
+
+            EnableSelectMode();
+
+            try
+            {
+                problemData = dlg.problemData;
+                
+                if (dlg.P > countPoint)
+                {
+                    MessageBox.Show("Can't be started. Should contain at least one vertex.", "Error");
+                    return;
+                }
+            }
+            catch (GeneticAlgorithmException ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+                return;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Whoops, something went wrong.", "Error");
+                return;
+            }
 
         }
     }

@@ -71,16 +71,16 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             return childrenList;
         }
 
-        public override int[] Crossover(int[] firstParent, int[] secondParent)
+        public override Chromosome Crossover(Chromosome firstParent, Chromosome secondParent)
         {          
             if (Probability == 0)
                 throw new NotImplementedException();
             
             double probability = Utility.Rand.NextDouble();
                         
-            int sizeChromosome = firstParent.Length;
-            int[] child = new int[sizeChromosome];
-
+            int sizeChromosome = firstParent.SizeChromosome;
+            int[] childArray = new int[sizeChromosome];
+            
             if (probability <= Probability)
             {                
                 int pointCrossover = Utility.Rand.Next(sizeChromosome - 1) + 1;
@@ -88,15 +88,15 @@ namespace Pmedian.CoreData.Genetic.Сrossover
                 {
                     if (p < pointCrossover)
                     {
-                        child[p] = firstParent[p];
+                        childArray[p] = firstParent.chromosomeArray[p];
                     }
                     else
                     {
-                        child[p] = secondParent[p];
+                        childArray[p] = secondParent.chromosomeArray[p];
                     }                    
                 }
             }
-
+            Chromosome child = new Chromosome(childArray);
             return child;
         }
 

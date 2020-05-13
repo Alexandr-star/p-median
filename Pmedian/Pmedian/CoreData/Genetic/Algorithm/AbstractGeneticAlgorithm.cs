@@ -35,6 +35,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// Абстрактный метод генетического алгоритма
         /// </summary>
         /// <param name="graph"></param>
-        public abstract void GeneticAlgorithm(MainGraph graph);
+        /// <param name="problemData">Параметры задачи</param>
+        public abstract void GeneticAlgorithm(MainGraph graph, ProblemData problemData);
     }
 }

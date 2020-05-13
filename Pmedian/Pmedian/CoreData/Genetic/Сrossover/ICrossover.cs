@@ -24,7 +24,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// <param name="firstParant">Первый родитель.</param>       
         /// <param name="secondParent">Второй родитель.</param>
         /// <returns>Одного потомка.</returns>
-        int[] Crossover(int[] firstParent, int[] secondParent);
+        Chromosome Crossover(Chromosome firstParent, Chromosome secondParent);
 
     }       
 }

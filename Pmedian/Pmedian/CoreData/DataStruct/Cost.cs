@@ -1,6 +1,8 @@
 ﻿using Pmedian.Model;
+using Pmedian.Model.Enums;
 using System;
 using System.Linq;
+using System.Windows.Documents;
 
 namespace Pmedian.CoreData.DataStruct
 {
@@ -12,123 +14,145 @@ namespace Pmedian.CoreData.DataStruct
         /// <summary>
         /// Матрица затрат.
         /// </summary>
-        private CostEdge[][] costEdgeArray;
-
-        /// <summary>
-        /// Тестовая матрица.
-        /// </summary>
-        public int[][] TESTcostEdgeArray { get; private set; }
-
-        public int countVillage { get; }
-
-        public int countOtherPoint { get; }
-
-        private Random random = new Random();
-
+        public CostEdge[][] costEdgeArray { get; private set; }
 
         /// <summary>
         /// Массив затрат на постройку пунктов. 
         /// </summary>
-        private double[] costVertexArray;
+        public double[] costVertexArray { get; private set; }
 
         /// <summary>
-        /// Список смежности затрат.
+        /// Количество деревень в графе.
         /// </summary>
-        //private List<List<Cost>> costList = new List<List<Cost>>();
+        public int countVillage { get; set; }
 
+        /// <summary>
+        /// Количество фельдшерских пунктов в графе.
+        /// </summary>
+        public int countMedic { get; set; }
+
+        /// <summary>
+        /// Количество пунктов скорой помощи в графе.
+        /// </summary>
+        public int countClinic { get; set; }
+
+        
 
         /// <summary>
         /// Конструктор с параметрами.
         /// </summary>
         /// <param name="vertexCount">Количество вершин в графе</param>
-        public Cost(int vertexCount)
+        public Cost(int countClinic, int countMedic, int countVillage)
         {
-            this.countVillage = 4;
-            this.countOtherPoint = 9;
-            InitializeTestCost();
-            //InitializeList(vertexCount);
+            this.countClinic = countClinic;
+            this.countMedic = countMedic;
+            this.countVillage = countVillage;
+            InitializeList();
         }
-
-        private void InitializeTestCost()
-        {
-            this.TESTcostEdgeArray = new int[countVillage][];
-            for (int i = 0; i < countVillage; i++)
-            {
-                TESTcostEdgeArray[i] = new int[countOtherPoint];
-                for (int j = 0; j < countOtherPoint; j++)
-                {
-                    TESTcostEdgeArray[i][j] = random.Next(100);
-                }
-            }
-            PrintCost(TESTcostEdgeArray);
-        }
-
-
 
         /// <summary>
         /// Инициализация списка расходов. Создает полностью список расходов.
         /// </summary>
         /// <param name="vertexCount">Количество вершин в графе.</param>
-        private void InitializeList(int vertexCount)
+        private void InitializeList()
         {
-            costEdgeArray = new CostEdge[vertexCount][];
-            costVertexArray = new double[vertexCount];
-            for (int i = 0; i < vertexCount; i++)
+            costEdgeArray = new CostEdge[countVillage][];
+            costVertexArray = new double[countVillage + countMedic + countClinic];
+            for (int i = 0; i < countVillage; i++)
             {
-                costEdgeArray[i] = new CostEdge[vertexCount];
-                costVertexArray[i] = 0.0;
-                for (int j = 0; j < vertexCount; j++)
+                costEdgeArray[i] = new CostEdge[countVillage + countMedic + countClinic];                
+                for (int j = 0; j < countVillage + countMedic + countClinic; j++)
                 {
-                    costEdgeArray[i][j] = null;
+                    costVertexArray[j] = 0.0;
+                    costEdgeArray[i][j] = new CostEdge();
                 }
-            }
-
+            }                            
         }
 
 
         public static Cost CreateCostArray(MainGraph graph)
-        {
-            var cost = new Cost(graph.VertexCount);
-
+        {           
             var vertices = graph.Vertices.ToList();
 
-            foreach (var vertex in graph.Vertices)
+            int countVillage = 0;
+            int countClinic = 0;
+            int countMedic = 0;
+            foreach (var vertex in vertices)
+            {
+                
+                switch (vertex.Type)
+                {
+                    case VertexType.GroupeVillage:
+                        countVillage++;
+                        break;
+                    case VertexType.GroupeClinic:
+                        countClinic++;                        
+                        break;
+                    case VertexType.GroupeMedic:
+                        countMedic++;                       
+                        break;
+                }
+            }
+            
+            var cost = new Cost(countClinic, countMedic, countVillage);
+            foreach (var vertex in vertices)
             {
                 int target = vertices.IndexOf(vertex);
-                cost.costVertexArray[target] = vertex.vertexCost;
+                Console.WriteLine($"vertex {target} type {vertex.Type} cost {vertex.vertexCost}");
+                if (vertex.Type != VertexType.GroupeVillage)
+                {
+                    cost.costVertexArray[target] = vertex.vertexCost;                      
+                }
             }
-
-            foreach (var edge in graph.Edges)
+            
+            // TODO: Исправить добовление свяаных деревень в массив.
+            foreach (var vertex in vertices)
             {
-                int source = vertices.IndexOf(edge.Source);
-                int target = vertices.IndexOf(edge.Target);
-
-                var costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
-                cost.costEdgeArray[source][target] = costEdge;
-                cost.costEdgeArray[target][source] = costEdge;
+                if (vertex.Type == VertexType.GroupeVillage)
+                {
+                    int targetVerex = vertices.IndexOf(vertex);
+                    foreach (var edge in graph.Edges)
+                    {
+                        int source = vertices.IndexOf(edge.Source);
+                        int target = vertices.IndexOf(edge.Target);
+                        var costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
+                        if (source == targetVerex)
+                        {                           
+                            cost.costEdgeArray[targetVerex][target] = costEdge;
+                        } else if (target == targetVerex)
+                        {
+                            cost.costEdgeArray[targetVerex][source] = costEdge;
+                        }                                              
+                    }
+                }               
             }
 
-            //cost.PrintCost();
+            
+            
+
+            cost.PrintCost();
+
             return cost;
         }
 
 
-        private void PrintCost(int[][] arrayCost)
+        private void PrintCost()
         {
-            Console.WriteLine("print cost array");
-            for (int i = 0; i < arrayCost.Length; i++)
+            Console.WriteLine("print cost array edge");
+            for (int i = 0; i < costEdgeArray.Length; i++)
             {
-                Console.WriteLine($"vertex: {i}-costVertexArray[i]");
-                for (int j = 0; j < arrayCost[i].Length; j++)
+                Console.WriteLine($"vertex: {i}-{costVertexArray[i]}");
+                for (int j = 0; j < costEdgeArray[i].Length; j++)
                 {
-                    Console.Write($" {arrayCost[i][j] }");
-                    //Console.Write($"({i}, {j}) ");
-                    //if (arrayCost[i][j] != null)
-                    //{
-                        //Console.Write($"{arrayCost[i][j]}; " +
-                        //    $"{arrayCost[i][j]}; " +
-                        //    $"{arrayCost[i][j]}");
-                    //}
+
+                    if (costEdgeArray[i][j] != null)
+                    {
+                        Console.Write($" {costEdgeArray[i][j] }");
+                        Console.Write($"({i}, {j}) ");
+                        Console.Write($"{costEdgeArray[i][j].roadKm}; " +
+                            $"{costEdgeArray[i][j].timeAmbulance}; " +
+                            $"{costEdgeArray[i][j].timeMedic}");
+                    }
                 }
                 Console.WriteLine();
             }

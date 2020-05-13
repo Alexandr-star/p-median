@@ -16,6 +16,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// Решение задачи p-медианы по указанному алгоритму.
         /// </summary>
         /// <param name="graph">Граф.</param>
-        void GeneticAlgorithm(MainGraph graph);
+        /// <param name="problemData">Параметры задачи</param>
+        void GeneticAlgorithm(MainGraph graph, ProblemData problemData);
     }
 }

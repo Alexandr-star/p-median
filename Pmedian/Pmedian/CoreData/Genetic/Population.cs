@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.TextFormatting;
 
 namespace Pmedian.CoreData.Genetic
 {
@@ -24,7 +25,7 @@ namespace Pmedian.CoreData.Genetic
         /// <summary>
         /// Популяция, предаставленная массивом хромомсом.
         /// </summary>
-        public List<int[]> populationList { get; set; }
+        public List<Chromosome> populationList { get; set; }
 
         /// <summary>
         /// Конструктор с параметрами.
@@ -34,50 +35,24 @@ namespace Pmedian.CoreData.Genetic
         public Population(int sizePopulation, Cost costArray)
         {
             this.SizePopulation = sizePopulation;
-            this.SizeChromosome = costArray.countVillage * costArray.countOtherPoint;
             initializePopulation(costArray);
         }
 
-        public Population(List<int[]> pop)
+        public Population(List<Chromosome> pop)
         {
             this.SizePopulation = pop.Count;
-            this.SizeChromosome = pop[0].Length;
             this.populationList = pop;
         }
 
-        private void initializePopulation(Cost costArray)
+        private void initializePopulation(Cost cost)
         {
-            this.populationList = new List<int[]>();
-
+            this.populationList = new List<Chromosome>();
+            int sizeChromosome = cost.countVillage * (cost.countClinic + cost.countMedic);
             for (int i = 0; i < SizePopulation; i++)
             {
-                int[] chromosome = InitializeChromosome();
+                Chromosome chromosome = Chromosome.CreateChromosome(sizeChromosome);
                 populationList.Add(chromosome);
-                Console.WriteLine();
-                //Console.WriteLine($"{populationList[i].GetHashCode()}  {populationList[i].chromosomeArray.GetHashCode()}");
-
-                //array[i].PrintChromosome();
             }
-            PrintPopulation();
-        }
-
-        private int[] InitializeChromosome()
-        {
-            int[] chromosomeArray = new int[SizeChromosome];
-            for (int i = 0; i < SizeChromosome; i++)
-            {
-                double p = Utility.Rand.NextDouble();
-                if (p < 0.5)
-                {
-                    chromosomeArray[i] = 0;
-                }
-                else
-                {
-                    chromosomeArray[i] = 1;
-                }
-
-            }
-            return chromosomeArray;
         }
 
         public void PrintPopulation()
@@ -85,12 +60,38 @@ namespace Pmedian.CoreData.Genetic
             Console.WriteLine($"Population - {SizePopulation}");
             for (int i = 0; i < populationList.Count; i++)
             {
-                for (int j = 0; j < SizeChromosome; j++)
+                for (int j = 0; j < populationList[i].chromosomeArray.Length; j++)
                 {
-                    Console.Write(populationList[i][j]);
+                    Console.Write($"{populationList[i].chromosomeArray[j]}");
                 }
                 Console.WriteLine();
             }
+        }
+
+        public Chromosome BestChromosome()
+        {
+            var bestChromosome = populationList[0];
+
+            foreach( var chromosome in populationList)
+            {
+                if (chromosome.fitness < bestChromosome.fitness)
+                    bestChromosome = chromosome;
+            }
+
+            return bestChromosome;
+        }
+
+        public Chromosome WorstChromosome()
+        {
+            var worstChromosome = populationList[0];
+
+            foreach (var chromosome in populationList)
+            {
+                if (chromosome.fitness > worstChromosome.fitness)
+                    worstChromosome = chromosome;
+            }
+
+            return worstChromosome;
         }
     }
 }

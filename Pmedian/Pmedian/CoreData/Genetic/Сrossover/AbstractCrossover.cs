@@ -35,7 +35,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// <param name="firstParent">Первый родитель.</param>
         /// <param name="secondParent">Второй родитель.</param>
         /// <returns>Потомок.</returns>
-        public abstract int[] Crossover(int[] firstParent, int[] secondParent);
+        public abstract Chromosome Crossover(Chromosome firstParent, Chromosome secondParent);
 
         /// <summary>
         /// Метод, который перемешивает индексы.

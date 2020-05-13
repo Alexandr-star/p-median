@@ -17,8 +17,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         private AdjacencyList adjacencyList;
 
         private Cost cost;
-
-
+       
         /// <summary>
         /// Вариант кроссовера. 
         /// </summary>
@@ -57,17 +56,30 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// Реализация генетического алгоритма "Genitoe".
         /// </summary>
         /// <param name="graph">Граф.</param>
-        public override void GeneticAlgorithm(MainGraph graph)
+        /// <param name="problemData">Параметры задачи</param>
+        public override void GeneticAlgorithm(MainGraph graph, ProblemData problemData)
         {
             //Инициализация основных структур.
             adjacencyList = AdjacencyList.GenerateList(graph);
             cost = Cost.CreateCostArray(graph);
+            ProblemData problem = problemData;
+            Console.WriteLine("Problem");
+            Console.WriteLine(problem.P);
+            Console.WriteLine(problem.RoadCost);
+            Console.WriteLine(problem.TimeAmbulance);
+            Console.WriteLine(problem.TimeMedic);
             Population startPopulation = new Population(PopulationSize, cost);
+            startPopulation.PrintPopulation();
+
+            foreach(var chromosome in startPopulation.populationList)
+            {
+                chromosome.fitness = Fitness.Function(cost, problemData, chromosome);
+                Console.WriteLine(chromosome.fitness);
+            }
             var crossover = GeneticMethod.ChosenCrossoverMethod(crossoverMethod, CrossoverProbability);
             var mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, MutationProbability);
-            int[] fitnessChromosomes = new int[PopulationSize];
 
-            List<int[]> population = startPopulation.populationList;
+            var population = startPopulation;
 
             int stepGA = 1;
             
@@ -77,39 +89,39 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 // вычесление пригодности хромосом.
                 for(int i = 0; i < PopulationSize; i++)
                 {
-                    fitnessChromosomes[i] = Fitness.Function(cost.TESTcostEdgeArray, population[i]);
+                    population.populationList[i].fitness = Fitness.Function(cost, problemData, population.populationList[i]);
                 }
                 
                 // выбор двух хромосом для скрещивания
-                List<int[]> selectedChromosome = RandomSelection.Selection(population);
+                List<Chromosome> selectedChromosome = RandomSelection.Selection(population.populationList);
                 // полученный потомок после скрещивания
-                int[] child = crossover.Crossover(selectedChromosome[0], selectedChromosome[1]);
+                var child = crossover.Crossover(selectedChromosome[0], selectedChromosome[1]);
                 // пригодность потомка
-                int fitChild = Fitness.Function(cost.TESTcostEdgeArray, child);
+                child.fitness = Fitness.Function(cost, problemData, child);
                 // поиск самой худщей хромосомы
-                int badChrom = fitnessChromosomes.Max();
+                var badChrom = population.WorstChromosome();
                 // замена худшей хромосомы на потомка
-                if (fitChild < badChrom)
+                if (child.fitness < badChrom.fitness)
                 {
-                    int index = Array.IndexOf(fitnessChromosomes, badChrom);
-                    population.RemoveAt(index);
-                    population.Insert(index, child);
+                    int index = population.populationList.IndexOf(badChrom);
+                    population.populationList.RemoveAt(index);
+                    population.populationList.Insert(index, child);
                 }
                 stepGA++;
-                Console.WriteLine($"step {stepGA}");
 
             }
             Console.WriteLine("answer");
-            int winCh = fitnessChromosomes.Min();
-            Console.WriteLine(winCh);
-            int indexWin = Array.IndexOf(fitnessChromosomes, winCh);
+            Chromosome winCh = population.BestChromosome();
+            Console.WriteLine(winCh.fitness);
+            int indexWin = population.populationList.IndexOf(winCh);
 
-            
-            int[] win = population.ElementAt(indexWin);
-            foreach(int ch in win) 
+
+            Chromosome win = population.populationList.ElementAt(indexWin);
+            foreach(int ch in win.chromosomeArray) 
                 Console.Write(ch);
             Console.WriteLine();
-            AdjacencyList list = AdjacencyList.GenerateList(win, cost.countVillage, cost.countOtherPoint);
+            
+            AdjacencyList list = AdjacencyList.GenerateList(win.chromosomeArray, cost.countVillage, cost.countClinic + cost.countMedic);
             
             AdjacencyList.PrintGraph(list);
         }
