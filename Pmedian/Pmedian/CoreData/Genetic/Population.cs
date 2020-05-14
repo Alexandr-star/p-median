@@ -47,7 +47,12 @@ namespace Pmedian.CoreData.Genetic
         private void initializePopulation(Cost cost)
         {
             this.populationList = new List<Chromosome>();
-            int sizeChromosome = cost.countVillage * (cost.countClinic + cost.countMedic);
+            //int sizeChromosome = cost.countVillage * (cost.countClinic + cost.countMedic);
+            int sizeChromosome = 0;
+            foreach (var list in cost.CostList)
+            {
+                sizeChromosome += list.Count;
+            }
             for (int i = 0; i < SizePopulation; i++)
             {
                 Chromosome chromosome = Chromosome.CreateChromosome(sizeChromosome);

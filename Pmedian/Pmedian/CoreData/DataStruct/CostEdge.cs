@@ -16,7 +16,12 @@ namespace Pmedian.CoreData.DataStruct
         /// </summary>
         public double timeMedic { get; private set; }
 
+        /// <summary>
+        /// Расстояние между вершинами.
+        /// </summary>
         public double roadKm { get; private set; }
+
+        public bool EmptyCost { get; private set; }
 
         /// <summary>
         /// Конструктор с параметрами
@@ -28,6 +33,7 @@ namespace Pmedian.CoreData.DataStruct
             this.roadKm = weidthRoad;
             this.timeAmbulance = timeAmbulance;
             this.timeMedic = timeMedic;
+            this.EmptyCost = false;
         }
 
         /// <summary>
@@ -35,9 +41,7 @@ namespace Pmedian.CoreData.DataStruct
         /// </summary>
         public CostEdge() 
         {
-            this.roadKm = 0.0;
-            this.timeAmbulance = 0.0;
-            this.timeMedic = 0.0;
+            this.EmptyCost = true;
         }
     }
 }

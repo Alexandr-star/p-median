@@ -28,5 +28,21 @@ namespace Pmedian
             lhs = rhs;
             rhs = temp;
         }
+
+        public static int[] ShuffleIndexes(int size)
+        {
+            int[] indexes = new int[size];
+            for (int i = 0; i < size; i++)
+                indexes[i] = i;
+
+            int randomIndex = 0;
+            for (int i = 0; i < size; i++)
+            {
+                randomIndex = Utility.Rand.Next(size);
+                Utility.Swap<int>(ref indexes[i], ref indexes[randomIndex]);
+            }
+
+            return indexes;
+        }
     }
 }

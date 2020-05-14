@@ -9,7 +9,7 @@ namespace Pmedian.Model.Enums
     {
         [Description("One dot Crossover")]
         OneDot,
-        [Description("Two dot Crossover")]
-        TwoDot
+        [Description("N dot Crossover")]
+        NDot
     }
 }

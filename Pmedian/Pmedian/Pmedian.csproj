@@ -121,8 +121,10 @@
     <Compile Include="CoreData\Genetic\Selection\ISelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\RandomSelection.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\AbstractCrossover.cs" />
+    <Compile Include="CoreData\Genetic\Сrossover\NDotCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\OneDotCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\ICrossover.cs" />
+    <Compile Include="CoreData\Genetic\Сrossover\TwoDotCrossover.cs" />
     <Compile Include="CoreData\GraphGeneration\ErdosRenyi.cs" />
     <Compile Include="CoreData\GraphGeneration\IGraphGenerator.cs" />
     <Compile Include="CoreData\GraphGeneration\SimplePrecise.cs" />

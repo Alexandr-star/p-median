@@ -1,5 +1,8 @@
 ﻿using Pmedian.CoreData.DataStruct;
 using Pmedian.CoreData;
+using System.Windows.Documents;
+using System.Collections.Generic;
+using System;
 
 namespace Pmedian.CoreData.Genetic
 {
@@ -18,45 +21,57 @@ namespace Pmedian.CoreData.Genetic
         public static double Function(Cost cost, ProblemData problemData, Chromosome chromosome)
         {
             double fitness = 0;
-            double badFitness = double.MaxValue;
-
             int n = cost.countVillage;
-            int m = cost.countClinic + cost.countMedic;
-            
-            // TODO: Если деревня = 0 попадается то что то сделать , чтобы не попадалась
+            int m = cost.vertexCount;
 
-            for (int i = 0; i < n; i++)
+            int chgencount = 0;
+            for (int i = 0;  i < n; i++)
             {
-                int ichrom = 0;
-
-                double tMedic = 0.0;
-                double tAmbulance = 0.0;
-                int sump = 0;
-                for (int j = 0, c = ichrom; j < m; j++, c++)
+                double timeM = 0.0;
+                double timeA = 0.0;
+                int vertexMedian = 0;
+                for (int j = 0, c = chgencount; j < m; j++)
                 {
-                    if (cost.costEdgeArray[i][j].roadKm == 0.0 & 
-                        cost.costEdgeArray[i][j].timeAmbulance == 0.0 & 
-                        cost.costEdgeArray[i][j].timeMedic == 0.0)
+                    if (cost.costEdgeArray[i][j].EmptyCost)
                         continue;
-                    // суммы для проверки на органичения сверху или снизу числом
-                    sump += chromosome.chromosomeArray[c];
-                    tMedic += cost.costEdgeArray[i][j].timeMedic * chromosome.chromosomeArray[c];
-                    tAmbulance += cost.costEdgeArray[i][j].timeAmbulance * chromosome.chromosomeArray[c];
+
+                    timeM += cost.costEdgeArray[i][j].timeMedic;
+                    if (timeM > problemData.TimeMedic)
+                    {
+                        Console.WriteLine();
+                        return double.MaxValue;
+                    }
+
+                    timeA += cost.costEdgeArray[i][j].timeAmbulance;
+                    if (timeA > problemData.TimeAmbulance)
+                    {
+                        Console.WriteLine();
+                        return double.MaxValue;
+                    }
                     
-                    if (tMedic > problemData.TimeMedic)
-                        return badFitness;
-                    else if (tAmbulance > problemData.TimeAmbulance)
-                        return badFitness;
-                    //сумма функции
-                    fitness += cost.costVertexArray[i] + (cost.costEdgeArray[i][j].roadKm * problemData.RoadCost +
+                    vertexMedian += chromosome.chromosomeArray[c];
+
+                    fitness += (
                         cost.costEdgeArray[i][j].timeMedic + 
-                        cost.costEdgeArray[i][j].timeAmbulance) * chromosome.chromosomeArray[c];
-                    
-                    ichrom++;
+                        cost.costEdgeArray[i][j].timeAmbulance + 
+                        cost.costEdgeArray[i][j].roadKm * problemData.RoadCost +
+                        cost.costVertexArray[j]
+                        ) * chromosome.chromosomeArray[c];
+
+
+                    c++;
+                    chgencount++;
+
                 }
-                if (sump < problemData.P)
-                    return badFitness;
+                Console.Write(vertexMedian);
+                Console.Write(" ");
+                if (vertexMedian < problemData.P)
+                {
+                    Console.WriteLine();
+                    return double.MaxValue;
+                }
             }
+            Console.WriteLine();
 
             return fitness;
         }

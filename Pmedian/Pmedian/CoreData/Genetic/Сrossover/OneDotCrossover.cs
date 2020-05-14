@@ -37,7 +37,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             double probability = Utility.Rand.NextDouble();
             if (probability <= Probability)
             {
-                int[] indexes = ShuffleIndexes(parents.Count);
+                int[] indexes = Utility.ShuffleIndexes(parents.Count);
                 for (int i = 0; i < parents.Count; i += 2)
                 {
                     int[] firstParent = parents.ElementAt(indexes[i]);
@@ -98,22 +98,6 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             }
             Chromosome child = new Chromosome(childArray);
             return child;
-        }
-
-        public override int[] ShuffleIndexes(int size)
-        {
-            int[] indexes = new int[size];
-            for (int i = 0; i < size; i++)
-                indexes[i] = i;
-
-            int randomIndex = 0;
-            for (int i = 0; i < size; i++)
-            { 
-                randomIndex = Utility.Rand.Next(size);
-                Utility.Swap<int>(ref indexes[i], ref indexes[randomIndex]);
-            }
-            
-            return indexes;
-        }
+        }        
     }
 }

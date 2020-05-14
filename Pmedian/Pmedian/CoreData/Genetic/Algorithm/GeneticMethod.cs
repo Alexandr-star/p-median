@@ -19,7 +19,8 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 case CrossoverMethod.OneDot:
                     crossover = new OneDotCrossover(CrossoverProbability);
                     break;
-                case CrossoverMethod.TwoDot:
+                case CrossoverMethod.NDot:
+                    crossover = new NDotCrossover(1, CrossoverProbability);
                     break;
             }
 
@@ -42,6 +43,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     break;
                 case MutationMethod.TranslocationMutation:
                     mutation = new TranslocationMutation(MutationProbability);
+                    break;
+                case MutationMethod.NonMutation:
+                    mutation = null;
                     break;
             }
 

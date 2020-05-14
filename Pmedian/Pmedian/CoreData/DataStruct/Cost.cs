@@ -1,6 +1,7 @@
 ﻿using Pmedian.Model;
 using Pmedian.Model.Enums;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Documents;
 
@@ -15,6 +16,13 @@ namespace Pmedian.CoreData.DataStruct
         /// Матрица затрат.
         /// </summary>
         public CostEdge[][] costEdgeArray { get; private set; }
+
+        private List<List<int>> _costList = new List<List<int>>();
+
+        public List<List<int>> CostList
+        {
+            get => _costList;
+        }
 
         /// <summary>
         /// Массив затрат на постройку пунктов. 
@@ -36,7 +44,7 @@ namespace Pmedian.CoreData.DataStruct
         /// </summary>
         public int countClinic { get; set; }
 
-        
+        public int vertexCount { get; private set; }
 
         /// <summary>
         /// Конструктор с параметрами.
@@ -47,6 +55,7 @@ namespace Pmedian.CoreData.DataStruct
             this.countClinic = countClinic;
             this.countMedic = countMedic;
             this.countVillage = countVillage;
+            this.vertexCount = countClinic + countMedic + countVillage;
             InitializeList();
         }
 
@@ -56,13 +65,15 @@ namespace Pmedian.CoreData.DataStruct
         /// <param name="vertexCount">Количество вершин в графе.</param>
         private void InitializeList()
         {
+            _costList = new List<List<int>>();
             costEdgeArray = new CostEdge[countVillage][];
             costVertexArray = new double[countVillage + countMedic + countClinic];
             for (int i = 0; i < countVillage; i++)
             {
                 costEdgeArray[i] = new CostEdge[countVillage + countMedic + countClinic];                
-                for (int j = 0; j < countVillage +countMedic + countClinic; j++)
+                for (int j = 0; j < countVillage + countMedic + countClinic; j++)
                 {
+                    _costList.Add(new List<int>());
                     costVertexArray[j] = 0.0;
                     costEdgeArray[i][j] = new CostEdge();
                 }
@@ -104,49 +115,71 @@ namespace Pmedian.CoreData.DataStruct
                 Console.WriteLine($"vertex {target} type {vertex.Type} cost {vertex.vertexCost}");
                 if (vertex.Type != VertexType.GroupeVillage)
                 {
-                    cost.costVertexArray[target] = vertex.vertexCost;                      
+                    cost.AddCostVertex(target, vertex.vertexCost);                      
                 }
             }
-            
-            // TODO: Исправить добовление свяаных деревень в массив.
-            foreach (var vertex in vertices)
+
+            foreach (var edge in graph.Edges)
             {
-                if (vertex.Type == VertexType.GroupeVillage)
+                int source = vertices.IndexOf(edge.Source);
+                int target = vertices.IndexOf(edge.Target);
+                
+                if (edge.Source.Type != edge.Target.Type)
                 {
-                    int targetVerex = vertices.IndexOf(vertex);
-                    foreach (var edge in graph.Edges)
+                    if (edge.Source.Type == VertexType.GroupeVillage)
                     {
-                       
-                        int source = vertices.IndexOf(edge.Source);
-                        int target = vertices.IndexOf(edge.Target);
-                        if (source == targetVerex)
-                        {
-                            if (edge.Target.Type != VertexType.GroupeVillage)
-                            { 
-                                var costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
-                                cost.costEdgeArray[targetVerex][target] = costEdge;
-                            }                                
-                        }
-                        else if (target == targetVerex)
-                        {
-                            if (edge.Source.Type != VertexType.GroupeVillage)
-                            {
-                                var costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
-                                cost.costEdgeArray[targetVerex][source] = costEdge;                     
-                            }
-                        }                                                                  
+                        cost.AddEdge(source, target);
+                        CostEdge costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
+                        cost.AddCostEdge(source, target, costEdge);
                     }
-                }               
+                    else if (edge.Target.Type == VertexType.GroupeVillage)
+                    {
+                        cost.AddEdge(target, source);
+                        CostEdge costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
+                        cost.AddCostEdge(target, source, costEdge);
+                    }
+                }
             }
 
-            
-            
 
+            cost.PrintCostList();
             cost.PrintCost();
 
             return cost;
         }
 
+        /// <summary>
+        /// Добавить расход ребра в массив расходов ребер.
+        /// </summary>
+        /// <param name="source">Индекс деревни.</param>
+        /// <param name="target">Индекс пункта.</param>
+        /// <param name="costEdge">Расход ребра.</param>
+        private void AddCostEdge(int indexVillage, int indexPoin, CostEdge costEdge)
+        {
+            costEdgeArray[indexVillage][indexPoin] = costEdge;
+        }
+
+        /// <summary>
+        /// Добавить расход вершины в массив расходов вершин.
+        /// </summary>
+        /// <param name="index">Индекс вершины.</param>
+        /// <param name="vertexCost">Расход вершины.</param>
+        private void AddCostVertex(int index, double vertexCost)
+        {
+            costVertexArray[index] = vertexCost;
+        }
+
+
+
+        /// <summary>
+        /// Добавить ребро в список смежности затрат.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        private void AddEdge(int source, int target)
+        {
+            _costList[source].Add(target);
+        }
 
         private void PrintCost()
         {
@@ -168,6 +201,21 @@ namespace Pmedian.CoreData.DataStruct
                 }
                 Console.WriteLine();
             }
+        }
+
+        public void PrintCostList()
+        {
+            Console.WriteLine("print adjacency list COst");
+            for (int i = 0; i < vertexCount; i++)
+            {
+                Console.Write($"{i} - ");
+                foreach (int j in _costList[i])
+                {
+                    Console.Write(j);
+                    Console.Write(" ");
+                }
+                Console.WriteLine();
+            }            
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Pmedian.Model.Enums
         [Description("Swap Mutation")]
         SwapMutation,
         [Description("Translocation Mutation")]
-        TranslocationMutation
+        TranslocationMutation,
+        [Description("NON Mutation")]
+        NonMutation
     }
 }

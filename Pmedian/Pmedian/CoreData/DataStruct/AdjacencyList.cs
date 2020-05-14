@@ -14,9 +14,14 @@ namespace Pmedian.CoreData.DataStruct
     public class AdjacencyList
     {
         /// <summary>
-        /// Список смежности.
+        /// Список смежности графа.
         /// </summary>
         private List<List<int>> adjacencyList = new List<List<int>>();
+
+        /// <summary>
+        /// Список смежности деревень со смежными вершинами.
+        /// </summary>
+        private List<List<int>> adjacencyListVillage = new List<List<int>>();
 
         private List<List<int>> typeListVertex = new List<List<int>>();
 
@@ -29,7 +34,7 @@ namespace Pmedian.CoreData.DataStruct
         /// Максимальное количество вершин в списке смежности.
         /// </summary>
         // TODO: ошибка вылетает, надо исправить
-        public int VertexCountInMaxList => adjacencyList.Max().Count;
+        public int VertexCountInMaxList => MaxCountListInAdj();
 
         /// <summary>
         /// Связность графа.
@@ -63,6 +68,16 @@ namespace Pmedian.CoreData.DataStruct
 
             if (!IsDirected)
                 adjacencyList[target].Add(source);
+        }
+
+        /// <summary>
+        /// Добавление нового ребра, связанного с деревней.
+        /// </summary>
+        /// <param name="source">Исходная вершина.</param>
+        /// <param name="target">Конечная вершина.</param>
+        public void AddEdgeToAdjVillage(int source, int target)
+        {
+            adjacencyListVillage[source].Add(target);
         }
 
         /// <summary>
@@ -115,9 +130,13 @@ namespace Pmedian.CoreData.DataStruct
         private void InitializeList(int vertexCount)
         {
             adjacencyList = new List<List<int>>();
+            adjacencyListVillage = new List<List<int>>();
             typeListVertex = new List<List<int>>();
             for (int i = 0; i < vertexCount; i++)
+            {
                 adjacencyList.Add(new List<int>());
+                adjacencyListVillage.Add(new List<int>());
+            }
             for (int i = 0; i < 3; i++)
                 typeListVertex.Add(new List<int>());
         }
@@ -215,14 +234,13 @@ namespace Pmedian.CoreData.DataStruct
                 int source = vertices.IndexOf(edge.Source);
                 int target = vertices.IndexOf(edge.Target);
 
-                list.AddEdge(source, target);
+                list.AddEdge(source, target);               
             }
             PrintGraph(list);
             return list;
         }
 
-
-        public static AdjacencyList GenerateList(int[] chromosome, int villageCount, int otherPoint)
+        /*public static AdjacencyList GenerateList(int[] chromosome, int villageCount, int otherPoint)
         {
             var list = new AdjacencyList(villageCount + otherPoint);
 
@@ -238,7 +256,7 @@ namespace Pmedian.CoreData.DataStruct
             }
             
             return list;
-        }
+        }*/
 
         /// <summary>
         /// Создание нового экземлпяра графа на основе указанного списка смежности. 
@@ -274,14 +292,14 @@ namespace Pmedian.CoreData.DataStruct
             Console.WriteLine("print adjacency list");
             for (int i = 0; i < list.VertexCount; i++)
             {
-                Console.WriteLine(i);
-                foreach (int j in list.GetAdjacent(i))
+                Console.Write($"{i} - ");
+                foreach (int j in list.adjacencyList[i])
                 {
                     Console.Write(j);
                     Console.Write(" ");
                 }
                 Console.WriteLine();
-            }
+            }           
         }
     }
 }

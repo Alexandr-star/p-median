@@ -19,7 +19,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// <param name="probability">Вероятность кроссовера.</param>
         public AbstractCrossover(double probability)
         {
-            this.Probability = probability;
+            this.Probability = probability / 100;
         }
 
         /// <summary>
@@ -35,13 +35,6 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// <param name="firstParent">Первый родитель.</param>
         /// <param name="secondParent">Второй родитель.</param>
         /// <returns>Потомок.</returns>
-        public abstract Chromosome Crossover(Chromosome firstParent, Chromosome secondParent);
-
-        /// <summary>
-        /// Метод, который перемешивает индексы.
-        /// </summary>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        public abstract int[] ShuffleIndexes(int size);
+        public abstract Chromosome Crossover(Chromosome firstParent, Chromosome secondParent);      
     }   
 }
