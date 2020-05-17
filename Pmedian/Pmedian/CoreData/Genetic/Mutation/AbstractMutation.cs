@@ -14,18 +14,24 @@ namespace Pmedian.CoreData.Genetic.Mutation
         public double Probability { get; }
 
         /// <summary>
+        /// Точек мутации.
+        /// </summary>
+        public int Point { get; }
+
+        /// <summary>
         /// Конструктор с параметром.
         /// </summary>
         /// <param name="probability">Вероятность мутации.</param>
-        public AbstractMutation(double probability)
+        public AbstractMutation(double probability, int point)
         {
             this.Probability = probability;
+            this.Point = point;
         }
 
         /// <summary>
         /// Мутация хромосомы.
         /// </summary>
         /// <param name="chromosome">Хромосома.</param>
-        public abstract void Mutation(int[] chromosome);
+        public abstract void Mutation(Chromosome chromosome);
     }
 }

@@ -110,7 +110,7 @@
     <Compile Include="CoreData\Genetic\Algorithm\GenitorGA.cs" />
     <Compile Include="CoreData\Genetic\Algorithm\IGeneticAlgorithm.cs" />
     <Compile Include="CoreData\Genetic\Chromosome.cs" />
-    <Compile Include="CoreData\Genetic\Fitness.cs" />
+    <Compile Include="CoreData\Genetic\Function\Fitness.cs" />
     <Compile Include="CoreData\Genetic\Mutation\AbstractMutation.cs" />
     <Compile Include="CoreData\Genetic\Mutation\IMutation.cs" />
     <Compile Include="CoreData\Genetic\Mutation\InversionMutation.cs" />
@@ -120,6 +120,7 @@
     <Compile Include="CoreData\Genetic\Population.cs" />
     <Compile Include="CoreData\Genetic\Selection\ISelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\RandomSelection.cs" />
+    <Compile Include="CoreData\Genetic\Selection\SelectionPressure.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\AbstractCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\NDotCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\OneDotCrossover.cs" />

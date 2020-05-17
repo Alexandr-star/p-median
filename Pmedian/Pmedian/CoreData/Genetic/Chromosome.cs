@@ -15,6 +15,11 @@ namespace Pmedian.CoreData.Genetic
         /// Приспособленность хромосомы.
         /// </summary>
         public double fitness { get; set; }
+       
+        /// <summary>
+        /// Ранг хромосомы.
+        /// </summary>
+        public double rank { get; set; }
 
         /// <summary>
         /// Длинна хромосомы.
@@ -25,7 +30,7 @@ namespace Pmedian.CoreData.Genetic
         /// <summary>
         /// Массив описывающий хромосому.
         /// </summary>
-        public int[] chromosomeArray { get; private set; }
+        public int[] chromosomeArray { get;  set; }
 
         public Chromosome(int[] chromosome)
         {

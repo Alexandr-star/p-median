@@ -1,10 +1,7 @@
 ﻿using Pmedian.CoreData.DataStruct;
-using Pmedian.CoreData;
-using System.Windows.Documents;
-using System.Collections.Generic;
 using System;
 
-namespace Pmedian.CoreData.Genetic
+namespace Pmedian.CoreData.Genetic.Function
 {
     /// <summary>
     /// Статический класс, описывающий функцию присособленности.
@@ -12,12 +9,12 @@ namespace Pmedian.CoreData.Genetic
     public static class Fitness
     {
         /// <summary>
-        /// Функция приспособленности.
+        /// Целефая функция.
         /// </summary>
         /// <param name="cost">Затраты.</param>
         /// <param name="problemData">Ограничивающие параметры.</param>
         /// <param name="chromosome">Хромосома.</param>
-        /// <returns>Приспособленность хромосомы.</returns>
+        /// <returns>Результат.</returns>
         public static double Function(Cost cost, ProblemData problemData, Chromosome chromosome)
         {
             double fitness = 0;
@@ -25,7 +22,8 @@ namespace Pmedian.CoreData.Genetic
             int m = cost.vertexCount;
 
             int chgencount = 0;
-            for (int i = 0;  i < n; i++)
+            int constant = 1;
+            for (int i = 0; i < n; i++)
             {
                 double timeM = 0.0;
                 double timeA = 0.0;
@@ -38,22 +36,22 @@ namespace Pmedian.CoreData.Genetic
                     timeM += cost.costEdgeArray[i][j].timeMedic;
                     if (timeM > problemData.TimeMedic)
                     {
-                        Console.WriteLine();
-                        return double.MaxValue;
+                       Console.WriteLine();
+                        constant++;
                     }
 
                     timeA += cost.costEdgeArray[i][j].timeAmbulance;
                     if (timeA > problemData.TimeAmbulance)
                     {
                         Console.WriteLine();
-                        return double.MaxValue;
+                        constant++;
                     }
-                    
+
                     vertexMedian += chromosome.chromosomeArray[c];
 
                     fitness += (
-                        cost.costEdgeArray[i][j].timeMedic + 
-                        cost.costEdgeArray[i][j].timeAmbulance + 
+                        cost.costEdgeArray[i][j].timeMedic +
+                        cost.costEdgeArray[i][j].timeAmbulance +
                         cost.costEdgeArray[i][j].roadKm * problemData.RoadCost +
                         cost.costVertexArray[j]
                         ) * chromosome.chromosomeArray[c];
@@ -63,17 +61,15 @@ namespace Pmedian.CoreData.Genetic
                     chgencount++;
 
                 }
+
                 Console.Write(vertexMedian);
-                Console.Write(" ");
                 if (vertexMedian < problemData.P)
-                {
-                    Console.WriteLine();
-                    return double.MaxValue;
-                }
+                    constant++;
+                Console.Write(" ");
             }
             Console.WriteLine();
 
-            return fitness;
+            return Math.Pow(fitness, constant);
         }
     }
 }

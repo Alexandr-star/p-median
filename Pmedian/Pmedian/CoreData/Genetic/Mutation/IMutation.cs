@@ -15,6 +15,6 @@ namespace Pmedian.CoreData.Genetic.Mutation
         /// Мутация особи.
         /// </summary>
         /// <param name="chromosome">Особь.</param>
-        void Mutation(int[] chromosome); 
+        void Mutation(Chromosome chromosome); 
     }
 }

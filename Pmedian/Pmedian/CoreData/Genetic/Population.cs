@@ -2,6 +2,7 @@
 using QuickGraph;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Pmedian.CoreData.Genetic
     /// <summary>
     /// Класс реализующий популяцию хромосом.
     /// </summary>
-    class Population
+    public class Population
     {
         /// <summary>
         /// Размер популяции.
@@ -69,7 +70,9 @@ namespace Pmedian.CoreData.Genetic
                 {
                     Console.Write($"{populationList[i].chromosomeArray[j]}");
                 }
+                
                 Console.WriteLine();
+                Console.WriteLine($"fit {populationList[i].fitness}");
             }
         }
 
@@ -97,6 +100,44 @@ namespace Pmedian.CoreData.Genetic
             }
 
             return worstChromosome;
+        }
+
+        public Chromosome MinRankChromosome()
+        {
+            var minRankChromosome = populationList[0];
+
+            foreach (var chromosome in populationList)
+            {
+                if (chromosome.rank < minRankChromosome.rank)
+                    minRankChromosome = chromosome;
+            }
+
+            return minRankChromosome;
+        }
+
+        public void Sort()
+        {
+            for (int i = 0; i < SizePopulation - 1; i++)
+            {
+                double min = populationList[i].fitness;
+                int minId = i;
+                for (int j = i + 1; j < SizePopulation; j++)
+                {
+                    double temp = populationList[j].fitness;
+                    if (temp < min)
+                    {
+                        min = temp;
+                        minId = j;
+                    }
+                }
+
+                Chromosome tempChromosome = populationList[i];
+                populationList.Insert(i, populationList[minId]);
+                populationList.RemoveAt(i + 1);
+                populationList.Insert(minId, tempChromosome);
+                populationList.RemoveAt(minId + 1);
+
+            }
         }
     }
 }

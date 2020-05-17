@@ -11,20 +11,26 @@ namespace Pmedian.CoreData.Genetic.Mutation
         /// <summary>
         /// Конструктор с параметром.
         /// </summary>
-        public ReplaceMutaion(double probabililt) : base(probabililt) { }
+        public ReplaceMutaion(double probabililt, int point) : base(probabililt, point) { }
 
         /// <summary>
         /// Мутаия в одной точке.
         /// </summary>
         /// <param name="chromosome">Хромомсома</param>
-        public override void Mutation(int[] chromosome)
+        public override void Mutation(Chromosome chromosome)
         {
-            int indexGen = Utility.Rand.Next(chromosome.Length);
+            if (Utility.Rand.NextDouble() < Probability)
+            {
+                for (int i = 0; i < Point; i++)
+                {
+                    int indexGen = Utility.Rand.Next(chromosome.chromosomeArray.Length);
 
-            if (chromosome[indexGen] == 0)
-                chromosome[indexGen] = 1;
-            else
-                chromosome[indexGen] = 0;
+                    if (chromosome.chromosomeArray[indexGen] == 0)
+                        chromosome.chromosomeArray[indexGen] = 1;
+                    else
+                        chromosome.chromosomeArray[indexGen] = 0;
+                }
+            }            
         }
     }
 }

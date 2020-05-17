@@ -37,5 +37,6 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// <param name="graph"></param>
         /// <param name="problemData">Параметры задачи</param>
         public abstract void GeneticAlgorithm(MainGraph graph, ProblemData problemData);
+        
     }
 }

@@ -33,16 +33,16 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             switch (mutationMethod)
             {
                 case MutationMethod.InversionMutation:
-                    mutation = new InversionMutation(MutationProbability);
+                    mutation = new InversionMutation(MutationProbability, 3);
                     break;
                 case MutationMethod.ReplaceMutation:
-                    mutation = new ReplaceMutaion(MutationProbability);
+                    mutation = new ReplaceMutaion(MutationProbability, 1);
                     break;
                 case MutationMethod.SwapMutation:
-                    mutation = new SwapMutation(MutationProbability);
+                    mutation = new SwapMutation(MutationProbability, 1);
                     break;
                 case MutationMethod.TranslocationMutation:
-                    mutation = new TranslocationMutation(MutationProbability);
+                    mutation = new TranslocationMutation(MutationProbability, 6);
                     break;
                 case MutationMethod.NonMutation:
                     mutation = null;

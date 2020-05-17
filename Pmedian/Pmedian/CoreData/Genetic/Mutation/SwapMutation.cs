@@ -8,11 +8,19 @@ namespace Pmedian.CoreData.Genetic.Mutation
 {
     class SwapMutation : AbstractMutation
     {
-        public SwapMutation(double probability) : base(probability) { }
+        public SwapMutation(double probability, int point) : base(probability, point) { }
 
-        public override void Mutation(int[] chromosome)
+        public override void Mutation(Chromosome chromosome)
         {
-            throw new NotImplementedException();
+            if (Utility.Rand.NextDouble() < Probability)
+            {
+                for (int i = 0; i < Point; i++)
+                {
+                    int source = Utility.Rand.Next(chromosome.SizeChromosome);
+                    int target = Utility.Rand.Next(chromosome.SizeChromosome);
+                    Utility.Swap<int>(ref chromosome.chromosomeArray[source], ref chromosome.chromosomeArray[target]);
+                } 
+            }
         }
     }
 }
