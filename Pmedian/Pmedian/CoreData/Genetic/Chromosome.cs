@@ -52,5 +52,14 @@ namespace Pmedian.CoreData.Genetic
 
             return chromosome;
         }
+
+        public void PrintChromosome()
+        {
+            foreach (int i in chromosomeArray)
+            {
+                Console.Write(i); 
+            }
+            Console.WriteLine();
+        }
     }
 }

@@ -10,6 +10,8 @@ namespace Pmedian.Model.Enums
         [Description("One dot Crossover")]
         OneDot,
         [Description("N dot Crossover")]
-        NDot
+        NDot,
+        [Description("HUX Crossover")]
+        HUX
     }
 }

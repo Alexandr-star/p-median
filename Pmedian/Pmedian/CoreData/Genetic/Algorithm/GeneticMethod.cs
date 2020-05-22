@@ -19,6 +19,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 case CrossoverMethod.OneDot:
                     crossover = new OneDotCrossover(CrossoverProbability);
                     break;
+                case CrossoverMethod.HUX:
+                    crossover = new HUXCrossover(CrossoverProbability);
+                    break;
                 case CrossoverMethod.NDot:
                     crossover = new NDotCrossover(1, CrossoverProbability);
                     break;

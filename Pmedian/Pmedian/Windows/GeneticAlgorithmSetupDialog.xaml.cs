@@ -91,6 +91,12 @@ namespace Pmedian.Windows
                             CMethod, CrossoverProbability,
                             MMethod, MutationProbability);
                         break;
+                    case GeneticAlgotithmMethod.CHCGA:
+                        ErrorMessageZeroIterationSize();
+                        GA = new CHCGA(
+                            IterationSize, PopulationSize,
+                            CrossoverProbability);
+                        break;
                     default:
                         ErrorMessageZeroIterationSize();
                         GA = new GenitorGA(

@@ -28,20 +28,20 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// </summary>
         /// <param name="parents">Список с родителями, который будут скещиваться</param>
         /// <returns>Список потомков.</returns>
-        public override List<int[]> Crossover(List<int[]> parents)
+        public override List<Chromosome> Crossover(List<Chromosome> parents)
         {
             if (Probability == 0)
                 throw new NotImplementedException();
 
-            List<int[]> childrenList = new List<int[]>();
+            List<Chromosome> childrenList = new List<Chromosome>();
             double probability = Utility.Rand.NextDouble();
             if (probability <= Probability)
             {
                 int[] indexes = Utility.ShuffleIndexes(parents.Count);
                 for (int i = 0; i < parents.Count; i += 2)
                 {
-                    int[] firstParent = parents.ElementAt(indexes[i]);
-                    int[] secondParent = parents.ElementAt(indexes[i + 1]);
+                    int[] firstParent = parents.ElementAt(indexes[i]).chromosomeArray;
+                    int[] secondParent = parents.ElementAt(indexes[i + 1]).chromosomeArray;
                     int sizeChromosome = firstParent.Length;
 
                     int pointCrossover = Utility.Rand.Next(sizeChromosome - 1) + 1;
@@ -62,8 +62,8 @@ namespace Pmedian.CoreData.Genetic.Сrossover
                         }
                     }
 
-                    childrenList.Add(firstChild);
-                    childrenList.Add(secondChild);
+                    childrenList.Add(new Chromosome(firstChild));
+                    childrenList.Add(new Chromosome(secondChild));
 
                 }
             }

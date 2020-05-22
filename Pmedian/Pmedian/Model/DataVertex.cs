@@ -1,5 +1,6 @@
 ﻿using GraphX.Common.Models;
 using Pmedian.Model.Enums;
+using YAXLib;
 
 namespace Pmedian.Model
 {
@@ -11,13 +12,19 @@ namespace Pmedian.Model
         /// <summary>
         /// Цвет вершины.
         /// </summary>
+        //[YAXSerializeAs("color")]
+        //[YAXAttributeFor("Vertex")]
         public VertexColor Color { get; set; }
 
         /// <summary>
         /// Тип вершины.
         /// </summary>
+        //[YAXSerializeAs("type")]
+        //[YAXAttributeFor("Vertex")]
         public VertexType Type { get; set; }
 
+        //[YAXSerializeAs("cost")]
+        //[YAXAttributeFor("Vertex")]
         public double vertexCost { get; set; }
 
         /// <summary>

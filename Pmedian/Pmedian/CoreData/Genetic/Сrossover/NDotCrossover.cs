@@ -20,20 +20,20 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             this.CountDot = countDot;
         }
 
-        public override List<int[]> Crossover(List<int[]> parents)
+        public override List<Chromosome> Crossover(List<Chromosome> parents)
         {
             if (Probability == 0)
                 throw new NotImplementedException();
 
-            List<int[]> childrenList = new List<int[]>();
+            List<Chromosome> childrenList = new List<Chromosome>();
             double probability = Utility.Rand.NextDouble();
             if (probability <= Probability)
             {
                 int[] indexes = Utility.ShuffleIndexes(parents.Count);
                 for (int p = 0; p < parents.Count; p += 2)
                 {
-                    int[] firstParent = parents.ElementAt(indexes[p]);
-                    int[] secondParent = parents.ElementAt(indexes[p + 1]);
+                    int[] firstParent = parents.ElementAt(indexes[p]).chromosomeArray;
+                    int[] secondParent = parents.ElementAt(indexes[p + 1]).chromosomeArray;
                     int sizeChromosome = firstParent.Length;
                     int[] dots = GetDotCrossover(CountDot, sizeChromosome);
                     Console.WriteLine("dots");
@@ -83,8 +83,8 @@ namespace Pmedian.CoreData.Genetic.Сrossover
                             }
                         }
                     }
-                    childrenList.Add(firstChild);
-                    childrenList.Add(secondChild);
+                    childrenList.Add(new Chromosome(firstChild));
+                    childrenList.Add(new Chromosome(secondChild));
                 }
             }
             

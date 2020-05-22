@@ -17,6 +17,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// </summary>
         private AdjacencyList adjacencyList;
 
+        /// <summary>
+        /// Таблица расходов.
+        /// </summary>
         private Cost cost;
 
         /// <summary>
@@ -40,7 +43,15 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         private double MutationProbability;
 
 
-
+        /// <summary>
+        /// Конструктор с праметрами.
+        /// </summary>
+        /// <param name="IterationSize">Количество итераций в ГА.</param>
+        /// <param name="PopulationSize">Размер популяции.</param>
+        /// <param name="crossoverMethod">Оператор кроссовера.</param>
+        /// <param name="CrossoverProbability">Вероятность кроссовера.</param>
+        /// <param name="mutationMethod">Оператор мутации.</param>
+        /// <param name="MutationProbability">Вероятность мутации.</param>
         public GenitorGA(int IterationSize, int PopulationSize,
             CrossoverMethod crossoverMethod, double CrossoverProbability,
             MutationMethod mutationMethod, double MutationProbability)
@@ -54,13 +65,13 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         }
 
         /// <summary>
-        /// Реализация генетического алгоритма "Genitoe".
+        /// Реализация генетического алгоритма "Genitor".
         /// </summary>
         /// <param name="graph">Граф.</param>
         /// <param name="problemData">Параметры задачи</param>
         public override void GeneticAlgorithm(MainGraph graph, ProblemData problemData)
         {
-            //Инициализация основных структур.
+            // Инициализация основных структур.
             adjacencyList = AdjacencyList.GenerateList(graph);
             cost = Cost.CreateCostArray(graph);
             ProblemData problem = problemData;
@@ -90,8 +101,6 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     //Console.WriteLine(population.populationList[i].fitness);
                 }
 
-                // вычесление селективного давления.
-                double selectionPressure = SelectionPressure.S(population.WorstChromosome(), population);
                 // вычесление ранга хромосомы.
                 population.Sort();
                 //population.PrintPopulation();

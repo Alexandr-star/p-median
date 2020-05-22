@@ -122,6 +122,7 @@
     <Compile Include="CoreData\Genetic\Selection\RandomSelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\SelectionPressure.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\AbstractCrossover.cs" />
+    <Compile Include="CoreData\Genetic\Сrossover\HUXCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\NDotCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\OneDotCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\ICrossover.cs" />

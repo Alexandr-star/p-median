@@ -1,4 +1,5 @@
 ﻿using GraphX.Common.Models;
+using YAXLib;
 
 namespace Pmedian.Model
 {
@@ -7,8 +8,16 @@ namespace Pmedian.Model
     /// </summary>
     public class DataEdge : EdgeBase<DataVertex>
     {
+        //[YAXSerializeAs("value_road")]
+        //[YAXAttributeFor("WeightEdge")]
         public double weigthR { get; set; }
+
+        //[YAXSerializeAs("value_time_ambalance")]
+        //[YAXAttributeFor("WeightEdge")]
         public double weigthA { get; set; }
+
+        //[YAXSerializeAs("value_time_medic")]
+        //[YAXAttributeFor("WeightEdge")]
         public double weigthM { get; set; }
 
 

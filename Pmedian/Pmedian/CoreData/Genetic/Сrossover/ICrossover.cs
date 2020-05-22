@@ -16,7 +16,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// </summary
         /// <param name="parants">Список родителей.</param>       
         /// <returns>Список потомков</returns>
-        List<int[]> Crossover(List<int[]> parents);
+        List<Chromosome> Crossover(List<Chromosome> parents);
 
         /// <summary>
         /// Кроссовер двух родителей.
