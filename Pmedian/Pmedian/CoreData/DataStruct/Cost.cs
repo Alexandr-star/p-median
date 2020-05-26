@@ -66,15 +66,15 @@ namespace Pmedian.CoreData.DataStruct
         private void InitializeList()
         {
             _costList = new List<List<int>>();
-            costEdgeArray = new CostEdge[countVillage][];
-            costVertexArray = new double[countVillage + countMedic + countClinic];
-            for (int i = 0; i < countVillage; i++)
+            costEdgeArray = new CostEdge[vertexCount][];
+            costVertexArray = new double[vertexCount];
+            for (int i = 0; i < vertexCount; i++)
             {
-                costEdgeArray[i] = new CostEdge[countVillage + countMedic + countClinic];                
-                for (int j = 0; j < countVillage + countMedic + countClinic; j++)
-                {
-                    _costList.Add(new List<int>());
-                    costVertexArray[j] = 0.0;
+                _costList.Add(new List<int>());
+                costVertexArray[i] = 0.0;
+                costEdgeArray[i] = new CostEdge[vertexCount];                
+                for (int j = 0; j < vertexCount; j++)
+                {                   
                     costEdgeArray[i][j] = new CostEdge();
                 }
             }                            

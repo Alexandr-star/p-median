@@ -35,11 +35,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
                     int[] firstParent = parents.ElementAt(indexes[p]).chromosomeArray;
                     int[] secondParent = parents.ElementAt(indexes[p + 1]).chromosomeArray;
                     int sizeChromosome = firstParent.Length;
-                    int[] dots = GetDotCrossover(CountDot, sizeChromosome);
-                    Console.WriteLine("dots");
-                    foreach (int i in dots)
-                        Console.Write(i);
-                    Console.WriteLine("dots");
+                    int[] dots = GetDotCrossover(CountDot, sizeChromosome);                    
 
                     int[] firstChild = new int[sizeChromosome];
                     int[] secondChild = new int[sizeChromosome];
@@ -103,11 +99,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
 
             if (probability <= Probability)
             {
-                int[] dots = GetDotCrossover(CountDot, sizeChromosome);
-                Console.WriteLine("dots");
-                foreach (int i in dots)
-                    Console.Write(i);
-                Console.WriteLine("dots");
+                int[] dots = GetDotCrossover(CountDot, sizeChromosome);               
 
                 int g = 0;
                 for (int p = 0; p < CountDot; p++)

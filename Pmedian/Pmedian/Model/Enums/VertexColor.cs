@@ -8,7 +8,8 @@ namespace Pmedian.Model.Enums
     {
         Unmarked = 0,
         Selected,
-        FirstGroup,
-        SecondGroup
+        GroupeVillage,
+        GroupeClinic,
+        GroupeMedic
     }
 }

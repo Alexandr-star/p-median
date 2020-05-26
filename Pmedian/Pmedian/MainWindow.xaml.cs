@@ -179,7 +179,7 @@ namespace Pmedian
         }
 
         /// <summary>
-        /// Вызывается, когда сделан клик по панели и необхожимо поставить вершину на панель
+        /// Вызывается, когда сделан клик по панели и необходимо поставить вершину на панель
         /// </summary>
         /// <param name="vertexType">Тип вершины</param>
         /// <param name="e">Событие клика мышки</param>
@@ -256,7 +256,7 @@ namespace Pmedian
             operationMode = EditorOperationMode.Select;
             ClearCreateMode();
             graphArea.SetVerticesDrag(true, true);
-            graphArea.ResetVertexStyle();
+            //graphArea.ResetVertexStyle();
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace Pmedian
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.Create;
             ClearSelectMode();
-            graphArea.ResetVertexStyle();
+            //graphArea.ResetVertexStyle();
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace Pmedian
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.CreateVillage;
             ClearSelectMode();
-            graphArea.ResetVertexStyle();
+            //graphArea.ResetVertexStyle();
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace Pmedian
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.CreateClinic;
             ClearSelectMode();
-            graphArea.ResetVertexStyle();
+            //graphArea.ResetVertexStyle();
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace Pmedian
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.CreateMedic;
             ClearSelectMode();
-            graphArea.ResetVertexStyle();
+            //graphArea.ResetVertexStyle();
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace Pmedian
             operationMode = EditorOperationMode.Delete;
             ClearCreateMode();
             ClearSelectMode();
-            graphArea.ResetVertexStyle();
+            //graphArea.ResetVertexStyle();
         }
 
         /// <summary>
@@ -376,10 +376,42 @@ namespace Pmedian
             double vertexCost = dlg.cost;
 
             var data = new DataVertex(vertexType, vertexCost);
+
+            switch (vertexType)
+            {
+                case VertexType.GroupeVillage:
+                    data.Color = VertexColor.GroupeVillage;
+                    break;
+                case VertexType.GroupeClinic:
+                    data.Color = VertexColor.GroupeClinic;
+                    break;
+                case VertexType.GroupeMedic:
+                    data.Color = VertexColor.GroupeMedic;
+                    break;
+            }
+
+            
+
             var control = new VertexControl(data);
 
+            switch (data.Color)
+            {
+                case VertexColor.GroupeVillage:
+                    control.Style = App.Current.Resources["FirstGroupVertex"] as Style;
+                    break;
+                case VertexColor.GroupeClinic:
+                    control.Style = App.Current.Resources["SecondGroupVertex"] as Style;
+                    break;
+                case VertexColor.GroupeMedic:
+                    control.Style = App.Current.Resources["DefaultVertex"] as Style;
+                    break;
+            }
+
             control.SetPosition(position);
-            control.Style = App.Current.Resources["DefaultVertex"] as Style;
+
+            
+
+            //control.Style = App.Current.Resources["DefaultVertex"] as Style;
             graphArea.AddVertexAndData(data, control, true);
 
             return control;

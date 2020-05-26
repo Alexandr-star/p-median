@@ -12,13 +12,16 @@ namespace Pmedian.CoreData.Genetic.Сrossover
     /// </summary>
     class HUXCrossover : AbstractCrossover
     {
+
+        public int minHemmingDistanse { get;  private set; }
+
         /// <summary>
         /// Конструктор с параметром.
         /// </summary>
         /// <param name="probability">Вероятность кроссовера.</param>
-        public HUXCrossover(double probability) : base(probability)
+        public HUXCrossover(int minHemmingDistanse, double probability) : base(probability)
         {
-
+            this.minHemmingDistanse = minHemmingDistanse;
         }
 
         /// <summary>
@@ -29,41 +32,35 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// <returns>Список потомков</returns>
         public override List<Chromosome> Crossover(List<Chromosome> parents)
         {
-            if (Probability == 0)
-                throw new NotImplementedException();
-
+            
             List<Chromosome> childrenList = new List<Chromosome>();
-            double probability = Utility.Rand.NextDouble();
-        
-            if (probability <= Probability)
+                              
+            int[] indexes = Utility.ShuffleIndexes(parents.Count);
+            for (int p = 0; p < parents.Count; p += 2)
             {
-                int[] indexes = Utility.ShuffleIndexes(parents.Count);
-                for (int p = 0; p < parents.Count; p += 2)
+                int[] firstChild = parents.ElementAt(indexes[p]).chromosomeArray;
+                int[] secondChild = parents.ElementAt(indexes[p + 1]).chromosomeArray;
+
+                int hemmingDistance = HemmingDistance(firstChild, secondChild);
+
+                if (hemmingDistance <= minHemmingDistanse) continue;
+
+                List<int> res = H(firstChild, secondChild, firstChild.Length);
+
+                int halfDistance =  hemmingDistance / 2;
+
+                for (int i = 0; i < halfDistance; i++)
                 {
-                    int[] firstChild = parents.ElementAt(indexes[p]).chromosomeArray;
-                    int[] secondChild = parents.ElementAt(indexes[p + 1]).chromosomeArray;
-                    
-                    List<int> res = H(firstChild, secondChild, firstChild.Length);
-                    foreach (int i in res)
-                        Console.Write(i);
-                    Console.WriteLine();
+                    int indexBitInList = Utility.Rand.Next(res.Count);
+                    int indexBit = res.ElementAt(indexBitInList);
 
-                    Console.WriteLine($"{HemmingDistance(firstChild, secondChild)}");
-                    int halfDistance = HemmingDistance(firstChild, secondChild) / 2;
-
-                    for (int i = 0; i < halfDistance; i++)
-                    {
-                        int indexBitInList = Utility.Rand.Next(res.Count);
-                        int indexBit = res.ElementAt(indexBitInList);
-
-                        Utility.Swap<int>(ref firstChild[indexBit], ref secondChild[indexBit]);
-                        res.RemoveAt(indexBitInList);
-                    }
-
-                    childrenList.Add(new Chromosome(firstChild));
-                    childrenList.Add(new Chromosome(secondChild));
+                     Utility.Swap<int>(ref firstChild[indexBit], ref secondChild[indexBit]);
+                     res.RemoveAt(indexBitInList);
                 }
-            }
+
+                childrenList.Add(new Chromosome(firstChild));
+                childrenList.Add(new Chromosome(secondChild));
+            }           
 
             return childrenList;
         }
@@ -94,11 +91,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             if (probability <= Probability)
             {
                 List<int> res = H(firstParent.chromosomeArray, secondParent.chromosomeArray, sizeChromosome);
-                foreach (int i in res)
-                    Console.Write(i);
-                Console.WriteLine();
-
-                Console.WriteLine($"{HemmingDistance(firstParent.chromosomeArray, secondParent.chromosomeArray)}");
+                
                 int halfDistance = HemmingDistance(firstParent.chromosomeArray, secondParent.chromosomeArray) / 2;
                
 

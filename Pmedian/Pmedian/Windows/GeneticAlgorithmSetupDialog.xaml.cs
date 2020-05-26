@@ -1,5 +1,6 @@
 ﻿using Pmedian.CoreData.DataStruct;
 using Pmedian.CoreData.Genetic.Algorithm;
+using Pmedian.CoreData.Genetic.Сrossover;
 using Pmedian.Model.Enums;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,11 @@ namespace Pmedian.Windows
         private double CrossoverProbability => CrossoverSlider.Value;
 
         /// <summary>
+        /// Точек в кроссовере.
+        /// </summary>
+        private int DotCrossover => DotCross.Value ?? 0;
+
+        /// <summary>
         /// Выбранная мутация.
         /// </summary>
         private MutationMethod MMethod => (MutationMethod)MutationBox.SelectedValue;
@@ -57,6 +63,16 @@ namespace Pmedian.Windows
         /// Вероятность мутации.
         /// </summary>
         private double MutationProbability => MutationSlider.Value;
+
+        /// <summary>
+        /// Точек в мутации.
+        /// </summary>
+        private int DotMutation => DotMuta.Value ?? 0;
+
+        /// <summary>
+        /// Минимальное хемминговое расстояние.
+        /// </summary>
+        private int MinHemmingDistance => HemmingDist.Value ?? 0;
 
         /// <summary>
         /// Выбранный генетический алгоритм.
@@ -88,21 +104,25 @@ namespace Pmedian.Windows
                         ErrorMessageZeroIterationSize();
                         GA = new GenitorGA(
                             IterationSize, PopulationSize,
-                            CMethod, CrossoverProbability,
-                            MMethod, MutationProbability);
+                            CMethod, CrossoverProbability, DotCrossover,
+                            MMethod, MutationProbability, DotMutation,
+                            MinHemmingDistance);
                         break;
                     case GeneticAlgotithmMethod.CHCGA:
                         ErrorMessageZeroIterationSize();
                         GA = new CHCGA(
                             IterationSize, PopulationSize,
-                            CrossoverProbability);
+                            CrossoverProbability,
+                            MMethod, DotMutation,
+                            MinHemmingDistance);
                         break;
                     default:
                         ErrorMessageZeroIterationSize();
                         GA = new GenitorGA(
                             IterationSize, PopulationSize,
-                            CMethod, CrossoverProbability,
-                            MMethod, MutationProbability);
+                            CMethod, CrossoverProbability, DotCrossover,
+                            MMethod, MutationProbability, DotMutation,
+                            MinHemmingDistance);
                         break;
 
                 }

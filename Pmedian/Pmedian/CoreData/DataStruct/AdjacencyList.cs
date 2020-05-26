@@ -1,4 +1,5 @@
-﻿using Pmedian.Model;
+﻿using Pmedian.CoreData.Genetic;
+using Pmedian.Model;
 using Pmedian.Model.Enums;
 using System;
 using System.Collections.Generic;
@@ -240,23 +241,26 @@ namespace Pmedian.CoreData.DataStruct
             return list;
         }
 
-        /*public static AdjacencyList GenerateList(int[] chromosome, int villageCount, int otherPoint)
+        public static AdjacencyList GenerateList(Chromosome chromosome, Cost cost)
         {
-            var list = new AdjacencyList(villageCount + otherPoint);
-
-            int ch = 0;
-            for (int i = 0; i < villageCount; i++)
+            var list = new AdjacencyList(cost.vertexCount);
+            var costList = cost.CostList;
+            var chromArray = chromosome.chromosomeArray;
+            int c = 0;
+            for (int i = 0; i < list.VertexCount; i++)
             {
-                for (int j = 0, c = ch; j < otherPoint; j++, c++)
+                if (costList[i].Count == 0) continue;
+                for (int j = 0, ich = c; j < costList[i].Count; j++, c++, ich++)
                 {
-                    if (chromosome[j] == 1) 
-                        list.AddEdge(i, j);
-                    ch += c + 1;
+                    if (costList[i][j] * chromArray[ich] != 0)
+                    {
+                        list.AddEdge(i, costList[i][j]);
+                    }
                 }
             }
-            
+            AdjacencyList.PrintGraph(list);
             return list;
-        }*/
+        }
 
         /// <summary>
         /// Создание нового экземлпяра графа на основе указанного списка смежности. 

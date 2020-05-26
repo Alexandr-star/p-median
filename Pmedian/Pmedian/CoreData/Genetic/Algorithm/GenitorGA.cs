@@ -6,6 +6,7 @@ using Pmedian.Model.Enums;
 using QuickGraph;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Windows.Navigation;
 
 namespace Pmedian.CoreData.Genetic.Algorithm
@@ -33,6 +34,11 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         private double CrossoverProbability;
 
         /// <summary>
+        /// Точек в кроссовере.
+        /// </summary>
+        private int dotCrossover;
+
+        /// <summary>
         /// Вариант мутации.
         /// </summary>
         private MutationMethod mutationMethod;
@@ -42,6 +48,15 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// </summary>
         private double MutationProbability;
 
+        /// <summary>
+        /// Точек в мутации.
+        /// </summary>
+        private int dotMutation;
+
+        /// <summary>
+        /// Минимальное хеминговое расстояние.
+        /// </summary>
+        private int minHemmingDistance;
 
         /// <summary>
         /// Конструктор с праметрами.
@@ -53,15 +68,18 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// <param name="mutationMethod">Оператор мутации.</param>
         /// <param name="MutationProbability">Вероятность мутации.</param>
         public GenitorGA(int IterationSize, int PopulationSize,
-            CrossoverMethod crossoverMethod, double CrossoverProbability,
-            MutationMethod mutationMethod, double MutationProbability)
+            CrossoverMethod crossoverMethod, double CrossoverProbability, int dotCrossover,
+            MutationMethod mutationMethod, double MutationProbability, int dotMutation,
+            int minHemmingDistance)
             : base(IterationSize, PopulationSize)
         {
             this.crossoverMethod = crossoverMethod;
             this.CrossoverProbability = CrossoverProbability;
             this.mutationMethod = mutationMethod;
             this.MutationProbability = MutationProbability;
-
+            this.dotCrossover = dotCrossover;
+            this.dotMutation = dotMutation;
+            this.minHemmingDistance = minHemmingDistance;
         }
 
         /// <summary>
@@ -83,13 +101,16 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             Population startPopulation = new Population(PopulationSize, cost);
             //startPopulation.PrintPopulation();
 
-            var crossover = GeneticMethod.ChosenCrossoverMethod(crossoverMethod, CrossoverProbability);
-            var mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, MutationProbability);
+            var crossover = GeneticMethod.ChosenCrossoverMethod(crossoverMethod, CrossoverProbability, dotCrossover, minHemmingDistance);
+            var mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, MutationProbability, dotMutation);
 
             var population = startPopulation;
+            Chromosome bestChromosome = null;
+            double MediumFitness = 0;
 
-            int stepGA = 1;
-
+            int stepGA = 0;
+            bool answer = false;
+            int countS = 0;
             while (stepGA <= IterateSize)
             {
 
@@ -101,14 +122,16 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     //Console.WriteLine(population.populationList[i].fitness);
                 }
 
+                MediumFitness = Solution.MediumFitnessPopulation(population);
+
                 // вычесление ранга хромосомы.
                 population.Sort();
                 //population.PrintPopulation();
-                for (int i = 0; i < PopulationSize; i++)
+                /*for (int i = 0; i < PopulationSize; i++)
                 {
-                    double rank = Ranking(population.populationList[i], population.SizePopulation, i);
-                    Console.WriteLine(population.populationList[i].rank);
-                }
+                    Ranking(population.populationList[i], population.SizePopulation, i);
+                    //Console.WriteLine($"{i} - {population.populationList[i].rank}");
+                }*/
                 //Console.WriteLine();
 
                 // выбор двух хромосом для скрещивания
@@ -133,30 +156,36 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 child.fitness = Fitness.Function(cost, problemData, child);
                 // поиск самой худщей хромосомы
                 Chromosome badChrom = population.MinRankChromosome();
+                //Console.WriteLine($"min rank{badChrom.rank}");
                 // замена худшей хромосомы на потомка
                 
-                   int index = population.populationList.IndexOf(badChrom);
-                   population.populationList.Insert(index, child);
+                int index = population.populationList.IndexOf(badChrom);
+                population.populationList.Insert(index, child);
                 population.populationList.RemoveAt(index + 1);
+                double tempMediumFitness = Solution.MediumFitnessPopulation(population);
 
+                double absFitness = Math.Abs(tempMediumFitness - MediumFitness);
+                
 
                 stepGA++;
 
             }
-            //Console.WriteLine("answer");
-            Chromosome winCh = population.BestChromosome();
-            //Console.WriteLine(winCh.fitness);
-            int indexWin = population.populationList.IndexOf(winCh);
+            
+            Console.WriteLine($"answer, step {stepGA}");
+            population.PrintPopulation();
+            
+            if (!answer)
+            {
+                Console.WriteLine("Null best");
+                bestChromosome = population.BestChromosome();
+            }
 
+            Console.WriteLine(bestChromosome.fitness);
+            foreach (int ch in bestChromosome.chromosomeArray)
+                Console.Write(ch);
+            Console.WriteLine();
+            AdjacencyList.GenerateList(bestChromosome, cost);
 
-            Chromosome win = population.populationList[indexWin];
-            //foreach (int ch in win.chromosomeArray)
-              //  Console.Write(ch);
-            //Console.WriteLine();
-
-            //AdjacencyList list = AdjacencyList.GenerateList(win.chromosomeArray, cost.countVillage, cost.countClinic + cost.countMedic);
-
-            //AdjacencyList.PrintGraph(list);
         }
 
         /// <summary>
@@ -166,15 +195,14 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// <param name="selectionPressure">Селективное давение.</param>
         /// <param name="sizePopulation">Размер популяции.</param>
         /// <param name="indexCh">Индекс хромосомы.</param>
-        private double Ranking(Chromosome chromosome, int sizePopulation, int indexCh)
+        private void Ranking(Chromosome chromosome, int sizePopulation, int indexCh)
         {
             double a = Math.Round(Utility.Rand.NextDouble() + 1.0, 3);
             double b = Math.Round(2 - a, 3);
-            double c = (1.0 / sizePopulation);
+            double c = Math.Round(1.0 / sizePopulation, 3);
             double d = (double)indexCh / (double)(sizePopulation - 1);
             double f = Math.Round(a - (a - b));
-            chromosome.rank = c * (f * (d));               
-            return chromosome.rank;
+            chromosome.rank = Math.Round(c * (f * (d)), 3);               
         }
              
     }

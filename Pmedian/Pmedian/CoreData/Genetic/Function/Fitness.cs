@@ -33,17 +33,15 @@ namespace Pmedian.CoreData.Genetic.Function
                     if (cost.costEdgeArray[i][j].EmptyCost)
                         continue;
 
-                    timeM += cost.costEdgeArray[i][j].timeMedic;
+                    timeM += cost.costEdgeArray[i][j].timeMedic * chromosome.chromosomeArray[c];
                     if (timeM > problemData.TimeMedic)
                     {
-                       Console.WriteLine();
                         constant++;
                     }
 
-                    timeA += cost.costEdgeArray[i][j].timeAmbulance;
+                    timeA += cost.costEdgeArray[i][j].timeAmbulance * chromosome.chromosomeArray[c];
                     if (timeA > problemData.TimeAmbulance)
                     {
-                        Console.WriteLine();
                         constant++;
                     }
 
@@ -56,20 +54,65 @@ namespace Pmedian.CoreData.Genetic.Function
                         cost.costVertexArray[j]
                         ) * chromosome.chromosomeArray[c];
 
+                    c++;
+                    chgencount++;
+                }              
+
+                if (vertexMedian < problemData.P)
+                    constant++;               
+            }
+            if (fitness == 0) return double.MaxValue;
+            return Math.Pow(fitness, constant);
+        }
+
+        public static double Function2(Cost cost, ProblemData problemData, Chromosome chromosome)
+        {
+            double fitness = 0;
+            int n = cost.countVillage;
+            int m = cost.vertexCount;
+
+            int chgencount = 0;
+            int constant = 1;
+            for (int i = 0; i < n; i++)
+            {
+                double timeM = 0.0;
+                double timeA = 0.0;
+                int vertexMedian = 0;
+                for (int j = 0, c = chgencount; j < m; j++)
+                {
+                    if (cost.costEdgeArray[i][j].EmptyCost)
+                        continue;
+
+                    timeM += cost.costEdgeArray[i][j].timeMedic * chromosome.chromosomeArray[c];
+                    if (timeM > problemData.TimeMedic)
+                    {
+                        return double.MaxValue;
+                    }
+
+                    timeA += cost.costEdgeArray[i][j].timeAmbulance * chromosome.chromosomeArray[c];
+                    if (timeA > problemData.TimeAmbulance)
+                    {
+                        return double.MaxValue;
+                    }
+
+                    vertexMedian += chromosome.chromosomeArray[c];
+
+                    fitness += (
+                        cost.costEdgeArray[i][j].timeMedic +
+                        cost.costEdgeArray[i][j].timeAmbulance +
+                        cost.costEdgeArray[i][j].roadKm * problemData.RoadCost +
+                        cost.costVertexArray[j]
+                        ) * chromosome.chromosomeArray[c];
 
                     c++;
                     chgencount++;
-
                 }
 
-                Console.Write(vertexMedian);
                 if (vertexMedian < problemData.P)
-                    constant++;
-                Console.Write(" ");
+                    return double.MaxValue;
             }
-            Console.WriteLine();
-
-            return Math.Pow(fitness, constant);
+            if (fitness == 0) return double.MaxValue;
+            return fitness;
         }
     }
 }

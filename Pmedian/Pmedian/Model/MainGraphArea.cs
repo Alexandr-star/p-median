@@ -23,11 +23,14 @@ namespace Pmedian.Model
                     case VertexColor.Selected:
                         a.Value.Style = App.Current.Resources["SelectedVertex"] as Style;
                         break;
-                    case VertexColor.FirstGroup:
+                    case VertexColor.GroupeVillage:
                         a.Value.Style = App.Current.Resources["FirstGroupVertex"] as Style;
                         break;
-                    case VertexColor.SecondGroup:
+                    case VertexColor.GroupeClinic:
                         a.Value.Style = App.Current.Resources["SecondGroupVertex"] as Style;
+                        break;
+                    case VertexColor.GroupeMedic:
+                        a.Value.Style = App.Current.Resources["DefaultVertex"] as Style;
                         break;
                     default:
                         a.Value.Style = App.Current.Resources["DefaultVertex"] as Style;
@@ -41,6 +44,8 @@ namespace Pmedian.Model
         /// </summary>
         public void ResetVertexStyle()
         {
+           
+
             VertexList.Keys.ToList().ForEach(a =>
             {
                 a.Color = VertexColor.Unmarked;

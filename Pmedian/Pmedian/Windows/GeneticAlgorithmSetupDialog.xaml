@@ -27,7 +27,7 @@
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Number of iterations" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:IntegerUpDown Name="IterSize" Style="{StaticResource DialogInputField}" Value="1000" Minimum="1" Maximum="10000" Increment="10"/>
+            <xctk:IntegerUpDown Name="IterSize" Style="{StaticResource DialogInputField}" Value="10000" Minimum="1" Maximum="1000000" Increment="10"/>
             <TextBlock Text="Size population" Style="{StaticResource DialogInputLabel}"/>
             <xctk:IntegerUpDown Name="PopSize" Style="{StaticResource DialogInputField}" Value="10" Minimum="10" Maximum="10000" Increment="10"/>
         </StackPanel>
@@ -37,8 +37,15 @@
             <ComboBox Name="CrossoverBox" Style="{StaticResource DialogInputField}" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:CrossoverMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
+            <TextBlock Text="dots" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:IntegerUpDown Name="DotCross" Style="{StaticResource DialogInputField}" Value="2" Minimum="1" Maximum="10000" Increment="1"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="min hemming distance" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:IntegerUpDown Name="HemmingDist" Style="{StaticResource DialogInputField}" Value="2" Minimum="1" Maximum="10000" Increment="1"/>
+        </StackPanel>
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="probabiliti" Style="{StaticResource DialogInputLabel}"/>
             <Slider Name="CrossoverSlider" Style="{StaticResource DialogSliderProbability}"/>
         </StackPanel>
         <Separator/>
@@ -47,8 +54,11 @@
             <ComboBox Name="MutationBox" Style="{StaticResource DialogInputField}" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:MutationMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
+            <TextBlock Text="dots" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:IntegerUpDown Name="DotMuta" Style="{StaticResource DialogInputField}" Value="2" Minimum="1" Maximum="10000" Increment="1"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="probabiliti" Style="{StaticResource DialogInputLabel}"/>
             <Slider Name="MutationSlider" Style="{StaticResource DialogSliderProbability}"/>
         </StackPanel>
         <Separator/>

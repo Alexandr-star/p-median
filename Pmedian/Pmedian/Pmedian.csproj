@@ -110,7 +110,9 @@
     <Compile Include="CoreData\Genetic\Algorithm\GenitorGA.cs" />
     <Compile Include="CoreData\Genetic\Algorithm\IGeneticAlgorithm.cs" />
     <Compile Include="CoreData\Genetic\Chromosome.cs" />
+    <Compile Include="CoreData\Genetic\DistinctChromosome.cs" />
     <Compile Include="CoreData\Genetic\Function\Fitness.cs" />
+    <Compile Include="CoreData\Genetic\Function\Solution.cs" />
     <Compile Include="CoreData\Genetic\Mutation\AbstractMutation.cs" />
     <Compile Include="CoreData\Genetic\Mutation\IMutation.cs" />
     <Compile Include="CoreData\Genetic\Mutation\InversionMutation.cs" />
