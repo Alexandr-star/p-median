@@ -63,8 +63,8 @@
         <Setter Property="Width" Value="268"/>
         <Setter Property="Orientation" Value="Horizontal"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="Value" Value="50"/>
-        <Setter Property="Minimum" Value="0.1"/>
+        <Setter Property="Value" Value="50.0"/>
+        <Setter Property="Minimum" Value="0.001"/>
         <Setter Property="Maximum" Value="100"/>
         <Setter Property="SmallChange" Value="1"/>
         <Setter Property="LargeChange" Value="10"/>

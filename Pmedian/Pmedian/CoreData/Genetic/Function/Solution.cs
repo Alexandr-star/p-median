@@ -45,11 +45,12 @@ namespace Pmedian.CoreData.Genetic.Function
                 double timeM = 0.0;
                 double timeA = 0.0;
                 int vertexMedian = 0;
+                bool isNotEmptyCost = false;
                 for (int j = 0, c = chgencount; j < m; j++)
                 {
-                    if (cost.costEdgeArray[i][j].EmptyCost)
+                    if (cost.costEdgeArray[i][j].EmptyCost)                       
                         continue;
-
+                        
                     timeM += cost.costEdgeArray[i][j].timeMedic * bestChromosome.chromosomeArray[c];
                     if (timeM > problemData.TimeMedic)
                         return false;
@@ -62,7 +63,10 @@ namespace Pmedian.CoreData.Genetic.Function
 
                     c++;
                     chgencount++;
+                    isNotEmptyCost = true;
                 }
+                if (isNotEmptyCost && vertexMedian == 0)
+                    return false;
                 
             }
 

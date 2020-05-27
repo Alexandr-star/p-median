@@ -21,6 +21,8 @@ namespace Pmedian.CoreData.DataStruct
         /// </summary>
         public double roadKm { get; private set; }
 
+        public int fromTo { get; set; }
+
         public bool EmptyCost { get; private set; }
 
         /// <summary>

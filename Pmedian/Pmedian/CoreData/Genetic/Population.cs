@@ -21,12 +21,20 @@ namespace Pmedian.CoreData.Genetic
         /// </summary>
         public int SizePopulation { get; set; }
 
+        /// <summary>
+        /// Размер хромосомы.
+        /// </summary>
         public int SizeChromosome { get; }
 
         /// <summary>
         /// Популяция, предаставленная массивом хромомсом.
         /// </summary>
         public List<Chromosome> populationList { get; set; }
+
+        /// <summary>
+        /// Наименьший ранк хромосомы.
+        /// </summary>
+        private double MinRankChromosome { get; set; }
 
         /// <summary>
         /// Конструктор с параметрами.
@@ -73,6 +81,7 @@ namespace Pmedian.CoreData.Genetic
                 
                 Console.WriteLine();
                 Console.WriteLine($"fit {populationList[i].fitness}");
+                Console.WriteLine($"rank {populationList[i].rank}");
             }
         }
 
@@ -102,17 +111,55 @@ namespace Pmedian.CoreData.Genetic
             return worstChromosome;
         }
 
-        public Chromosome MinRankChromosome()
+        public Chromosome ChromosomeWithMinRank()
         {
-            var minRankChromosome = populationList[0];
+            Chromosome minRankChromosome = populationList[0];
 
             foreach (var chromosome in populationList)
             {
                 if (chromosome.rank < minRankChromosome.rank)
                     minRankChromosome = chromosome;
             }
-
+            MinRankChromosome = minRankChromosome.rank;
             return minRankChromosome;
+        }
+
+
+        public Chromosome OneOfChromosomesWithMinRank()
+        {
+           
+            List<Chromosome> list = new List<Chromosome>();
+            MinRankChromosome = populationList[SizePopulation - 1].rank;
+            foreach (var chromosome in populationList)
+            {
+                if (chromosome.rank < MinRankChromosome)
+                    MinRankChromosome = chromosome.rank;
+            }
+            Chromosome ch = populationList[0];
+            try
+            {
+                foreach (var chromosome in populationList)
+                {
+                    if (chromosome.rank == MinRankChromosome)
+                        list.Add(chromosome);
+                    else
+                        break;
+                }
+
+                int index = Utility.Rand.Next(list.Count);
+                ch = list[index];
+
+
+            } catch (ArgumentOutOfRangeException ex)
+            {
+                Console.WriteLine("Ex");
+                Console.WriteLine($"data {ex.Data}\n" +
+                    $"actual value {ex.ActualValue}\n" +
+                   $"param name {ex.ParamName}\n" +
+                    $"source {ex.Source}\n" +
+                    $"stack trace{ex.StackTrace}");
+            }
+            return ch;
         }
 
         public void Sort()
@@ -124,7 +171,7 @@ namespace Pmedian.CoreData.Genetic
                 for (int j = i + 1; j < SizePopulation; j++)
                 {
                     double temp = populationList[j].fitness;
-                    if (temp < min)
+                    if (temp > min)
                     {
                         min = temp;
                         minId = j;

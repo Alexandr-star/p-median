@@ -24,7 +24,7 @@ namespace Pmedian.Windows
         /// <summary>
         /// Затраты на 1 км пути.
         /// </summary>
-        private double roadCost => OnRoadCostUpDown.Value ?? 0;
+        private double roadCost => Math.Round(OnRoadCostUpDown.Value ?? 0, 3);
 
         /// <summary>
         /// Количество пунктов у деревни.
@@ -36,12 +36,12 @@ namespace Pmedian.Windows
         /// <summary>
         /// Время фельдшеров.
         /// </summary>
-        private double timeMedicCost => TimeMedicCostUpDown.Value ?? 0;
+        private double timeMedicCost => Math.Round(TimeMedicCostUpDown.Value ?? 0, 3);
 
         /// <summary>
         /// Время скорой помощи.
         /// </summary>
-        private double timeAmbulaceCost => TimeAmbulanceCostUpDown.Value ?? 0;
+        private double timeAmbulaceCost => Math.Round(TimeAmbulanceCostUpDown.Value ?? 0, 3);
 
         public ProblemData problemData { get; private set; }
 

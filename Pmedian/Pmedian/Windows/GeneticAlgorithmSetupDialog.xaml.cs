@@ -47,7 +47,8 @@ namespace Pmedian.Windows
         /// <summary>
         /// Вероятность кроссовера.
         /// </summary>
-        private double CrossoverProbability => CrossoverSlider.Value;
+        private double CrossoverProbability => Math.Round(ProbabilitiCross.Value ?? 0, 3);
+        
 
         /// <summary>
         /// Точек в кроссовере.
@@ -62,7 +63,7 @@ namespace Pmedian.Windows
         /// <summary>
         /// Вероятность мутации.
         /// </summary>
-        private double MutationProbability => MutationSlider.Value;
+        private double MutationProbability => Math.Round(ProbabilitiMuta.Value ?? 0, 3);
 
         /// <summary>
         /// Точек в мутации.

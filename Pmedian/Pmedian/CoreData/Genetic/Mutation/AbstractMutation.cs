@@ -24,7 +24,7 @@ namespace Pmedian.CoreData.Genetic.Mutation
         /// <param name="probability">Вероятность мутации.</param>
         public AbstractMutation(double probability, int point)
         {
-            this.Probability = probability;
+            this.Probability = probability / 100;
             this.Point = point;
         }
 
