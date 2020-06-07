@@ -37,6 +37,8 @@ namespace Pmedian.CoreData.Genetic
             this.chromosomeArray = chromosome;
         }
 
+        public Chromosome() { }
+
         public static Chromosome CreateChromosome(int sizeChromosome)
         {           
             int[] chromosomeArray = new int[sizeChromosome];

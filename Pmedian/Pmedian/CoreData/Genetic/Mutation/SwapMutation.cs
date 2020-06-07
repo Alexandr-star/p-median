@@ -22,5 +22,10 @@ namespace Pmedian.CoreData.Genetic.Mutation
                 } 
             }
         }
+
+        public override void Mutation(List<Chromosome> childChromodome)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

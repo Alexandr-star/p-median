@@ -11,8 +11,10 @@ using Pmedian.Model;
 using Pmedian.Model.Enums;
 using Pmedian.Windows;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 
@@ -37,6 +39,11 @@ namespace Pmedian
         /// Параметры задачи.
         /// </summary>
         private ProblemData problemData;
+
+        private List<DataEdge> dataEdgeStore;
+        private List<EdgeControl> edgeControlStore;
+
+        private MainGraph restoreGraphArea;
 
         private int countPoint => CountPoint();
 
@@ -389,9 +396,7 @@ namespace Pmedian
                     data.Color = VertexColor.GroupeMedic;
                     break;
             }
-
-            
-
+           
             var control = new VertexControl(data);
 
             switch (data.Color)
@@ -439,10 +444,12 @@ namespace Pmedian
             double weidthR = dlg.RoadLength;
             double weidthA = dlg.tAmbulator;
             double weidthM = dlg.tMedic;
-
+            
+            
             var data = new DataEdge((DataVertex)sourceVertex.Vertex, (DataVertex)targetVertex.Vertex, 1, weidthR, weidthA, weidthM);
             var control = new EdgeControl(sourceVertex, targetVertex, data);
-          
+            control.Style = App.Current.Resources["DefaultEdge"] as Style;
+            //control.Style = App.Current.Resources["DefaultEdge"] as Style;
             graphArea.InsertEdgeAndData(data, control, 0, true);
 
             HighlightBehaviour.SetHighlighted(sourceVertex, false);
@@ -495,6 +502,28 @@ namespace Pmedian
             }
         }
 
+        private void buttonRestoreGraph_Click(object sender, RoutedEventArgs e)
+        {
+            if (dataEdgeStore.Count != edgeControlStore.Count)
+            {
+                MessageBox.Show("Что-то пошло не так", "Ошибка");
+                return;
+            }
+            var result = MessageBox.Show("This action will remove all vertices and edges from \nthe graph area. " +
+                   "Do you really want to continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                for (int i = 0; i < dataEdgeStore.Count; i++)
+                {
+                    graphArea.InsertEdgeAndData(dataEdgeStore[i], edgeControlStore[i], 0, true);
+                }
+                dataEdgeStore.Clear();
+                edgeControlStore.Clear();
+            }
+            
+        }
+
         /// <summary>
         /// Полностью удаляет вершину и все смежные с ней ребра.
         /// </summary>
@@ -540,6 +569,7 @@ namespace Pmedian
 
                 EnableSelectMode();
                 graphArea.UpdateAllEdges();
+                graphArea.UpdateVertexStyle();
                 zoomCtrl.ZoomToFill();
             }
             catch (Exception)
@@ -583,7 +613,7 @@ namespace Pmedian
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void menuGenerateGraph_Click(object sender, RoutedEventArgs e)
+        /*private void menuGenerateGraph_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new GraphGeneratorDialog(this);
             if (dlg.ShowDialog() == false) return;
@@ -599,7 +629,7 @@ namespace Pmedian
             EnableSelectMode();
             graphArea.RelayoutGraph();
             zoomCtrl.ZoomToFill();
-        }
+        }*/
 
         /// <summary>
         /// Метод, вызываемый после клика на пункт меню "Redraw Graph".
@@ -650,7 +680,8 @@ namespace Pmedian
             try
             {
 
-                dlg.GA.GeneticAlgorithm(graphArea.LogicCore.Graph as MainGraph, problemData);
+                var result = dlg.GA.GeneticAlgorithm(graphArea.LogicCore.Graph as MainGraph, problemData);
+                VisualResult(result);
             }
             catch (GeneticAlgorithmException ex)
             {
@@ -662,6 +693,73 @@ namespace Pmedian
                 MessageBox.Show("Whoops, something went wrong.", "Error");
                 return;
             }
+        }
+
+        private void VisualResult(AdjacencyList result)
+        {
+            try
+            {
+                dataEdgeStore = new List<DataEdge>();
+                edgeControlStore = new List<EdgeControl>();
+                restoreGraphArea = graphArea.LogicCore.Graph as MainGraph;
+                var resultGraph = AdjacencyList.GenerateGraph(result);
+                var resultVertexlist = resultGraph.Vertices.ToList();
+                var resultEdgeList = resultGraph.Edges.ToList();
+                var vertexlist = graphArea.LogicCore.Graph.Vertices.ToList();
+                var edgeList = graphArea.LogicCore.Graph.Edges.ToList();
+                bool check = false;
+                foreach (var edge in edgeList)
+                {
+                    
+                    int source = vertexlist.IndexOf(edge.Source);
+                    int target = vertexlist.IndexOf(edge.Target);
+                    if (0 == result.adjacencyList[target].Count)
+                    {
+                        dataEdgeStore.Add(edge);
+                        edgeControlStore.Add(new EdgeControl(new VertexControl(edge.Source), new VertexControl(edge.Target), edge));
+                        graphArea.RemoveEdge(edge, true);
+                        continue;
+                    }
+
+                    for (int i = 0; i < result.VertexCount; i++)
+                    {
+                        foreach (int j in result.adjacencyList[i])
+                        {
+                            if (target == i && source == j)
+                            {
+                                check = true;
+                                break;
+                            }
+                        }
+                        if (check)
+                            break;
+
+                    }
+
+                    if (check)
+                        check = false;
+                    else
+                    {
+                        dataEdgeStore.Add(edge);
+                        edgeControlStore.Add(new EdgeControl(new VertexControl(edge.Source), new VertexControl(edge.Target), edge));
+                        graphArea.RemoveEdge(edge, true);
+                    }
+                }
+            }
+            catch (System.NullReferenceException)
+            {
+                if (result == null)
+                {
+                    MessageBox.Show("Алгоритм не нашел ответ.", "Нет ответа.");
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Что-то пошло не так, возможна ошибка в удалении лишних ребер.", "Нет ответа.");
+                    return;
+                }
+            }
+           
         }
 
         private void menuSettingProblem_Click(object sender, RoutedEventArgs e)

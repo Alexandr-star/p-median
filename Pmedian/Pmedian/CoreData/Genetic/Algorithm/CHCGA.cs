@@ -1,6 +1,8 @@
 ﻿using Pmedian.CoreData.DataStruct;
 using Pmedian.CoreData.Genetic.Function;
 using Pmedian.CoreData.Genetic.Mutation;
+using Pmedian.CoreData.Genetic.Reduction;
+using Pmedian.CoreData.Genetic.Selection;
 using Pmedian.CoreData.Genetic.Сrossover;
 using Pmedian.Model;
 using Pmedian.Model.Enums;
@@ -51,9 +53,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// Минимальное Хемминговое растояние между родителями
         /// </summary>
         private int minHemmingDistance;
-        private int countStagnation = 0;
-        private int count = 0;
-
+       
         /// <summary>
         /// Конструктор с параметрами.
         /// </summary>
@@ -78,7 +78,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// </summary>
         /// <param name="graph">Граф.</param>
         /// <param name="problemData">Параметры задачи.</param>
-        public override void GeneticAlgorithm(MainGraph graph, ProblemData problemData)
+        public override AdjacencyList GeneticAlgorithm(MainGraph graph, ProblemData problemData)
         {
             Console.WriteLine("CHC");
             // Инициализация основных структур.
@@ -92,80 +92,82 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             Console.WriteLine(problem.TimeMedic);
             Population startPopulation = new Population(PopulationSize, cost);
 
-            HUXCrossover crossover = new HUXCrossover(minHemmingDistance, CrossoverProbability);
+            bool d = DoCtaclism(startPopulation);
 
             var population = startPopulation;
             Chromosome bestChromosome = null;
-            double MediumFitness = 0;
-
+            HUXCrossover crossover = new HUXCrossover(minHemmingDistance, CrossoverProbability);
             int stepGA = 0;
-            
-            while (stepGA <= IterateSize)
+            FitnessCalculation(population.populationList);
+            double MediumFitness = Solution.MediumFitnessPopulation(population);
+            int staticPop = 0;
+            population.PrintPopulation();
+            while (stepGA < IterateSize)
             {
-                FitnessCalculation(population.populationList);
-                MediumFitness = Solution.MediumFitnessPopulation(population);
-                //population.PrintPopulation();
-                
                 List<Chromosome> childList = crossover.Crossover(population.populationList);
+                if (childList.Count == 0)
+                    crossover.minHemmingDistanse = --minHemmingDistance;
                 FitnessCalculation(childList);
-                population.populationList = ReductionIntermediatePopulation(population.populationList, childList);
+                if (childList.Count < population.SizePopulation)
+                    Console.WriteLine($"childList {childList.Count}");
+                
+                population.populationList = EliteReductionForCHC.Reduction(population.populationList, childList, PopulationSize);
+
                 double tempMediumFitness = Solution.MediumFitnessPopulation(population);
-                //population.PrintPopulation();
-
-                double absFitness = Math.Abs(tempMediumFitness - MediumFitness);
-                if (absFitness >= 0 && absFitness <= 1)
-                {
-                    countStagnation++;
-                    Console.WriteLine(countStagnation);
-                    
-                }
+                double absFitness = tempMediumFitness - MediumFitness;
+                MediumFitness = tempMediumFitness;
+                if (absFitness == 0.0)
+                    staticPop++;
                 else
-                    countStagnation = 0;
-
-                if (countStagnation >= STAGNATION)
+                    staticPop = 0;
+                
+                if (staticPop == STAGNATION)
                 {
-                    Console.WriteLine("YES");
-                    bestChromosome = population.BestChromosome();
-                    if (Solution.isAnswer(bestChromosome, cost, problemData))
-                        break;
-                    else
+                    if (DoCtaclism(population))
                     {
-                        Console.WriteLine("cataclizm");
+                        Console.WriteLine($"cut");
+
                         CatacliysmicMutation(population);
-                        count = 0;
                     }
                 }
-                   
-                if (count >= PopulationSize / 4)
-                {
-                    Console.WriteLine("cataclizm");
-                    CatacliysmicMutation(population);
-                    count = 0;
-                }
+                
+              
+
                 stepGA++;
             }
             Console.WriteLine($"answer, step {stepGA}");
             population.PrintPopulation();
             if (bestChromosome == null)
             {
+                int index = 0;
                 Console.WriteLine("Null best");
                 while (population.populationList.Count != 0)
                 {
                     bestChromosome = population.BestChromosome();
-                    if (Solution.isAnswer(bestChromosome, cost, problemData))
+                    if (Solution.isAnswer(bestChromosome, cost, problemData, index))
                     {
                         Console.WriteLine(" ANSVER");
                         break;
                     }
                     else
                         population.populationList.Remove(bestChromosome);
+                    index++;
                 }                
             }
-            Console.WriteLine(bestChromosome.fitness);
-            foreach (int ch in bestChromosome.chromosomeArray)
-                Console.Write(ch);
-            Console.WriteLine();
-            AdjacencyList.GenerateList(bestChromosome, cost);
+            if (Solution.isAnswer(bestChromosome, cost, problemData))
+            {
+                Console.WriteLine(bestChromosome.fitness);
+                bestChromosome.PrintChromosome();
+                Console.WriteLine(" ANSVER");
+            }
+            else
+            {
+                bestChromosome = null;
+                Console.WriteLine(" NO ANSVER");
+
+            }
+            
+            return AdjacencyList.GenerateList(bestChromosome, cost);
         }
 
         /// <summary>
@@ -182,46 +184,16 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             }
         }
 
-
-        private List<Chromosome> ReductionIntermediatePopulation(List<Chromosome> populationList, List<Chromosome> childList)
+        private bool DoCtaclism(Population population)
         {
-            List<Chromosome> list = new List<Chromosome>();
-
-            list.AddRange(populationList);
-            list.AddRange(childList);
-            for (int i = 0; i < list.Count - 1; i++)
-            {
-                double min = list[i].fitness;
-                int minId = i;
-                for (int j = i + 1; j < list.Count; j++)
-                {
-                    double temp = list[j].fitness;
-                    if (temp < min)
-                    {
-                        min = temp;
-                        minId = j;
-                    }
-                }
-
-                Chromosome tempChromosome = list[i];
-                list.Insert(i, list[minId]);
-                list.RemoveAt(i + 1);
-                list.Insert(minId, tempChromosome);
-                list.RemoveAt(minId + 1);
-
-            }
-
-            List<Chromosome> distList = list.GroupBy(ch => ch.chromosomeArray).Select(ch => ch.First()).ToList();            
-            if (distList.Count < PopulationSize)
-            {
-                count++;
-                int diff = PopulationSize - distList.Count;
-                for (int i = 0; i < diff; i++)
-                    distList.Add(list[i]);
-            } else
-                distList.RemoveRange(PopulationSize, distList.Count - PopulationSize);
-            return distList;
+                      
+            var list = population.populationList.GroupBy(ch => string.Join(string.Empty, ch.chromosomeArray)).Select(ch => ch.First()).ToList();
+            if (population.populationList.Count > list.Count)
+                return true;
+            
+            return false;
         }
+        
 
         /// <summary>
         /// Мутация при которой все особоби, кроме самой лучшей мутируют 
@@ -231,7 +203,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         private void CatacliysmicMutation(Population population)
         {
             Chromosome bestChromosome = population.BestChromosome();
-            int bitsMutation = population.SizeChromosome / 3;
+            int bitsMutation = (int)(population.SizeChromosome * 0.35);
             AbstractMutation mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, 100, bitsMutation);
             
             foreach (var chromosome in population.populationList)

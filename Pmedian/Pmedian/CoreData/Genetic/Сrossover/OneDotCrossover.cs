@@ -14,6 +14,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
     /// </summary>
     class OneDotCrossover : AbstractCrossover
     {   
+
         /// <summary>
         /// Конструктор с параметрами.
         /// </summary>
@@ -22,6 +23,8 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         {
 
         }
+
+        public List<int> nonp { get; set; }
 
         /// <summary>
         /// Одноточечный кроссовер.
@@ -34,11 +37,14 @@ namespace Pmedian.CoreData.Genetic.Сrossover
                 throw new NotImplementedException();
 
             List<Chromosome> childrenList = new List<Chromosome>();
-            double probability = Utility.Rand.NextDouble();
-            if (probability <= Probability)
+            nonp = new List<int>();
+            nonp.Clear();
+            
+            int[] indexes = Utility.ShuffleIndexes(parents.Count);
+            for (int i = 0; i < parents.Count; i += 2)
             {
-                int[] indexes = Utility.ShuffleIndexes(parents.Count);
-                for (int i = 0; i < parents.Count; i += 2)
+                double probability = Utility.Rand.NextDouble();
+                if (probability <= Probability)
                 {
                     int[] firstParent = parents.ElementAt(indexes[i]).chromosomeArray;
                     int[] secondParent = parents.ElementAt(indexes[i + 1]).chromosomeArray;
@@ -55,7 +61,8 @@ namespace Pmedian.CoreData.Genetic.Сrossover
                         {
                             firstChild[p] = firstParent[p];
                             secondChild[p] = secondParent[p];
-                        } else
+                        }
+                        else
                         {
                             firstChild[p] = secondParent[p];
                             secondChild[p] = firstParent[p];
@@ -64,9 +71,14 @@ namespace Pmedian.CoreData.Genetic.Сrossover
 
                     childrenList.Add(new Chromosome(firstChild));
                     childrenList.Add(new Chromosome(secondChild));
-
+                }
+                else
+                {
+                    nonp.Add(indexes[i]);
+                    nonp.Add(indexes[i + 1]);
                 }
             }
+            
 
             return childrenList;
         }

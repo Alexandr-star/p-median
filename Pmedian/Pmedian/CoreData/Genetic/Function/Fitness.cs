@@ -35,16 +35,10 @@ namespace Pmedian.CoreData.Genetic.Function
                         continue;
 
                     timeM += cost.costEdgeArray[i][j].timeMedic * chromosome.chromosomeArray[c];
-                    if (timeM > problemData.TimeMedic)
-                    {
-                        constant++;
-                    }
+                    
 
                     timeA += cost.costEdgeArray[i][j].timeAmbulance * chromosome.chromosomeArray[c];
-                    if (timeA > problemData.TimeAmbulance)
-                    {
-                        constant++;
-                    }
+                    
 
                     vertexMedian += chromosome.chromosomeArray[c];
 
@@ -60,7 +54,14 @@ namespace Pmedian.CoreData.Genetic.Function
                     isNotEmptyCost = true;
 
                 }
-
+                if (timeM > vertexMedian * problemData.TimeMedic)
+                {
+                    constant++;
+                }
+                if (timeA > vertexMedian * problemData.TimeAmbulance)
+                {
+                    constant++;
+                }
                 if (isNotEmptyCost && vertexMedian == 0)
                     constant++;               
             }

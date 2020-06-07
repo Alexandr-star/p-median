@@ -139,14 +139,14 @@
     </Style>
 
     <!-- EDGE CONTROL -->
-    <Style TargetType="{x:Type controls:EdgeControl}">
+    <Style x:Key="DefaultEdge" TargetType="{x:Type controls:EdgeControl}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:EdgeControl}">
                     <Grid>
                         <Path Stroke="{StaticResource EdgeBrush}"
                           StrokeThickness="2" MinWidth="1" MinHeight="1"
-                          ToolTip="{TemplateBinding ToolTip}" 
+                          ToolTip="{TemplateBinding ToolTip}"
                           x:Name="PART_edgePath"/>
                         <controls:DefaultEdgePointer NeedRotation="true" x:Name="PART_EdgePointerForTarget" >
                             <Path Data="M0,0.5 L1,1 1,0" Fill="Black" Stretch="Uniform" Width="0" Height="0"/>

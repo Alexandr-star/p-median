@@ -13,7 +13,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
     class HUXCrossover : AbstractCrossover
     {
 
-        public int minHemmingDistanse { get;  private set; }
+        public int minHemmingDistanse { get;  set; }
 
         /// <summary>
         /// Конструктор с параметром.
@@ -38,8 +38,14 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             int[] indexes = Utility.ShuffleIndexes(parents.Count);
             for (int p = 0; p < parents.Count; p += 2)
             {
+                
+                
                 int[] firstChild = parents.ElementAt(indexes[p]).chromosomeArray;
-                int[] secondChild = parents.ElementAt(indexes[p + 1]).chromosomeArray;
+                int[] secondChild = null;
+                if (parents.Count % 2 == 1 && p == parents.Count - 1)
+                    secondChild = parents.ElementAt(indexes[0]).chromosomeArray;
+                else
+                    secondChild = parents.ElementAt(indexes[p + 1]).chromosomeArray;
 
                 int hemmingDistance = HemmingDistance(firstChild, secondChild);
 

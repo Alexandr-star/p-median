@@ -1,6 +1,7 @@
 ﻿using GraphX.Controls;
 using Pmedian.Model.Enums;
 using QuickGraph;
+using QuickGraph.Collections;
 using System.Linq;
 using System.Windows;
 
@@ -36,6 +37,14 @@ namespace Pmedian.Model
                         a.Value.Style = App.Current.Resources["DefaultVertex"] as Style;
                         break;
                 }
+            });
+        }
+
+        public void UpdateEdgeStyle()
+        {
+            EdgesList.ToList().ForEach(a =>
+            {
+                a.Value.Style = App.Current.Resources["DefaultVertex"] as Style;
             });
         }
 

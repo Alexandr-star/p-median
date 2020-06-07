@@ -17,7 +17,9 @@ namespace Pmedian.CoreData.DataStruct
         /// <summary>
         /// Список смежности графа.
         /// </summary>
-        private List<List<int>> adjacencyList = new List<List<int>>();
+        public List<List<int>> adjacencyList = new List<List<int>>();
+
+        static public Cost cost { get; set; }
 
         /// <summary>
         /// Список смежности деревень со смежными вершинами.
@@ -241,8 +243,11 @@ namespace Pmedian.CoreData.DataStruct
             return list;
         }
 
-        public static AdjacencyList GenerateList(Chromosome chromosome, Cost cost)
+        public static AdjacencyList GenerateList(Chromosome chromosome, Cost costt)
         {
+            if (chromosome == null)
+                return null;
+            cost = costt;
             var list = new AdjacencyList(cost.vertexCount);
             var costList = cost.CostList;
             var chromArray = chromosome.chromosomeArray;
@@ -269,6 +274,8 @@ namespace Pmedian.CoreData.DataStruct
         /// <returns>Новый экземпляр графа.</returns>
         public static MainGraph GenerateGraph(AdjacencyList list)
         {
+            if (list == null)
+                return null;
             MainGraph graph = new MainGraph();
 
             for (int i = 0; i < list.VertexCount; i++)

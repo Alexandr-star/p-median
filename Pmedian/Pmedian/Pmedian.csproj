@@ -120,9 +120,19 @@
     <Compile Include="CoreData\Genetic\Mutation\SwapMutation.cs" />
     <Compile Include="CoreData\Genetic\Mutation\TranslocationMutation.cs" />
     <Compile Include="CoreData\Genetic\Population.cs" />
+    <Compile Include="CoreData\Genetic\Reduction\AbstaractReduction.cs" />
+    <Compile Include="CoreData\Genetic\Reduction\BolzmanReduction.cs" />
+    <Compile Include="CoreData\Genetic\Reduction\EliteReduction.cs" />
+    <Compile Include="CoreData\Genetic\Reduction\EliteReductionForCHC.cs" />
+    <Compile Include="CoreData\Genetic\Reduction\IReduction.cs" />
+    <Compile Include="CoreData\Genetic\Reduction\ReductionForClassicGA.cs" />
+    <Compile Include="CoreData\Genetic\Selection\AbstractSelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\ISelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\RandomSelection.cs" />
+    <Compile Include="CoreData\Genetic\Selection\RankingSelection.cs" />
+    <Compile Include="CoreData\Genetic\Selection\SelectionForCHC.cs" />
     <Compile Include="CoreData\Genetic\Selection\SelectionPressure.cs" />
+    <Compile Include="CoreData\Genetic\Selection\TournamentSelection.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\AbstractCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\HUXCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\NDotCrossover.cs" />
@@ -146,6 +156,7 @@
     <Compile Include="Model\Enums\GeneticAlgotithmMethod.cs" />
     <Compile Include="Model\Enums\GraphGenerationMethod.cs" />
     <Compile Include="Model\Enums\MutationMethod.cs" />
+    <Compile Include="Model\Enums\SelectionMethod.cs" />
     <Compile Include="Model\Enums\VertexColor.cs" />
     <Compile Include="Model\Enums\VertexType.cs" />
     <Compile Include="Model\MainGraph.cs" />

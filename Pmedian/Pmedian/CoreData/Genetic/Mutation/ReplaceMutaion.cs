@@ -32,5 +32,11 @@ namespace Pmedian.CoreData.Genetic.Mutation
                 }
             }            
         }
+
+        public override void Mutation(List<Chromosome> childChromodome)
+        {
+            foreach (var ch in childChromodome)
+                Mutation(ch);
+        }
     }
 }

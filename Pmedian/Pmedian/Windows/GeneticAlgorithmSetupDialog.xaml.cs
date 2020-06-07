@@ -27,7 +27,7 @@ namespace Pmedian.Windows
         /// <summary>
         /// Выбранный генетический алгоритм. 
         /// </summary>
-        private GeneticAlgotithmMethod AMethod => (GeneticAlgotithmMethod)AlgorithmBox.SelectedValue;
+        private GeneticAlgotithmMethod Algorithm => (GeneticAlgotithmMethod)AlgorithmBox.SelectedValue;
 
         /// <summary>
         /// Количество итераций генетического алгоритма.
@@ -75,6 +75,10 @@ namespace Pmedian.Windows
         /// </summary>
         private int MinHemmingDistance => HemmingDist.Value ?? 0;
 
+        private int CountSelected => SizeSelected.Value ?? 2;
+
+        private int CountTour => SizeTournament.Value ?? 2;
+
         /// <summary>
         /// Выбранный генетический алгоритм.
         /// </summary>
@@ -88,7 +92,16 @@ namespace Pmedian.Windows
         {
             Owner = owner;
             InitializeComponent();
+
+            AlgorithmBox.SelectionChanged += AlgorithmBox_SelectionChanged;
+            AlgorithmBox_SelectionChanged(this, null);
+            CrossoverBox.SelectionChanged += CrossoverBox_SelectionChanged;
+            CrossoverBox_SelectionChanged(this, null);
         }
+
+
+
+
 
         /// <summary>
         /// Метод, вызываемый после клика на кнопку "OK".
@@ -99,8 +112,15 @@ namespace Pmedian.Windows
         {
             try
             {
-                switch (AMethod)
+                switch (Algorithm)
                 {
+                    case GeneticAlgotithmMethod.ClassicGA:
+                        ErrorMessageZeroIterationSize();
+                        GA = new ClassicGA(
+                            IterationSize, PopulationSize,
+                            CrossoverProbability, MutationProbability,
+                            CountSelected, CountTour);
+                        break;
                     case GeneticAlgotithmMethod.GenitorGA:
                         ErrorMessageZeroIterationSize();
                         GA = new GenitorGA(
@@ -117,14 +137,7 @@ namespace Pmedian.Windows
                             MMethod, DotMutation,
                             MinHemmingDistance);
                         break;
-                    default:
-                        ErrorMessageZeroIterationSize();
-                        GA = new GenitorGA(
-                            IterationSize, PopulationSize,
-                            CMethod, CrossoverProbability, DotCrossover,
-                            MMethod, MutationProbability, DotMutation,
-                            MinHemmingDistance);
-                        break;
+                    
 
                 }
             }
@@ -158,6 +171,59 @@ namespace Pmedian.Windows
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void AlgorithmBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (Algorithm)
+            {
+                case GeneticAlgotithmMethod.ClassicGA:
+                    PopulatinPanel.Visibility = Visibility.Visible;
+                    CrossoverPanel.Visibility = Visibility.Collapsed;
+                    ProbabilityCrossPanel.Visibility = Visibility.Visible;
+                    HemmingDistansePanel.Visibility = Visibility.Collapsed;
+                    MutationPanel.Visibility = Visibility.Collapsed;
+                    ProbabilitiMutaPanel.Visibility = Visibility.Visible;
+                    SelectionPanel.Visibility = Visibility.Visible;
+                    break;
+                case GeneticAlgotithmMethod.GenitorGA:
+                    PopulatinPanel.Visibility = Visibility.Visible;
+                    CrossoverPanel.Visibility = Visibility.Visible;                    
+                    MutationPanel.Visibility = Visibility.Visible;
+                    SelectionPanel.Visibility = Visibility.Collapsed;
+                    break;
+                case GeneticAlgotithmMethod.CHCGA:
+                    PopulatinPanel.Visibility = Visibility.Visible;
+                    CrossoverPanel.Visibility = Visibility.Collapsed;
+                    MutationPanel.Visibility = Visibility.Visible;
+                    HemmingDistansePanel.Visibility = Visibility.Visible;
+                    ProbabilitiMutaPanel.Visibility = Visibility.Collapsed;
+                    SelectionPanel.Visibility = Visibility.Collapsed;
+                    break;
+            }
+
+        }
+
+        private void CrossoverBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (CMethod)
+            {
+                case CrossoverMethod.OneDot:
+                    ProbabilityCrossPanel.Visibility = Visibility.Visible;
+                    HemmingDistansePanel.Visibility = Visibility.Collapsed;
+                    DotCrossPanel.Visibility = Visibility.Collapsed;
+                    break;
+                case CrossoverMethod.NDot:
+                    HemmingDistansePanel.Visibility = Visibility.Collapsed;
+                    DotCrossPanel.Visibility = Visibility.Visible;
+                    ProbabilityCrossPanel.Visibility = Visibility.Visible;
+                    break;
+                case CrossoverMethod.HUX:
+                    HemmingDistansePanel.Visibility = Visibility.Visible;
+                    DotCrossPanel.Visibility = Visibility.Collapsed;
+                    ProbabilityCrossPanel.Visibility = Visibility.Collapsed;
+                    break;
+            }
         }
     }
 }

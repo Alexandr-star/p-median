@@ -33,5 +33,6 @@ namespace Pmedian.CoreData.Genetic.Mutation
         /// </summary>
         /// <param name="chromosome">Хромосома.</param>
         public abstract void Mutation(Chromosome chromosome);
+        public abstract void Mutation(List<Chromosome> childChromodome);
     }
 }

@@ -88,7 +88,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// </summary>
         /// <param name="graph">Граф.</param>
         /// <param name="problemData">Параметры задачи</param>
-        public override void GeneticAlgorithm(MainGraph graph, ProblemData problemData)
+        public override AdjacencyList GeneticAlgorithm(MainGraph graph, ProblemData problemData)
         {
             // Инициализация основных структур.
             adjacencyList = AdjacencyList.GenerateList(graph);
@@ -102,6 +102,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             Population startPopulation = new Population(PopulationSize, cost);
             //startPopulation.PrintPopulation();
 
+            
+
+
             var crossover = GeneticMethod.ChosenCrossoverMethod(crossoverMethod, 100, dotCrossover, minHemmingDistance);
             var mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, MutationProbability, dotMutation);
 
@@ -109,9 +112,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             Chromosome bestChromosome = null;
             double MediumFitness = 0;
 
-            int stepGA = 0;
-            bool answer = false;
-            int countS = 0;
+            int stepGA = 0;           
 
             // вычесление пригодности хромосом.
             //Console.WriteLine("fitness ");
@@ -190,12 +191,18 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                         population.populationList.Remove(bestChromosome);
                 }
             }
+            if (Solution.isAnswer(bestChromosome, cost, problemData))
+            {
+                Console.WriteLine(bestChromosome.fitness);
+                Console.WriteLine(" ANSVER");
+            } else
+            {
+                bestChromosome = null;
+                Console.WriteLine(" NO ANSVER");
+            }
 
-            Console.WriteLine(bestChromosome.fitness);
-            foreach (int ch in bestChromosome.chromosomeArray)
-                Console.Write(ch);
-            Console.WriteLine();
-            AdjacencyList.GenerateList(bestChromosome, cost);
+            
+            return AdjacencyList.GenerateList(bestChromosome, cost);
 
         }
 

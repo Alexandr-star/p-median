@@ -53,8 +53,10 @@ namespace Pmedian.CoreData.Genetic.Function
                         
                     timeM += cost.costEdgeArray[i][j].timeMedic * bestChromosome.chromosomeArray[c];
                     if (timeM > problemData.TimeMedic)
+                    {
+                        
                         return false;
-
+                    }
                         timeA += cost.costEdgeArray[i][j].timeAmbulance * bestChromosome.chromosomeArray[c];
                     if (timeA > problemData.TimeAmbulance)
                         return false;
@@ -68,6 +70,51 @@ namespace Pmedian.CoreData.Genetic.Function
                 if (isNotEmptyCost && vertexMedian == 0)
                     return false;
                 
+            }
+
+            return true;
+        }
+
+        public static bool isAnswer(Chromosome bestChromosome, Cost cost, ProblemData problemData, int index)
+        {
+            int n = cost.countVillage;
+            int m = cost.vertexCount;
+
+            int chgencount = 0;
+            for (int i = 0; i < n; i++)
+            {
+                double timeM = 0.0;
+                double timeA = 0.0;
+                int vertexMedian = 0;
+                bool isNotEmptyCost = false;
+                for (int j = 0, c = chgencount; j < m; j++)
+                {
+                    if (cost.costEdgeArray[i][j].EmptyCost)
+                        continue;
+
+                    timeM = cost.costEdgeArray[i][j].timeMedic * bestChromosome.chromosomeArray[c];
+                    if (timeM > problemData.TimeMedic)
+                    {
+                        Console.WriteLine($"TimeM false{index} gen index{c} i{i}j{j}");
+                        return false;
+                    }
+                    timeA = cost.costEdgeArray[i][j].timeAmbulance * bestChromosome.chromosomeArray[c];
+                    if (timeA > problemData.TimeAmbulance)
+                    {
+                        Console.WriteLine($"TimeA false{index} gen index{c} i{i}j{j}");
+                        return false;
+                    }
+                    vertexMedian += bestChromosome.chromosomeArray[c];
+
+                    c++;
+                    chgencount++;
+                    isNotEmptyCost = true;
+                }
+                if (isNotEmptyCost && vertexMedian == 0)
+                {
+                    Console.WriteLine($"vertex false{index}  i{i}");
+                    return false;
+                }
             }
 
             return true;

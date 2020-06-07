@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://schemas.panthernet.ru/graphx/"
         xmlns:models="clr-namespace:Pmedian.Model"
-        xmlns:local="clr-namespace:Pmedian"
+        xmlns:local="clr-namespace:Pmedian.Windows"
         mc:Ignorable="d" 
         Height="600"
         Width="900"
         MinHeight="300"
         MinWidth="200"
-        Title="P-median problem">
+        Title="P-median problem"
+        Style="{StaticResource MainWindow}">
     
     <Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/Windows/Style/MainDictionary.xaml"/>
@@ -39,7 +40,7 @@
                 <MenuItem Header="Exit" Click="menuFileExit_Click"/>
             </MenuItem>
             <MenuItem Header="Tools">
-                <MenuItem Header="Generate Graph" Click="menuGenerateGraph_Click"/>
+                <!--<MenuItem Header="Generate Graph" Click="menuGenerateGraph_Click"/>-->
                 <MenuItem Header="Redraw Graph" Click="menuRedrawGraph_Click"/>
                 <Separator/>
                 <MenuItem Header="Setting Genetic Algoritm" Click="menuSettingGeneticAlgoritm_Click"/>
@@ -56,7 +57,7 @@
         <controls:ZoomControl x:Name="zoomCtrl" Grid.Column="0" Grid.Row="1" MouseDown="zoomCtrl_MouseDown">
             <models:MainGraphArea x:Name="graphArea" VertexSelected="graphArea_VertexSelected" EdgeSelected="graphArea_EdgeSelected"/>
         </controls:ZoomControl>
-
+        <controls:EdgeControl Style="{StaticResource DefaultEdge}"></controls:EdgeControl>
         <DockPanel LastChildFill="False" Grid.Column="1" Grid.Row="1" Style="{StaticResource MainWindowDockPanel}">
             <Border Style="{StaticResource MainWindowDockPanelBorder}"/>
             <StackPanel Name="MainSidebar" Style="{StaticResource MainWindowStackPanel}">
@@ -67,6 +68,8 @@
                 <ToggleButton Name="buttonDeleteMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="DEL" ToolTip="Vertex/Edge Removal Mode"/>
                 <Separator Style="{StaticResource MainWindowStackPanelSeparator}"/>
                 <Button Name="buttonClearGraph" Style="{StaticResource MainWindowStackPanelButton}" Click="buttonClearGraph_Click"  Content="CLR" ToolTip="Clear Graph Area"/>
+                <Separator Style="{StaticResource MainWindowStackPanelSeparator}"/>
+                <!--<Button x:Name="buttonRestoreGraph" Style="{StaticResource MainWindowStackPanelButton}" Click="buttonRestoreGraph_Click" Content="CLR" ToolTip="Restor Graph"/>-->
             </StackPanel>
         </DockPanel>
 

@@ -9,7 +9,7 @@ namespace Pmedian.CoreData.Genetic.Selection
     /// <summary>
     /// Оператор селекции, который отбирает двух случайных родителей.
     /// </summary>
-    static class RandomSelection
+     static class RandomSelection
     {
         /// <summary>
         /// Оператор селекции.
