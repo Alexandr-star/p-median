@@ -12,71 +12,82 @@
       MinHeight="100"
       WindowStyle="SingleBorderWindow"
       ResizeMode="CanMinimize"
-      Title="Genetic algorithm setting" WindowStartupLocation="CenterScreen">
+      Title="Настройки Генетического Алгоритма" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/Windows/Style/DialogWindowDictionary.xaml"/>
     </Window.Resources>
 
     <StackPanel Style="{StaticResource DialogMainPanel}">
+        <StackPanel Style="{StaticResource DialogStackPanel}" Name="AlgorithmTextPanel">
+            <TextBlock Text="Алгоритм" Style="{StaticResource DialogInputLabel}"/>
+        </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="AlgorithmPanel">
-            <TextBlock Text="Algorithm" Style="{StaticResource DialogInputLabel}"/>
+            
             <ComboBox Name="AlgorithmBox" Style="{StaticResource DialogInputField}"  HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:GeneticAlgotithmMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="PopulatinPanel">
-            <TextBlock Text="Number of iterations" Style="{StaticResource DialogInputLabel}"/>
+            <TextBlock Text="Количество итераций" Style="{StaticResource DialogInputLabel}"/>
             <xctk:IntegerUpDown Name="IterSize" Style="{StaticResource DialogInputField}" Value="10000" Minimum="1" Maximum="1000000" Increment="10"/>
-            <TextBlock Text="Size population" Style="{StaticResource DialogInputLabel}"/>
+            <TextBlock Text="Размер популяции" Style="{StaticResource DialogInputLabel}"/>
             <xctk:IntegerUpDown Name="PopSize" Style="{StaticResource DialogInputField}" Value="10" Minimum="10" Maximum="10000" Increment="10"/>
         </StackPanel>
         <Separator/>
+        <StackPanel Style="{StaticResource DialogStackPanel}" Name="CrossoverTextPanel">
+            <TextBlock  Text="Кроссовер" Style="{StaticResource DialogInputLabel}"/>
+        </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="CrossoverPanel">
-            <TextBlock Text="Crossover" Style="{StaticResource DialogInputLabel}"/>
             <ComboBox Name="CrossoverBox" Style="{StaticResource DialogInputField}" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:CrossoverMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
             
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="DotCrossPanel">
-            <TextBlock Text="dots" Style="{StaticResource DialogInputLabel}"/>
+            <TextBlock Text="Тички разреза" Style="{StaticResource DialogInputLabel}"/>
             <xctk:IntegerUpDown Name="DotCross" Style="{StaticResource DialogInputField}" Value="2" Minimum="1" Maximum="10000" Increment="1"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="HemmingDistansePanel">
-            <TextBlock Text="min hemming distance" Style="{StaticResource DialogInputLabel}"/>
+            <TextBlock Text="Хэмингово расстояние" Style="{StaticResource DialogInputLabel}"/>
             <xctk:IntegerUpDown Name="HemmingDist" Style="{StaticResource DialogInputField}" Value="2" Minimum="1" Maximum="10000" Increment="1"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="ProbabilityCrossPanel">
-            <TextBlock Text="probabiliti" Style="{StaticResource DialogInputLabel}"/>
+            <TextBlock Text="Вероятность" Style="{StaticResource DialogInputLabel}"/>
             <xctk:DoubleUpDown Name="ProbabilitiCross" Style="{StaticResource DialogInputField}" Value="70.0" Minimum="0.001" Maximum="100.0" Increment="0.01" FormatString="F3"/>
             <TextBlock Text="%" Style="{StaticResource DialogInputLabel}"/>
         </StackPanel>
         <Separator/>
+        <StackPanel Style="{StaticResource DialogStackPanel}" Name="MutationNamePanel">
+            <TextBlock Text="Мутация" Style="{StaticResource DialogInputLabel}"/>
+        </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="MutationPanel">
-            <TextBlock Text="Mutation" Style="{StaticResource DialogInputLabel}"/>
             <ComboBox Name="MutationBox" Style="{StaticResource DialogInputField}" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:MutationMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
-            <TextBlock Text="dots" Style="{StaticResource DialogInputLabel}"/>
+            <TextBlock Text="Точки разреза" Style="{StaticResource DialogInputLabel}"/>
             <xctk:IntegerUpDown Name="DotMuta" Style="{StaticResource DialogInputField}" Value="2" Minimum="1" Maximum="10000" Increment="1" />
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="ProbabilitiMutaPanel">
-            <TextBlock Text="probabiliti" Style="{StaticResource DialogInputLabel}"/>
+            <TextBlock Text="Вероятность" Style="{StaticResource DialogInputLabel}"/>
             <xctk:DoubleUpDown Name="ProbabilitiMuta" Style="{StaticResource DialogInputField}" Value="1" Minimum="0.001" Maximum="100.0" Increment="0.001" FormatString="F3"/>
             <TextBlock Text="%" Style="{StaticResource DialogInputLabel}"/>
         </StackPanel>
         <Separator/>
+        <StackPanel Style="{StaticResource DialogStackPanel}" Name="SelectionNamePanel">
+            <TextBlock Text="Турнирная селекция" Style="{StaticResource DialogInputLabel}"/>
+        </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="SelectionPanel">
-            <TextBlock Text="Selection" Style="{StaticResource DialogInputLabel}"/>
             <ComboBox Name="SelectionBox" Style="{StaticResource DialogInputField}" HorizontalContentAlignment="Right"
                      ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
-            <TextBlock Text="Size selected" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:IntegerUpDown Name="SizeSelected" Style="{StaticResource DialogInputField}" Value="20" Minimum="1" Maximum="10000" Increment="1" />
+        </StackPanel>
+        <StackPanel Style="{StaticResource DialogStackPanel}" Name="SizeSelectedPanel">
+            <TextBlock Text="Размер селекции" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:IntegerUpDown Name="SizeSelected" Style="{StaticResource DialogInputField}" Value="10" Minimum="1" Maximum="10000" Increment="2" />
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="TournamentPanel">
-            <TextBlock Text="size tournamet" Style="{StaticResource DialogInputLabel}"/>
+            <TextBlock Text="размера тура" Style="{StaticResource DialogInputLabel}"/>
             <xctk:IntegerUpDown Name="SizeTournament" Style="{StaticResource DialogInputField}" Value="2" Minimum="2" Maximum="10000" Increment="1" />
         </StackPanel>
         <StackPanel Style="{StaticResource DialogActionPanel}">

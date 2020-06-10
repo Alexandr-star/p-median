@@ -10,7 +10,6 @@ namespace Pmedian.Model
     {
         //[YAXSerializeAs("value_road")]
         //[YAXAttributeFor("WeightEdge")]
-        public double weigthR { get; set; }
 
         //[YAXSerializeAs("value_time_ambalance")]
         //[YAXAttributeFor("WeightEdge")]
@@ -27,10 +26,9 @@ namespace Pmedian.Model
         /// <param name="source">Стартовая вершина.</param>
         /// <param name="target">Конечная вершина.</param>
         /// <param name="weight">Вес ребра.</param>
-        public DataEdge(DataVertex source, DataVertex target, double weight = 1, double weigthR = 1, double weigthA = 0, double weigthM = 0)
+        public DataEdge(DataVertex source, DataVertex target, double weight = 1, double weigthA = 0, double weigthM = 0)
             : base(source, target, weight)
         {
-            this.weigthR = weigthR;
             this.weigthA = weigthA;
             this.weigthM = weigthM;
         }

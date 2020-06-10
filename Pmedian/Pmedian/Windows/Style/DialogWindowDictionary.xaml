@@ -48,7 +48,7 @@
     <!-- DIALOG INPUT LABEL STYLE -->
     <Style x:Key="DialogInputLabel" TargetType="TextBlock">
         <Setter Property="Margin" Value="5"/>
-        <Setter Property="Width" Value="105"/>
+        <Setter Property="Width" Value="125"/>
     </Style>
 
     <!-- DIALOG INPUT FIELD STYLE -->

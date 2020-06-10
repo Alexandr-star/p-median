@@ -1,0 +1,21 @@
+﻿<Window x:Class="Pmedian.Windows.AlgorithmDataWork"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pmedian.Windows"
+        mc:Ignorable="d" Title="" WindowStartupLocation="Manual"
+        Style="{StaticResource ControlWindow}" Width="155">
+    <StackPanel Style="{StaticResource ControlWindowStackPanel}">
+        <Border Name="StepsAlgorithm" Style="{StaticResource ControlWindowStackPanelLabelBorder}">
+            <Label Name="labelSteps" Style="{StaticResource ControlWindowStackPanelLabel}" Content="STEP: 1" ToolTip="Итераций пройдено"/>
+        </Border>
+        <Border Name="TimeAlgorithm" Style="{StaticResource ControlWindowStackPanelLabelBorder}">
+            <Label Name="labelTime" Style="{StaticResource ControlWindowStackPanelLabel}" Content="TIME: 00:00:00" ToolTip="Время работы"/>
+        </Border>
+        <Border Name="borderStepGainCounter" Style="{StaticResource ControlWindowStackPanelLabelBorder}">
+            <Label Name="labelStepGainCounter" Style="{StaticResource ControlWindowStackPanelLabel}" Content="Best F(x): 0" ToolTip="Лучший результат"/>
+        </Border>
+        <Button Name="buttonClose" Style="{StaticResource ControlWindowStackPanelButton}" Click="buttonClose_Click" Content="CLOSE" ToolTip="Закрыть"/>
+    </StackPanel>
+</Window>

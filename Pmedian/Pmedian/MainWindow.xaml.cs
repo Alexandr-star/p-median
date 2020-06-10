@@ -130,6 +130,15 @@ namespace Pmedian
                     case EditorOperationMode.Create:
                         CreateEdgeControl(args.VertexControl);
                         break;
+                    case EditorOperationMode.CreateVillage:
+                        CreateEdgeControl(args.VertexControl);
+                        break;
+                    case EditorOperationMode.CreateMedic:
+                        CreateEdgeControl(args.VertexControl);
+                        break;
+                    case EditorOperationMode.CreateClinic:
+                        CreateEdgeControl(args.VertexControl);
+                        break;
                     case EditorOperationMode.Delete:
                         SafeRemoveVertex(args.VertexControl);
                         break;
@@ -206,11 +215,7 @@ namespace Pmedian
         /// <param name="e"></param>
         void ToolbarButton_Checked(object sender, RoutedEventArgs e)
         {
-            if (sender == buttonCreateMode)
-            {
-                EnableCreateMode();
-            }
-            else if (sender == buttonCreateVillageMode)
+            if (sender == buttonCreateVillageMode)
             {
                 EnableCreateVillageMode();
 
@@ -242,7 +247,7 @@ namespace Pmedian
         /// <param name="e"></param>
         void ToolbarButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (buttonCreateMode.IsChecked == false &&
+            if (
                 buttonDeleteMode.IsChecked == false &&
                 buttonCreateVillageMode.IsChecked == false &&
                 buttonCreateClinicMode.IsChecked == false &&
@@ -257,7 +262,7 @@ namespace Pmedian
         /// </summary>
         private void EnableSelectMode()
         {
-            buttonCreateMode.IsChecked = false;
+            
             buttonDeleteMode.IsChecked = false;
             zoomCtrl.Cursor = Cursors.Arrow;
             operationMode = EditorOperationMode.Select;
@@ -289,7 +294,6 @@ namespace Pmedian
             buttonDeleteMode.IsChecked = false;
             buttonCreateMedicMode.IsChecked = false;
             buttonCreateClinicMode.IsChecked = false;
-            buttonCreateMode.IsChecked = false;
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.CreateVillage;
             ClearSelectMode();
@@ -304,7 +308,6 @@ namespace Pmedian
             buttonDeleteMode.IsChecked = false;
             buttonCreateVillageMode.IsChecked = false;
             buttonCreateMedicMode.IsChecked = false;
-            buttonCreateMode.IsChecked = false;
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.CreateClinic;
             ClearSelectMode();
@@ -317,7 +320,6 @@ namespace Pmedian
         private void EnableCreateMedicMode()
         {
             buttonDeleteMode.IsChecked = false;
-            buttonCreateMode.IsChecked = false;
             buttonCreateClinicMode.IsChecked = false;
             buttonCreateVillageMode.IsChecked = false;
             zoomCtrl.Cursor = Cursors.Hand;
@@ -331,7 +333,6 @@ namespace Pmedian
         /// </summary>
         private void EnableDeleteMode()
         {
-            buttonCreateMode.IsChecked = false;
             buttonCreateMedicMode.IsChecked = false;
             buttonCreateClinicMode.IsChecked = false;
             buttonCreateVillageMode.IsChecked = false;
@@ -377,28 +378,50 @@ namespace Pmedian
         /// <returns>объект класса VertexControl.</returns>
         private VertexControl CreateVertexControl(Point position, VertexType vertexType)
         {
-            var dlg = new AddVertexDataCostDialog(this);
-            if (dlg.ShowDialog() == false) return null;
-
-            double vertexCost = dlg.cost;
+            double vertexCost = 0.0;
+            if (vertexType == VertexType.GroupeVillage)
+            {
+                var dlg = new AddVertexVillageDataCostDialog(this);
+                if (dlg.ShowDialog() == false) return null;
+                vertexCost = dlg.cost;
+            } 
+            else if (vertexType == VertexType.GroupeClinic)
+            {
+                var dlg = new AddVertexDataCostDialog(this);
+                if (dlg.ShowDialog() == false) return null;
+                vertexCost = dlg.cost;
+            }
+            else if (vertexType == VertexType.GroupeMedic)
+            {
+                var dlg = new AddVertexDataCostDialog(this);
+                if (dlg.ShowDialog() == false) return null;
+                vertexCost = dlg.cost;
+            }
+            
+            
+            
+            
+             
 
             var data = new DataVertex(vertexType, vertexCost);
-
             switch (vertexType)
             {
                 case VertexType.GroupeVillage:
                     data.Color = VertexColor.GroupeVillage;
                     break;
                 case VertexType.GroupeClinic:
+                    
                     data.Color = VertexColor.GroupeClinic;
                     break;
-                case VertexType.GroupeMedic:
+                case VertexType.GroupeMedic:                    
                     data.Color = VertexColor.GroupeMedic;
                     break;
             }
-           
+
+          
             var control = new VertexControl(data);
 
+            
             switch (data.Color)
             {
                 case VertexColor.GroupeVillage:
@@ -413,16 +436,14 @@ namespace Pmedian
             }
 
             control.SetPosition(position);
-
-            
-
+           
             //control.Style = App.Current.Resources["DefaultVertex"] as Style;
             graphArea.AddVertexAndData(data, control, true);
-
+            ClearCreateMode();
             return control;
         }
 
-
+      
         /// <summary>
         /// Создает ребро и его визуальную часть.
         /// </summary>
@@ -446,7 +467,7 @@ namespace Pmedian
             double weidthM = dlg.tMedic;
             
             
-            var data = new DataEdge((DataVertex)sourceVertex.Vertex, (DataVertex)targetVertex.Vertex, 1, weidthR, weidthA, weidthM);
+            var data = new DataEdge((DataVertex)sourceVertex.Vertex, (DataVertex)targetVertex.Vertex, weidthR, weidthA, weidthM);
             var control = new EdgeControl(sourceVertex, targetVertex, data);
             control.Style = App.Current.Resources["DefaultEdge"] as Style;
             //control.Style = App.Current.Resources["DefaultEdge"] as Style;
@@ -574,7 +595,7 @@ namespace Pmedian
             }
             catch (Exception)
             {
-                MessageBox.Show("Failed to load graph layout file.", "Error");
+                MessageBox.Show("Ошибка загрузки графа.", "Error");
             }
         }
 
@@ -594,7 +615,7 @@ namespace Pmedian
             }
             catch (Exception)
             {
-                MessageBox.Show("Failed to save graph layout file.", "Error");
+                MessageBox.Show("Ошибка загрузки графа.", "Error");
             }
         }
 
@@ -613,7 +634,7 @@ namespace Pmedian
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /*private void menuGenerateGraph_Click(object sender, RoutedEventArgs e)
+        private void menuGenerateGraph_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new GraphGeneratorDialog(this);
             if (dlg.ShowDialog() == false) return;
@@ -625,11 +646,12 @@ namespace Pmedian
 
             // Fix auto-generated labels (maybe there is a better way, but who cares lol)
             graphArea.VertexList.Values.ToList().ForEach(v => v.DetachLabel());
-
+            graphArea.UpdateAllEdges();
+            graphArea.UpdateVertexStyle();
             EnableSelectMode();
             graphArea.RelayoutGraph();
             zoomCtrl.ZoomToFill();
-        }*/
+        }
 
         /// <summary>
         /// Метод, вызываемый после клика на пункт меню "Redraw Graph".
@@ -660,15 +682,14 @@ namespace Pmedian
         /// <param name="e"></param>
         private void menuAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("       The program was made by Alexandr Skvortsov.\n\n\n        " +
-                "It uses GraphX for .NET library.", "About", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            MessageBox.Show("     Программа Александра Скворцова ИВТ-42БО.\n\n\n" , "О Программе", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         private void menuSettingGeneticAlgoritm_Click(object sender, RoutedEventArgs e)
         {
-            if (graphArea.VertexList.Count < 1)
+            if (graphArea.VertexList.Count < 3)
             {
-                MessageBox.Show("Genetic algorithm can't be started. Graph should contain at least one vertex.", "Error");
+                MessageBox.Show("Алгоритм не может быть начат. Граф должен содержать хотябы три вершины", "Error");
                 return;
             }
 
@@ -681,7 +702,9 @@ namespace Pmedian
             {
 
                 var result = dlg.GA.GeneticAlgorithm(graphArea.LogicCore.Graph as MainGraph, problemData);
+
                 VisualResult(result);
+                new AlgorithmDataWork(this).UpdateData(dlg.GA.GetAlgorithmInfo());
             }
             catch (GeneticAlgorithmException ex)
             {
@@ -690,7 +713,7 @@ namespace Pmedian
             }
             catch (Exception)
             {
-                MessageBox.Show("Whoops, something went wrong.", "Error");
+                MessageBox.Show("Что-то пошло не так.", "Error");
                 return;
             }
         }
@@ -775,18 +798,18 @@ namespace Pmedian
                 
                 if (dlg.P > countPoint)
                 {
-                    MessageBox.Show("Can't be started. Should contain at least one vertex.", "Error");
+                    MessageBox.Show("Не может быть начато. Должен содержать хотя бы одну вершину.", "Error");
                     return;
                 }
             }
             catch (GeneticAlgorithmException ex)
             {
-                MessageBox.Show(ex.Message, "Error");
+                MessageBox.Show(ex.Message, "Ошибка");
                 return;
             }
             catch (Exception)
             {
-                MessageBox.Show("Whoops, something went wrong.", "Error");
+                MessageBox.Show("Ошибка");
                 return;
             }
 

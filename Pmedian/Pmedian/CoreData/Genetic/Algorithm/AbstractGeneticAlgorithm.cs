@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Pmedian.CoreData.Genetic.Algorithm
-{
+{ 
     abstract class AbstractGeneticAlgorithm : IGeneticAlgorithm
     {
         /// <summary>
@@ -37,6 +37,8 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// <param name="graph"></param>
         /// <param name="problemData">Параметры задачи</param>
         public abstract AdjacencyList GeneticAlgorithm(MainGraph graph, ProblemData problemData);
+
+        public abstract AlgorithmInfo GetAlgorithmInfo();
         
     }
 }

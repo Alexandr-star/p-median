@@ -8,11 +8,18 @@ using System.Threading.Tasks;
 
 namespace Pmedian.CoreData.Genetic.Algorithm
 {
+
     /// <summary>
     /// Интерфейс для генетических алгоритмов поиска решения.
     /// </summary>
     public interface IGeneticAlgorithm
     {
+        /// <summary>
+        /// Возвращает данные о работе алгоритма.
+        /// </summary>
+        /// <returns></returns>
+        AlgorithmInfo GetAlgorithmInfo();
+
         /// <summary>
         /// Решение задачи p-медианы по указанному алгоритму.
         /// </summary>

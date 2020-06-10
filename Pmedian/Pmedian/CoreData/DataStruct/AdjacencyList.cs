@@ -276,6 +276,7 @@ namespace Pmedian.CoreData.DataStruct
         {
             if (list == null)
                 return null;
+            AdjacencyList.PrintGraph(list);
             MainGraph graph = new MainGraph();
 
             for (int i = 0; i < list.VertexCount; i++)
@@ -297,6 +298,45 @@ namespace Pmedian.CoreData.DataStruct
 
             return graph;
         }
+
+        /// <summary>
+        /// Создание нового экземлпяра графа на основе указанного списка смежности. 
+        /// </summary>
+        /// <param name="list">Исходный список смежности.</param>
+        /// <returns>Новый экземпляр графа.</returns>
+        public static MainGraph GenerateGraph(AdjacencyList list, int village, int clinic, int medic)
+        {
+            if (list == null)
+                return null;
+            AdjacencyList.PrintGraph(list);
+            MainGraph graph = new MainGraph();
+            for (int i = 0; i < village; i++)
+                graph.AddVertex(new DataVertex(VertexType.GroupeVillage, Utility.Rand.Next(50, 10000)));
+            for (int i = village; i < village + clinic; i++)
+                graph.AddVertex(new DataVertex(VertexType.GroupeClinic, Utility.Rand.Next(10, 10000) + Utility.Rand.NextDouble()));
+            for (int i = village + clinic; i < village + clinic + medic; i++)
+                graph.AddVertex(new DataVertex(VertexType.GroupeMedic, Utility.Rand.Next(10, 10000) + Utility.Rand.NextDouble()));
+
+            for (int i = 0; i < list.VertexCount; i++)
+            {
+                foreach (int j in list.GetAdjacent(i))
+                {
+                    if (list.IsDirected || !list.IsDirected && j > i)
+                    {
+                        var source = graph.Vertices.ElementAt(i);
+                        var target = graph.Vertices.ElementAt(j);
+
+                        graph.AddEdge(new DataEdge(source, target,
+                            Utility.Rand.Next(1, 10000) + Utility.Rand.NextDouble(),
+                            Utility.Rand.Next(0, 5) + Utility.Rand.NextDouble(),
+                            Utility.Rand.Next(0, 5) + Utility.Rand.NextDouble()));
+                    }
+                }
+            }
+
+            return graph;
+        }
+
 
         public static void PrintGraph(AdjacencyList list)
         {

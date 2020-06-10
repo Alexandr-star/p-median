@@ -61,6 +61,13 @@ namespace Pmedian.Model
             Color = color;
             Type = type;
         }
+        
+        public DataVertex(VertexColor color, VertexType type, double cost)
+        {
+            Color = color;
+            Type = type;
+            this.vertexCost = cost;
+        }
 
         /// <summary>
         /// Конструктор без параметров для совместимости с сериализацией.

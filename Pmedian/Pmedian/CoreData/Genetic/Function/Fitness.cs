@@ -62,8 +62,8 @@ namespace Pmedian.CoreData.Genetic.Function
                 {
                     constant++;
                 }
-                if (isNotEmptyCost && vertexMedian == 0)
-                    constant++;               
+                if (isNotEmptyCost && vertexMedian < problemData.P)
+                    return double.MaxValue;
             }
             if (fitness == 0) return double.MaxValue;
             return Math.Pow(fitness, constant);
@@ -82,6 +82,8 @@ namespace Pmedian.CoreData.Genetic.Function
                 double timeM = 0.0;
                 double timeA = 0.0;
                 int vertexMedian = 0;
+                bool isNotEmptyCost = false;
+
                 for (int j = 0, c = chgencount; j < m; j++)
                 {
                     if (cost.costEdgeArray[i][j].EmptyCost)
@@ -110,9 +112,11 @@ namespace Pmedian.CoreData.Genetic.Function
 
                     c++;
                     chgencount++;
+                    isNotEmptyCost = true;
+
                 }
 
-                if (vertexMedian < problemData.P)
+                if (isNotEmptyCost && vertexMedian < problemData.P)
                     return double.MaxValue;
             }
             if (fitness == 0) return double.MaxValue;

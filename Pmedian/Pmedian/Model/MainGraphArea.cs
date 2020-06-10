@@ -33,9 +33,9 @@ namespace Pmedian.Model
                     case VertexColor.GroupeMedic:
                         a.Value.Style = App.Current.Resources["DefaultVertex"] as Style;
                         break;
-                    default:
+                    /*default:
                         a.Value.Style = App.Current.Resources["DefaultVertex"] as Style;
-                        break;
+                        break;*/
                 }
             });
         }

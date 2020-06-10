@@ -129,13 +129,13 @@ namespace Pmedian.CoreData.DataStruct
                     if (edge.Source.Type == VertexType.GroupeVillage)
                     {
                         cost.AddEdge(source, target);
-                        CostEdge costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
+                        CostEdge costEdge = new CostEdge(edge.Weight, edge.weigthA, edge.weigthM);
                         cost.AddCostEdge(source, target, costEdge);
                     }
                     else if (edge.Target.Type == VertexType.GroupeVillage)
                     {
                         cost.AddEdge(target, source);
-                        CostEdge costEdge = new CostEdge(edge.weigthR, edge.weigthA, edge.weigthM);
+                        CostEdge costEdge = new CostEdge(edge.Weight, edge.weigthA, edge.weigthM);
                         cost.AddCostEdge(target, source, costEdge);
                     }
                 }

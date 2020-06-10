@@ -10,18 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Pmedian.Windows
 {
     /// <summary>
-    /// Interaction logic for AddVertexDataCostDialog.xaml
+    /// Interaction logic for AddVertexVillageDataCostDialog.xaml
     /// </summary>
-    public partial class AddVertexDataCostDialog : Window
+    public partial class AddVertexVillageDataCostDialog : Window
     {
-        public double cost => CostUpDown.Value ?? 0;
-        public AddVertexDataCostDialog(Window owner)
+        public double cost => CostUpDownInt.Value ?? 0;
+        public AddVertexVillageDataCostDialog(Window owner)
         {
             Owner = owner;
             InitializeComponent();

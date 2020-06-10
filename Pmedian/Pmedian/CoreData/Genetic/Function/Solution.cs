@@ -51,23 +51,23 @@ namespace Pmedian.CoreData.Genetic.Function
                     if (cost.costEdgeArray[i][j].EmptyCost)                       
                         continue;
                         
-                    timeM += cost.costEdgeArray[i][j].timeMedic * bestChromosome.chromosomeArray[c];
+                    timeM = cost.costEdgeArray[i][j].timeMedic * bestChromosome.chromosomeArray[c];
                     if (timeM > problemData.TimeMedic)
                     {
                         
                         return false;
                     }
-                        timeA += cost.costEdgeArray[i][j].timeAmbulance * bestChromosome.chromosomeArray[c];
+                    timeA = cost.costEdgeArray[i][j].timeAmbulance * bestChromosome.chromosomeArray[c];
                     if (timeA > problemData.TimeAmbulance)
                         return false;
 
-                        vertexMedian += bestChromosome.chromosomeArray[c];
+                    vertexMedian += bestChromosome.chromosomeArray[c];
 
                     c++;
                     chgencount++;
                     isNotEmptyCost = true;
                 }
-                if (isNotEmptyCost && vertexMedian == 0)
+                if (isNotEmptyCost && vertexMedian < problemData.P)
                     return false;
                 
             }
@@ -95,13 +95,11 @@ namespace Pmedian.CoreData.Genetic.Function
                     timeM = cost.costEdgeArray[i][j].timeMedic * bestChromosome.chromosomeArray[c];
                     if (timeM > problemData.TimeMedic)
                     {
-                        Console.WriteLine($"TimeM false{index} gen index{c} i{i}j{j}");
                         return false;
                     }
                     timeA = cost.costEdgeArray[i][j].timeAmbulance * bestChromosome.chromosomeArray[c];
                     if (timeA > problemData.TimeAmbulance)
                     {
-                        Console.WriteLine($"TimeA false{index} gen index{c} i{i}j{j}");
                         return false;
                     }
                     vertexMedian += bestChromosome.chromosomeArray[c];
@@ -110,11 +108,8 @@ namespace Pmedian.CoreData.Genetic.Function
                     chgencount++;
                     isNotEmptyCost = true;
                 }
-                if (isNotEmptyCost && vertexMedian == 0)
-                {
-                    Console.WriteLine($"vertex false{index}  i{i}");
+                if (isNotEmptyCost && vertexMedian < problemData.P)
                     return false;
-                }
             }
 
             return true;

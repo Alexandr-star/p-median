@@ -8,6 +8,7 @@ using Pmedian.Model;
 using Pmedian.Model.Enums;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -17,6 +18,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 {
     class CHCGA : AbstractGeneticAlgorithm
     {
+        public AlgorithmInfo algorithmInfo;
+        private Stopwatch stopwatch;
+
         /// <summary>
         /// Граф, задаваемый списком смежности вершин.
         /// </summary>
@@ -80,7 +84,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// <param name="problemData">Параметры задачи.</param>
         public override AdjacencyList GeneticAlgorithm(MainGraph graph, ProblemData problemData)
         {
-            Console.WriteLine("CHC");
+            algorithmInfo = new AlgorithmInfo();
             // Инициализация основных структур.
             adjacencyList = AdjacencyList.GenerateList(graph);
             cost = Cost.CreateCostArray(graph);
@@ -90,26 +94,24 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             Console.WriteLine(problem.RoadCost);
             Console.WriteLine(problem.TimeAmbulance);
             Console.WriteLine(problem.TimeMedic);
-            Population startPopulation = new Population(PopulationSize, cost);
-
-            bool d = DoCtaclism(startPopulation);
-
-            var population = startPopulation;
+            stopwatch = new Stopwatch();
             Chromosome bestChromosome = null;
             HUXCrossover crossover = new HUXCrossover(minHemmingDistance, CrossoverProbability);
             int stepGA = 0;
+            stopwatch.Start();
+            Population startPopulation = new Population(PopulationSize, cost);
+
+            var population = startPopulation;
+            
             FitnessCalculation(population.populationList);
             double MediumFitness = Solution.MediumFitnessPopulation(population);
-            int staticPop = 0;
-            population.PrintPopulation();
+            int staticPop = 0;            
             while (stepGA < IterateSize)
             {
                 List<Chromosome> childList = crossover.Crossover(population.populationList);
                 if (childList.Count == 0)
                     crossover.minHemmingDistanse = --minHemmingDistance;
                 FitnessCalculation(childList);
-                if (childList.Count < population.SizePopulation)
-                    Console.WriteLine($"childList {childList.Count}");
                 
                 population.populationList = EliteReductionForCHC.Reduction(population.populationList, childList, PopulationSize);
 
@@ -124,29 +126,25 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 if (staticPop == STAGNATION)
                 {
                     if (DoCtaclism(population))
-                    {
-                        Console.WriteLine($"cut");
-
+                    {                        
                         CatacliysmicMutation(population);
                     }
                 }
-                
-              
-
+                              
                 stepGA++;
             }
-            Console.WriteLine($"answer, step {stepGA}");
-            population.PrintPopulation();
+            stopwatch.Stop();
             if (bestChromosome == null)
             {
                 int index = 0;
-                Console.WriteLine("Null best");
                 while (population.populationList.Count != 0)
                 {
                     bestChromosome = population.BestChromosome();
                     if (Solution.isAnswer(bestChromosome, cost, problemData, index))
                     {
-                        Console.WriteLine(" ANSVER");
+                        algorithmInfo.Time = stopwatch.Elapsed;
+                        algorithmInfo.BestFx = bestChromosome.fitness;
+                        algorithmInfo.Steps = stepGA;
                         break;
                     }
                     else
@@ -154,11 +152,32 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     index++;
                 }                
             }
-            if (Solution.isAnswer(bestChromosome, cost, problemData))
+            else if (bestChromosome != null)
             {
-                Console.WriteLine(bestChromosome.fitness);
-                bestChromosome.PrintChromosome();
-                Console.WriteLine(" ANSVER");
+                bool answer = false;
+                while (population.populationList.Count != 0)
+                {
+                    if (Solution.isAnswer(bestChromosome, cost, problemData))
+                    {
+                        algorithmInfo.Time = stopwatch.Elapsed;
+                        algorithmInfo.BestFx = bestChromosome.fitness;
+                        algorithmInfo.Steps = stepGA;
+                        Console.WriteLine(" ANSVER");
+                        answer = true;
+                        break;
+                    }
+                    else
+                    {
+                        population.populationList.Remove(bestChromosome);
+                        bestChromosome = population.BestChromosome();
+                    }
+                }
+                if (!answer)
+                {
+                    bestChromosome = null;
+                    Console.WriteLine("NOT ANSVER");
+
+                }
             }
             else
             {
@@ -213,6 +232,11 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     mutation.Mutation(chromosome);
                 }
             }            
+        }
+
+        public override AlgorithmInfo GetAlgorithmInfo()
+        {
+            return algorithmInfo;
         }
     }
 }

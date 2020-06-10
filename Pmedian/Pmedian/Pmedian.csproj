@@ -103,6 +103,7 @@
     <Compile Include="CoreData\DataStruct\CostEdge.cs" />
     <Compile Include="CoreData\DataStruct\CostVertex.cs" />
     <Compile Include="CoreData\Genetic\Algorithm\AbstractGeneticAlgorithm.cs" />
+    <Compile Include="CoreData\Genetic\Algorithm\AlgorithmInfo.cs" />
     <Compile Include="CoreData\Genetic\Algorithm\CHCGA.cs" />
     <Compile Include="CoreData\Genetic\Algorithm\GeneticMethod.cs" />
     <Compile Include="CoreData\Genetic\Algorithm\ClassicGA.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="CoreData\Genetic\Сrossover\TwoDotCrossover.cs" />
     <Compile Include="CoreData\GraphGeneration\ErdosRenyi.cs" />
     <Compile Include="CoreData\GraphGeneration\IGraphGenerator.cs" />
+    <Compile Include="CoreData\GraphGeneration\PmedianGraphGenerate.cs" />
     <Compile Include="CoreData\GraphGeneration\SimplePrecise.cs" />
     <Compile Include="CoreData\GraphGeneration\SimpleRandom.cs" />
     <Compile Include="CoreData\GraphGeneration\WattsStrogatz.cs" />
@@ -169,6 +171,12 @@
     <Compile Include="Windows\AddVertexDataCostDialog.xaml.cs">
       <DependentUpon>AddVertexDataCostDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\AddVertexVillageDataCostDialog.xaml.cs">
+      <DependentUpon>AddVertexVillageDataCostDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AlgorithmDataWork.xaml.cs">
+      <DependentUpon>AlgorithmDataWork.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\GeneticAlgorithmSetupDialog.xaml.cs">
       <DependentUpon>GeneticAlgorithmSetupDialog.xaml</DependentUpon>
     </Compile>
@@ -195,6 +203,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\AddVertexDataCostDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddVertexVillageDataCostDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AlgorithmDataWork.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

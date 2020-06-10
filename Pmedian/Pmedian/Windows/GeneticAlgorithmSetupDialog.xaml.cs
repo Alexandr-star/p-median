@@ -179,25 +179,45 @@ namespace Pmedian.Windows
             {
                 case GeneticAlgotithmMethod.ClassicGA:
                     PopulatinPanel.Visibility = Visibility.Visible;
+
                     CrossoverPanel.Visibility = Visibility.Collapsed;
                     ProbabilityCrossPanel.Visibility = Visibility.Visible;
                     HemmingDistansePanel.Visibility = Visibility.Collapsed;
+                    
                     MutationPanel.Visibility = Visibility.Collapsed;
                     ProbabilitiMutaPanel.Visibility = Visibility.Visible;
-                    SelectionPanel.Visibility = Visibility.Visible;
+
+                    SelectionPanel.Visibility = Visibility.Collapsed;
+                    
                     break;
                 case GeneticAlgotithmMethod.GenitorGA:
                     PopulatinPanel.Visibility = Visibility.Visible;
-                    CrossoverPanel.Visibility = Visibility.Visible;                    
+
+                    CrossoverPanel.Visibility = Visibility.Visible;
+                    ProbabilityCrossPanel.Visibility = Visibility.Collapsed;
+                    
                     MutationPanel.Visibility = Visibility.Visible;
+
+                    SizeSelectedPanel.Visibility = Visibility.Collapsed;
+                    TournamentPanel.Visibility = Visibility.Collapsed;
+                    SelectionNamePanel.Visibility = Visibility.Collapsed;
                     SelectionPanel.Visibility = Visibility.Collapsed;
                     break;
                 case GeneticAlgotithmMethod.CHCGA:
                     PopulatinPanel.Visibility = Visibility.Visible;
+                    
                     CrossoverPanel.Visibility = Visibility.Collapsed;
-                    MutationPanel.Visibility = Visibility.Visible;
+                    DotCrossPanel.Visibility = Visibility.Collapsed;
+                    ProbabilityCrossPanel.Visibility = Visibility.Collapsed;
                     HemmingDistansePanel.Visibility = Visibility.Visible;
+
+                    MutationPanel.Visibility = Visibility.Visible;
                     ProbabilitiMutaPanel.Visibility = Visibility.Collapsed;
+                    
+                    SelectionPanel.Visibility = Visibility.Collapsed;
+                    SizeSelectedPanel.Visibility = Visibility.Collapsed;
+                    TournamentPanel.Visibility = Visibility.Collapsed;
+                    SelectionNamePanel.Visibility = Visibility.Collapsed;
                     SelectionPanel.Visibility = Visibility.Collapsed;
                     break;
             }
@@ -216,7 +236,10 @@ namespace Pmedian.Windows
                 case CrossoverMethod.NDot:
                     HemmingDistansePanel.Visibility = Visibility.Collapsed;
                     DotCrossPanel.Visibility = Visibility.Visible;
-                    ProbabilityCrossPanel.Visibility = Visibility.Visible;
+                    if (Algorithm == GeneticAlgotithmMethod.GenitorGA)
+                        ProbabilityCrossPanel.Visibility = Visibility.Collapsed;
+                    else
+                        ProbabilityCrossPanel.Visibility = Visibility.Visible;
                     break;
                 case CrossoverMethod.HUX:
                     HemmingDistansePanel.Visibility = Visibility.Visible;
