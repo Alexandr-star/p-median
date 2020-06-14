@@ -61,10 +61,10 @@
         <DockPanel LastChildFill="False" Grid.Column="1" Grid.Row="1" Style="{StaticResource MainWindowDockPanel}">
             <Border Style="{StaticResource MainWindowDockPanelBorder}"/>
             <StackPanel Name="MainSidebar" Style="{StaticResource MainWindowStackPanel}">
-                <!--<ToggleButton Name="buttonCreateMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="ADD" ToolTip="Vertex/Edge Creation Mode"/>-->
+                <ToggleButton Name="buttonCreateMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="ADD" ToolTip="Vertex/Edge Creation Mode"/>
                 <ToggleButton Name="buttonCreateVillageMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Деревня" ToolTip="Создать Вершину/Ребро"/>
-                <ToggleButton Name="buttonCreateClinicMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Скорая" ToolTip="Создать Вершину/Ребро"/>
-                <ToggleButton Name="buttonCreateMedicMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Фельшеры" ToolTip="Создать Вершину/Ребро"/>
+                <!--<ToggleButton Name="buttonCreateClinicMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Скорая" ToolTip="Создать Вершину/Ребро"/>-->
+                <!--<ToggleButton Name="buttonCreateMedicMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Фельшеры" ToolTip="Создать Вершину/Ребро"/>-->
                 <ToggleButton Name="buttonDeleteMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Удалить" ToolTip="Удалить Вершину/Ребро"/>
                 <Separator Style="{StaticResource MainWindowStackPanelSeparator}"/>
                 <Button Name="buttonClearGraph" Style="{StaticResource MainWindowStackPanelButton}" Click="buttonClearGraph_Click"  Content="Очистить" ToolTip="Очистить Область Графа"/>

@@ -74,45 +74,94 @@ namespace Pmedian.CoreData.Genetic.Function
 
             return true;
         }
-
-        public static bool isAnswer(Chromosome bestChromosome, Cost cost, ProblemData problemData, int index)
+       
+        public static bool isAnswerTrue(Chromosome chromosome, Cost cost, ProblemData problemData)
         {
-            int n = cost.countVillage;
-            int m = cost.vertexCount;
+            double fitness = 0;
+            int sumMedian = 0;
+            int constant = 1;
+            int[][] X = XMultiplicationChromosome(cost.arrayX, chromosome.chromosomeArray);
 
-            int chgencount = 0;
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < chromosome.SizeChromosome; i++)
             {
-                double timeM = 0.0;
-                double timeA = 0.0;
-                int vertexMedian = 0;
-                bool isNotEmptyCost = false;
-                for (int j = 0, c = chgencount; j < m; j++)
+                sumMedian += chromosome.chromosomeArray[i];
+
+                for (int j = 0; j < cost.vertexCount; j++)
                 {
                     if (cost.costEdgeArray[i][j].EmptyCost)
                         continue;
 
-                    timeM = cost.costEdgeArray[i][j].timeMedic * bestChromosome.chromosomeArray[c];
-                    if (timeM > problemData.TimeMedic)
+                    if (X[i][j] <= chromosome.chromosomeArray[i])
+                    {
+                    }
+                    else
                     {
                         return false;
                     }
-                    timeA = cost.costEdgeArray[i][j].timeAmbulance * bestChromosome.chromosomeArray[c];
-                    if (timeA > problemData.TimeAmbulance)
+                    if (cost.costEdgeArray[i][j].timeMedic > problemData.TimeMedic)
                     {
                         return false;
+                        constant++;
                     }
-                    vertexMedian += bestChromosome.chromosomeArray[c];
+                    if (cost.costEdgeArray[i][j].timeAmbulance > problemData.TimeAmbulance)
+                    {
+                        return false;
+                        constant++;
+                    }
 
-                    c++;
-                    chgencount++;
-                    isNotEmptyCost = true;
+                    fitness += (
+                        cost.costEdgeArray[i][j].timeMedic +
+                        cost.costEdgeArray[i][j].timeAmbulance +
+                        cost.costEdgeArray[i][j].roadKm * problemData.RoadCost +
+                        cost.costVertexArray[j]
+                        ) * X[i][j];
                 }
-                if (isNotEmptyCost && vertexMedian < problemData.P)
+
+            }
+            if (sumMedian == problemData.P)
+            {
+            }
+            else
+            {
+                return false;
+
+            }
+            for (int j = 0; j < cost.vertexCount; j++)
+            {
+                int sumx = 0;
+
+                for (int i = 0; i < chromosome.SizeChromosome; i++)
+                {
+                    sumx += X[i][j];
+                }
+                if (sumx == 1)
+                {
+                }
+                else if (sumx != 0)
+                {
                     return false;
+
+                }
             }
 
             return true;
+        }
+
+        private static int[][] XMultiplicationChromosome(int[][] arrayX, int[] chromosomeArray)
+        {
+
+            int[][] array = new int[arrayX.Length][];
+
+            for (int i = 0; i < arrayX.Length; i++)
+            {
+                array[i] = new int[arrayX[i].Length];
+                for (int j = 0; j < arrayX[i].Length; j++)
+                {
+                    array[i][j] = arrayX[i][j] * chromosomeArray[i];
+                }
+            }
+
+            return array;
         }
     }
 }

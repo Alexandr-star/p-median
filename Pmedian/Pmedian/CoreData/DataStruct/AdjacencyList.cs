@@ -1,10 +1,13 @@
 ﻿using Pmedian.CoreData.Genetic;
 using Pmedian.Model;
 using Pmedian.Model.Enums;
+using QuickGraph;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Globalization;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 
 namespace Pmedian.CoreData.DataStruct
@@ -19,13 +22,10 @@ namespace Pmedian.CoreData.DataStruct
         /// </summary>
         public List<List<int>> adjacencyList = new List<List<int>>();
 
+        
+
         static public Cost cost { get; set; }
-
-        /// <summary>
-        /// Список смежности деревень со смежными вершинами.
-        /// </summary>
-        private List<List<int>> adjacencyListVillage = new List<List<int>>();
-
+        
         private List<List<int>> typeListVertex = new List<List<int>>();
 
         /// <summary>
@@ -49,6 +49,7 @@ namespace Pmedian.CoreData.DataStruct
         /// </summary>
         public bool IsDirected { get; private set; }
 
+        
         /// <summary>
         /// Конструктор с параметрами.
         /// </summary>
@@ -72,17 +73,8 @@ namespace Pmedian.CoreData.DataStruct
             if (!IsDirected)
                 adjacencyList[target].Add(source);
         }
-
-        /// <summary>
-        /// Добавление нового ребра, связанного с деревней.
-        /// </summary>
-        /// <param name="source">Исходная вершина.</param>
-        /// <param name="target">Конечная вершина.</param>
-        public void AddEdgeToAdjVillage(int source, int target)
-        {
-            adjacencyListVillage[source].Add(target);
-        }
-
+       
+       
         /// <summary>
         /// Удаление ребра из графа.
         /// </summary>
@@ -133,13 +125,12 @@ namespace Pmedian.CoreData.DataStruct
         private void InitializeList(int vertexCount)
         {
             adjacencyList = new List<List<int>>();
-            adjacencyListVillage = new List<List<int>>();
             typeListVertex = new List<List<int>>();
             for (int i = 0; i < vertexCount; i++)
             {
                 adjacencyList.Add(new List<int>());
-                adjacencyListVillage.Add(new List<int>());
             }
+            
             for (int i = 0; i < 3; i++)
                 typeListVertex.Add(new List<int>());
         }
@@ -153,24 +144,7 @@ namespace Pmedian.CoreData.DataStruct
         {
             typeListVertex[type].Add(vertex);
         }
-
-        /// <summary>
-        /// Возвратить количество вершин определенного типа.
-        /// </summary>
-        /// <param name="type">Тип вершины.</param>
-        /// <returns>Количество вершин.</returns>
-        public int GetCountTypeVertex(int type)
-        {
-            if (type == 0)
-                return typeListVertex.ElementAt(type).Count;
-            else if (type == 1)
-                return typeListVertex.ElementAt(type).Count;
-            else if (type == 2)
-                return typeListVertex.ElementAt(type).Count;
-            else
-                return 0;
-        }
-
+        
         private int MaxCountListInAdj()
         {
             List<int> countList = new List<int>();
@@ -220,29 +194,18 @@ namespace Pmedian.CoreData.DataStruct
             var list = new AdjacencyList(graph.VertexCount);
 
             var vertices = graph.Vertices.ToList();
-
-
-            foreach (var vertex in vertices)
-            {
-                if (vertex.Type == VertexType.GroupeVillage)               
-                    list.AddVertexInTypeList(0, vertices.IndexOf(vertex));               
-                if (vertex.Type == VertexType.GroupeClinic)                 
-                    list.AddVertexInTypeList(1, vertices.IndexOf(vertex));             
-                if (vertex.Type == VertexType.GroupeMedic) 
-                    list.AddVertexInTypeList(2, vertices.IndexOf(vertex));
-            }
-
+            
             foreach (var edge in graph.Edges)
             {
                 int source = vertices.IndexOf(edge.Source);
                 int target = vertices.IndexOf(edge.Target);
-
-                list.AddEdge(source, target);               
+                list.AddEdge(source, target);
             }
             PrintGraph(list);
             return list;
         }
 
+       
         public static AdjacencyList GenerateList(Chromosome chromosome, Cost costt)
         {
             if (chromosome == null)
@@ -298,46 +261,7 @@ namespace Pmedian.CoreData.DataStruct
 
             return graph;
         }
-
-        /// <summary>
-        /// Создание нового экземлпяра графа на основе указанного списка смежности. 
-        /// </summary>
-        /// <param name="list">Исходный список смежности.</param>
-        /// <returns>Новый экземпляр графа.</returns>
-        public static MainGraph GenerateGraph(AdjacencyList list, int village, int clinic, int medic)
-        {
-            if (list == null)
-                return null;
-            AdjacencyList.PrintGraph(list);
-            MainGraph graph = new MainGraph();
-            for (int i = 0; i < village; i++)
-                graph.AddVertex(new DataVertex(VertexType.GroupeVillage, Utility.Rand.Next(50, 10000)));
-            for (int i = village; i < village + clinic; i++)
-                graph.AddVertex(new DataVertex(VertexType.GroupeClinic, Utility.Rand.Next(10, 10000) + Utility.Rand.NextDouble()));
-            for (int i = village + clinic; i < village + clinic + medic; i++)
-                graph.AddVertex(new DataVertex(VertexType.GroupeMedic, Utility.Rand.Next(10, 10000) + Utility.Rand.NextDouble()));
-
-            for (int i = 0; i < list.VertexCount; i++)
-            {
-                foreach (int j in list.GetAdjacent(i))
-                {
-                    if (list.IsDirected || !list.IsDirected && j > i)
-                    {
-                        var source = graph.Vertices.ElementAt(i);
-                        var target = graph.Vertices.ElementAt(j);
-
-                        graph.AddEdge(new DataEdge(source, target,
-                            Utility.Rand.Next(1, 10000) + Utility.Rand.NextDouble(),
-                            Utility.Rand.Next(0, 5) + Utility.Rand.NextDouble(),
-                            Utility.Rand.Next(0, 5) + Utility.Rand.NextDouble()));
-                    }
-                }
-            }
-
-            return graph;
-        }
-
-
+        
         public static void PrintGraph(AdjacencyList list)
         {
             Console.WriteLine("print adjacency list");
@@ -352,5 +276,8 @@ namespace Pmedian.CoreData.DataStruct
                 Console.WriteLine();
             }           
         }
+
+        
+
     }
 }

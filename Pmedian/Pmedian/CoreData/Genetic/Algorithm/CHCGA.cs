@@ -134,22 +134,25 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 stepGA++;
             }
             stopwatch.Stop();
+            Console.WriteLine($"answer, step {stepGA}");
+
             if (bestChromosome == null)
             {
-                int index = 0;
                 while (population.populationList.Count != 0)
                 {
                     bestChromosome = population.BestChromosome();
-                    if (Solution.isAnswer(bestChromosome, cost, problemData, index))
+                    if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                     {
                         algorithmInfo.Time = stopwatch.Elapsed;
                         algorithmInfo.BestFx = bestChromosome.fitness;
                         algorithmInfo.Steps = stepGA;
+                        bestChromosome.PrintChromosome();
+                        Console.WriteLine(" ANSVER");
+
                         break;
                     }
                     else
                         population.populationList.Remove(bestChromosome);
-                    index++;
                 }                
             }
             else if (bestChromosome != null)
@@ -157,12 +160,14 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 bool answer = false;
                 while (population.populationList.Count != 0)
                 {
-                    if (Solution.isAnswer(bestChromosome, cost, problemData))
+                    if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                     {
                         algorithmInfo.Time = stopwatch.Elapsed;
                         algorithmInfo.BestFx = bestChromosome.fitness;
                         algorithmInfo.Steps = stepGA;
                         Console.WriteLine(" ANSVER");
+                        bestChromosome.PrintChromosome();
+
                         answer = true;
                         break;
                     }
@@ -198,7 +203,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             // Вычесление пригодности хромосом.
             foreach (var chromosom  in chromosomes)
             {
-                chromosom.fitness = Fitness.Function(cost, problem, chromosom);
+                chromosom.fitness = Fitness.FunctionTrue(cost, problem, chromosom);
                 //Console.WriteLine(population.populationList[i].fitness);
             }
         }

@@ -2,6 +2,7 @@
 using Pmedian.Model.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Documents;
 
@@ -16,6 +17,13 @@ namespace Pmedian.CoreData.DataStruct
         /// Матрица затрат.
         /// </summary>
         public CostEdge[][] costEdgeArray { get; private set; }
+
+        private List<int> villageArray = new List<int>();
+        /// <summary>
+        /// Матрица связей медианной вершиные и не медианной вершины.
+        /// Гарантирует, что каждая вершина деревни, прекреплена к вершине пункта
+        /// </summary>
+        public int[][] arrayX;
 
         private List<List<int>> _costList = new List<List<int>>();
 
@@ -32,17 +40,7 @@ namespace Pmedian.CoreData.DataStruct
         /// <summary>
         /// Количество деревень в графе.
         /// </summary>
-        public int countVillage { get; set; }
-
-        /// <summary>
-        /// Количество фельдшерских пунктов в графе.
-        /// </summary>
-        public int countMedic { get; set; }
-
-        /// <summary>
-        /// Количество пунктов скорой помощи в графе.
-        /// </summary>
-        public int countClinic { get; set; }
+        public int countVillage { get; set; } 
 
         public int vertexCount { get; private set; }
 
@@ -50,12 +48,10 @@ namespace Pmedian.CoreData.DataStruct
         /// Конструктор с параметрами.
         /// </summary>
         /// <param name="vertexCount">Количество вершин в графе</param>
-        public Cost(int countClinic, int countMedic, int countVillage)
+        public Cost(int vertexCount, int countVillage)
         {
-            this.countClinic = countClinic;
-            this.countMedic = countMedic;
             this.countVillage = countVillage;
-            this.vertexCount = countClinic + countMedic + countVillage;
+            this.vertexCount = vertexCount;
             InitializeList();
         }
 
@@ -65,14 +61,16 @@ namespace Pmedian.CoreData.DataStruct
         /// <param name="vertexCount">Количество вершин в графе.</param>
         private void InitializeList()
         {
+            villageArray = new List<int>();
             _costList = new List<List<int>>();
-            costEdgeArray = new CostEdge[vertexCount][];
+            costEdgeArray = new CostEdge[vertexCount - countVillage][];
             costVertexArray = new double[vertexCount];
-            for (int i = 0; i < vertexCount; i++)
+            arrayX = new int[vertexCount - countVillage][];
+            for (int i = 0; i < vertexCount - countVillage; i++)
             {
                 _costList.Add(new List<int>());
-                costVertexArray[i] = 0.0;
-                costEdgeArray[i] = new CostEdge[vertexCount];                
+                costEdgeArray[i] = new CostEdge[vertexCount];
+                arrayX[i] = new int[vertexCount];
                 for (int j = 0; j < vertexCount; j++)
                 {                   
                     costEdgeArray[i][j] = new CostEdge();
@@ -86,29 +84,14 @@ namespace Pmedian.CoreData.DataStruct
             var vertices = graph.Vertices.ToList();
 
             int countVillage = 0;
-            int countClinic = 0;
-            int countMedic = 0;
             foreach (var vertex in vertices)
             {
-                
-                switch (vertex.Type)
-                {
-                    case VertexType.GroupeVillage:
-                        countVillage++;
-                        break;
-                    case VertexType.GroupeClinic:
-                        countClinic++;                        
-                        break;
-                    case VertexType.GroupeMedic:
-                        countMedic++;                       
-                        break;
-                }
+                if(VertexType.GroupeVillage == vertex.Type)
+                    countVillage++;                   
             }
-            Console.WriteLine(countVillage);
-            Console.WriteLine(countClinic);
-            Console.WriteLine(countMedic);
+            Console.WriteLine(countVillage); 
 
-            var cost = new Cost(countClinic, countMedic, countVillage);
+            var cost = new Cost(graph.VertexCount, countVillage);
             foreach (var vertex in vertices)
             {
                 int target = vertices.IndexOf(vertex);
@@ -116,35 +99,66 @@ namespace Pmedian.CoreData.DataStruct
                 if (vertex.Type != VertexType.GroupeVillage)
                 {
                     cost.AddCostVertex(target, vertex.vertexCost);                      
+                } 
+                else
+                {
+                    cost.villageArray.Add(target);
                 }
             }
 
+            int[][] tempX = new int[cost.vertexCount][];
+            CostEdge[][] tempCost = new CostEdge[cost.vertexCount][];
+            for (int i = 0; i < cost.vertexCount; i++)
+            {
+                tempX[i] = new int[cost.vertexCount];
+                tempCost[i] = new CostEdge[cost.vertexCount];
+                for (int j = 0; j < cost.vertexCount; j++)
+                    tempCost[i][j] = new CostEdge();
+            }
             foreach (var edge in graph.Edges)
             {
                 int source = vertices.IndexOf(edge.Source);
                 int target = vertices.IndexOf(edge.Target);
-                
+
                 if (edge.Source.Type != edge.Target.Type)
                 {
-                    if (edge.Source.Type == VertexType.GroupeVillage)
+                    if (edge.Source.Type != VertexType.GroupeVillage && edge.Target.Type == VertexType.GroupeVillage)
                     {
-                        cost.AddEdge(source, target);
                         CostEdge costEdge = new CostEdge(edge.Weight, edge.weigthA, edge.weigthM);
-                        cost.AddCostEdge(source, target, costEdge);
+                        tempCost[source][target] = costEdge;
+                        tempX[source][target] = 1;
                     }
-                    else if (edge.Target.Type == VertexType.GroupeVillage)
+                    else if (edge.Source.Type == VertexType.GroupeVillage && edge.Target.Type != VertexType.GroupeVillage)
                     {
-                        cost.AddEdge(target, source);
                         CostEdge costEdge = new CostEdge(edge.Weight, edge.weigthA, edge.weigthM);
-                        cost.AddCostEdge(target, source, costEdge);
+                        tempCost[target][source] = costEdge;
+                        tempX[target][source] = 1;
                     }
                 }
             }
 
+            try
+            {
+                int index = 0;
+                for (int i = 0; i < cost.vertexCount; i++)
+                {                                                                   
+                    if (cost.villageArray.Contains(i))
+                        continue;
+                    for (int j = 0; j < cost.vertexCount; j++)
+                    {
+                        cost.costEdgeArray[index][j] = tempCost[i][j];
+                            cost.arrayX[index][j] = tempX[i][j];
+                    }
+                    index++;
+                }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Console.WriteLine("Ошибка в индексации");
+            }
 
-            cost.PrintCostList();
             cost.PrintCost();
-
+            cost.PrintArray();
             return cost;
         }
 
@@ -192,7 +206,6 @@ namespace Pmedian.CoreData.DataStruct
 
                     if (costEdgeArray[i][j] != null)
                     {
-                        Console.Write($" {costEdgeArray[i][j] }");
                         Console.Write($"({i}, {j}) ");
                         Console.Write($"{costEdgeArray[i][j].roadKm}; " +
                             $"{costEdgeArray[i][j].timeAmbulance}; " +
@@ -203,19 +216,50 @@ namespace Pmedian.CoreData.DataStruct
             }
         }
 
-        public void PrintCostList()
+        private void PrintCost(CostEdge[][] arr)
         {
-            Console.WriteLine("print adjacency list COst");
-            for (int i = 0; i < vertexCount; i++)
+            Console.WriteLine("print cost array edge");
+            for (int i = 0; i < arr.Length; i++)
             {
-                Console.Write($"{i} - ");
-                foreach (int j in _costList[i])
+                Console.WriteLine($"vertex: {i}-{costVertexArray[i]}");
+                for (int j = 0; j < arr[i].Length; j++)
                 {
-                    Console.Write(j);
-                    Console.Write(" ");
+                    Console.Write($"({i}, {j}) ");
+                    Console.Write($"{arr[i][j].roadKm}; " +
+                        $"{arr[i][j].timeAmbulance}; " +
+                        $"{arr[i][j].timeMedic}");                    
                 }
                 Console.WriteLine();
-            }            
+            }
+        }
+
+
+        private void PrintArray()
+        {
+            Console.WriteLine("print array");
+            for (int i = 0; i < arrayX.Length; i++)
+            {
+                Console.Write($"{i} - ");
+                for(int j = 0; j < arrayX[i].Length; j++)
+                {
+                    Console.Write($"{arrayX[i][j]} ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private void PrintArray(int[][] arr)
+        {
+            Console.WriteLine("print array");
+            for (int i = 0; i < arr.Length; i++)
+            {
+                Console.Write($"{i} - ");
+                for (int j = 0; j < arr[i].Length; j++)
+                {
+                    Console.Write($"{arr[i][j]} ");
+                }
+                Console.WriteLine();
+            }
         }
     }
 }

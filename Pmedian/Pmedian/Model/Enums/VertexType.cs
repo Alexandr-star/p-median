@@ -6,6 +6,7 @@ namespace Pmedian.Model.Enums
     /// </summary>
     public enum VertexType
     {
+        Unmarket = 0,
         GroupeVillage,
         GroupeClinic,
         GroupeMedic

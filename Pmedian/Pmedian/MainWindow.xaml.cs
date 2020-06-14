@@ -168,19 +168,11 @@ namespace Pmedian
             {
                 if (operationMode == EditorOperationMode.Create)
                 {
-                    PutVertexOnGraphArea(VertexType.GroupeVillage, e);
+                    PutVertexOnGraphArea(VertexType.Unmarket, e);
                 }
                 else if (operationMode == EditorOperationMode.CreateVillage)
                 {
                     PutVertexOnGraphArea(VertexType.GroupeVillage, e);
-                }
-                else if (operationMode == EditorOperationMode.CreateClinic)
-                {
-                    PutVertexOnGraphArea(VertexType.GroupeClinic, e);
-                }
-                else if (operationMode == EditorOperationMode.CreateMedic)
-                {
-                    PutVertexOnGraphArea(VertexType.GroupeMedic, e);
                 }
                 else if (operationMode == EditorOperationMode.Select)
                 {
@@ -215,20 +207,13 @@ namespace Pmedian
         /// <param name="e"></param>
         void ToolbarButton_Checked(object sender, RoutedEventArgs e)
         {
-            if (sender == buttonCreateVillageMode)
+            if (sender == buttonCreateMode)
+            {
+                EnableCreateMode();
+            }
+            else if (sender == buttonCreateVillageMode)
             {
                 EnableCreateVillageMode();
-
-            }
-            else if (sender == buttonCreateClinicMode)
-            {
-                EnableCreateClinicMode();
-
-            }
-            else if (sender == buttonCreateMedicMode)
-            {
-                EnableCreateMedicMode();
-
             }
             else if (sender == buttonDeleteMode)
             {
@@ -248,10 +233,9 @@ namespace Pmedian
         void ToolbarButton_Unchecked(object sender, RoutedEventArgs e)
         {
             if (
+                buttonCreateMode.IsChecked == false &&
                 buttonDeleteMode.IsChecked == false &&
-                buttonCreateVillageMode.IsChecked == false &&
-                buttonCreateClinicMode.IsChecked == false &&
-                buttonCreateMedicMode.IsChecked == false)
+                buttonCreateVillageMode.IsChecked == false)
             {
                 EnableSelectMode();
             }
@@ -278,8 +262,6 @@ namespace Pmedian
         {
             buttonDeleteMode.IsChecked = false;
             buttonCreateVillageMode.IsChecked = false;
-            buttonCreateMedicMode.IsChecked = false;
-            buttonCreateClinicMode.IsChecked = false;
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.Create;
             ClearSelectMode();
@@ -292,49 +274,17 @@ namespace Pmedian
         private void EnableCreateVillageMode()
         {
             buttonDeleteMode.IsChecked = false;
-            buttonCreateMedicMode.IsChecked = false;
-            buttonCreateClinicMode.IsChecked = false;
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.CreateVillage;
             ClearSelectMode();
             //graphArea.ResetVertexStyle();
         }
-
-        /// <summary>
-        /// Включает режим создания редактора графов для типа вершин медецинских пунктов.
-        /// </summary>
-        private void EnableCreateClinicMode()
-        {
-            buttonDeleteMode.IsChecked = false;
-            buttonCreateVillageMode.IsChecked = false;
-            buttonCreateMedicMode.IsChecked = false;
-            zoomCtrl.Cursor = Cursors.Hand;
-            operationMode = EditorOperationMode.CreateClinic;
-            ClearSelectMode();
-            //graphArea.ResetVertexStyle();
-        }
-
-        /// <summary>
-        /// Включает режим создания редактора графов для типа вершин фельдшерских пунктов.
-        /// </summary>
-        private void EnableCreateMedicMode()
-        {
-            buttonDeleteMode.IsChecked = false;
-            buttonCreateClinicMode.IsChecked = false;
-            buttonCreateVillageMode.IsChecked = false;
-            zoomCtrl.Cursor = Cursors.Hand;
-            operationMode = EditorOperationMode.CreateMedic;
-            ClearSelectMode();
-            //graphArea.ResetVertexStyle();
-        }
-
+             
         /// <summary>
         /// Включает режим удаления редактора графов.
         /// </summary>
         private void EnableDeleteMode()
         {
-            buttonCreateMedicMode.IsChecked = false;
-            buttonCreateClinicMode.IsChecked = false;
             buttonCreateVillageMode.IsChecked = false;
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.Delete;
@@ -384,38 +334,24 @@ namespace Pmedian
                 var dlg = new AddVertexVillageDataCostDialog(this);
                 if (dlg.ShowDialog() == false) return null;
                 vertexCost = dlg.cost;
-            } 
-            else if (vertexType == VertexType.GroupeClinic)
+            }            
+            else if (vertexType == VertexType.Unmarket)
             {
                 var dlg = new AddVertexDataCostDialog(this);
                 if (dlg.ShowDialog() == false) return null;
                 vertexCost = dlg.cost;
             }
-            else if (vertexType == VertexType.GroupeMedic)
-            {
-                var dlg = new AddVertexDataCostDialog(this);
-                if (dlg.ShowDialog() == false) return null;
-                vertexCost = dlg.cost;
-            }
-            
-            
-            
-            
-             
-
+                                                            
             var data = new DataVertex(vertexType, vertexCost);
             switch (vertexType)
             {
                 case VertexType.GroupeVillage:
                     data.Color = VertexColor.GroupeVillage;
                     break;
-                case VertexType.GroupeClinic:
+                case VertexType.Unmarket:
+                    data.Color = VertexColor.Unmarked;
+                    break;
                     
-                    data.Color = VertexColor.GroupeClinic;
-                    break;
-                case VertexType.GroupeMedic:                    
-                    data.Color = VertexColor.GroupeMedic;
-                    break;
             }
 
           
@@ -427,12 +363,9 @@ namespace Pmedian
                 case VertexColor.GroupeVillage:
                     control.Style = App.Current.Resources["FirstGroupVertex"] as Style;
                     break;
-                case VertexColor.GroupeClinic:
-                    control.Style = App.Current.Resources["SecondGroupVertex"] as Style;
-                    break;
-                case VertexColor.GroupeMedic:
+                case VertexColor.Unmarked:
                     control.Style = App.Current.Resources["DefaultVertex"] as Style;
-                    break;
+                    break;                
             }
 
             control.SetPosition(position);
