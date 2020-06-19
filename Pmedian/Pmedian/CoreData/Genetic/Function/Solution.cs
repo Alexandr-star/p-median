@@ -1,8 +1,12 @@
 ﻿
 using Pmedian.CoreData.DataStruct;
+using Pmedian.Model;
+using Pmedian.Model.Enums;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Windows.Documents;
 
 namespace Pmedian.CoreData.Genetic.Function
 {
@@ -11,6 +15,58 @@ namespace Pmedian.CoreData.Genetic.Function
     /// </summary>
     public static class Solution
     {    
+
+
+        public static int Answer(Cost cost, Chromosome chromosome, ProblemData problemData, MainGraph graph)
+        {
+            if (chromosome == null || chromosome.fitness == double.MaxValue)
+                return 0;
+            List<List<int>> answerList = new List<List<int>>();
+            List<int> clinicList = new List<int>();
+            List<int> medicList = new List<int>();
+            List<int> array = new List<int>();
+            
+            for (int i = 0; i < chromosome.SizeChromosome; i++)
+            {
+                if (cost.unmarketVertex[i] * chromosome.chromosomeArray[i] != 0) 
+                {
+                    array.Add(cost.unmarketVertex[i]);                    
+                }
+            }
+
+
+            if (array.Count == 1)
+                graph.Vertices.ElementAt(array.First()).Color = VertexColor.GroupeClinic;
+            else if (array.Count % 2 == 1 && array.Count != 1)
+            {
+                int i = (array.Count / 2);
+                double a = Math.Abs(array[i + 1] - array[i]);
+                double b = Math.Abs(array[i - 1] - array[i]);
+                if (a > b)
+                {
+                    graph.Vertices.ElementAt(array[i]).Color = VertexColor.GroupeClinic;
+                }
+                else
+                    graph.Vertices.ElementAt(array[i]).Color = VertexColor.GroupeMedic;
+            }
+            for (int i = 0, j = array.Count - 1; i < array.Count / 2; i++, j--)
+            {
+                
+
+                if (graph.Vertices.ElementAt(array[i]).vertexCost < graph.Vertices.ElementAt(array[j]).vertexCost)
+                {
+                    graph.Vertices.ElementAt(array[i]).Color = VertexColor.GroupeMedic;
+                    graph.Vertices.ElementAt(array[j]).Color = VertexColor.GroupeClinic;
+                } else
+                {
+                    graph.Vertices.ElementAt(array[i]).Color = VertexColor.GroupeClinic;
+                    graph.Vertices.ElementAt(array[j]).Color = VertexColor.GroupeMedic;
+                }
+
+            }
+            return 1;       
+        }
+
         public static bool isConverget(Chromosome bestCromosome, Chromosome worstChromosome)
         {
             double diff = Math.Abs(worstChromosome.fitness - bestCromosome.fitness);
@@ -33,48 +89,7 @@ namespace Pmedian.CoreData.Genetic.Function
 
             return MFP;
         }
-
-        public static bool isAnswer(Chromosome bestChromosome, Cost cost, ProblemData problemData)
-        { 
-            int n = cost.countVillage;
-            int m = cost.vertexCount;
-
-            int chgencount = 0;
-            for (int i = 0; i < n; i++)
-            {
-                double timeM = 0.0;
-                double timeA = 0.0;
-                int vertexMedian = 0;
-                bool isNotEmptyCost = false;
-                for (int j = 0, c = chgencount; j < m; j++)
-                {
-                    if (cost.costEdgeArray[i][j].EmptyCost)                       
-                        continue;
-                        
-                    timeM = cost.costEdgeArray[i][j].timeMedic * bestChromosome.chromosomeArray[c];
-                    if (timeM > problemData.TimeMedic)
-                    {
-                        
-                        return false;
-                    }
-                    timeA = cost.costEdgeArray[i][j].timeAmbulance * bestChromosome.chromosomeArray[c];
-                    if (timeA > problemData.TimeAmbulance)
-                        return false;
-
-                    vertexMedian += bestChromosome.chromosomeArray[c];
-
-                    c++;
-                    chgencount++;
-                    isNotEmptyCost = true;
-                }
-                if (isNotEmptyCost && vertexMedian < problemData.P)
-                    return false;
-                
-            }
-
-            return true;
-        }
-       
+              
         public static bool isAnswerTrue(Chromosome chromosome, Cost cost, ProblemData problemData)
         {
             double fitness = 0;
@@ -91,29 +106,26 @@ namespace Pmedian.CoreData.Genetic.Function
                     if (cost.costEdgeArray[i][j].EmptyCost)
                         continue;
 
-                    if (X[i][j] <= chromosome.chromosomeArray[i])
-                    {
-                    }
-                    else
+                    if (X[i][j] > chromosome.chromosomeArray[i])
                     {
                         return false;
                     }
-                    if (cost.costEdgeArray[i][j].timeMedic > problemData.TimeMedic)
+                    
+                    if (cost.costEdgeArray[i][j].timeM > problemData.MedicTime)
                     {
                         return false;
                         constant++;
                     }
-                    if (cost.costEdgeArray[i][j].timeAmbulance > problemData.TimeAmbulance)
+                    if (cost.costEdgeArray[i][j].timeС > problemData.AmbulanceTime)
                     {
                         return false;
                         constant++;
                     }
 
                     fitness += (
-                        cost.costEdgeArray[i][j].timeMedic +
-                        cost.costEdgeArray[i][j].timeAmbulance +
+                      
                         cost.costEdgeArray[i][j].roadKm * problemData.RoadCost +
-                        cost.costVertexArray[j]
+                        cost.costVertexArray[i]
                         ) * X[i][j];
                 }
 
@@ -125,24 +137,7 @@ namespace Pmedian.CoreData.Genetic.Function
             {
                 return false;
 
-            }
-            for (int j = 0; j < cost.vertexCount; j++)
-            {
-                int sumx = 0;
-
-                for (int i = 0; i < chromosome.SizeChromosome; i++)
-                {
-                    sumx += X[i][j];
-                }
-                if (sumx == 1)
-                {
-                }
-                else if (sumx != 0)
-                {
-                    return false;
-
-                }
-            }
+            }            
 
             return true;
         }

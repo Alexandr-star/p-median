@@ -79,7 +79,7 @@
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="SelectionPanel">
             <ComboBox Name="SelectionBox" Style="{StaticResource DialogInputField}" HorizontalContentAlignment="Right"
-                     ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
+                     ItemsSource="{Binding Source={model:Enumeration {x:Type model:SelectionMethod}}}" DisplayMemberPath="Description"
                 SelectedValuePath="Value" SelectedIndex="0"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="SizeSelectedPanel">

@@ -21,13 +21,17 @@
         <GradientStop Color="#FFF40E0E" Offset="0"/>
         <GradientStop Color="#FFF71111" Offset="1"/>
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="VertexBorderBrushFirstGroup" EndPoint="0.5,0" StartPoint="0.5,1">
+    <LinearGradientBrush x:Key="VertexBorderBrushVillageGroup" EndPoint="0.5,0" StartPoint="0.5,1">
         <GradientStop Color="#FF1C1CE8" Offset="0"/>
         <GradientStop Color="#FF2222EE" Offset="1"/>
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="VertexBorderBrushSecondGroup" EndPoint="0.5,0" StartPoint="0.5,1">
+    <LinearGradientBrush x:Key="VertexBorderBrushClinicGroup" EndPoint="0.5,0" StartPoint="0.5,1">
         <GradientStop Color="#FF007600" Offset="0"/>
         <GradientStop Color="#FF008000" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VertexBorderBrushMedicGroup" EndPoint="0.5,0" StartPoint="0.5,1">
+        <GradientStop Color="#FFF07630" Offset="0"/>
+        <GradientStop Color="#FFF08030" Offset="1"/>
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="EdgeBrush" Color="Black"/>
@@ -130,23 +134,27 @@
         <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrushSelected}"/>
     </Style>
 
-    <Style x:Key="FirstGroupVertex" BasedOn="{StaticResource DefaultVertex}" TargetType="{x:Type controls:VertexControl}">
-        <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrushFirstGroup}"/>
+    <Style x:Key="VillageGroupVertex" BasedOn="{StaticResource DefaultVertex}" TargetType="{x:Type controls:VertexControl}">
+        <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrushVillageGroup}"/>
     </Style>
 
-    <Style x:Key="SecondGroupVertex" BasedOn="{StaticResource DefaultVertex}" TargetType="{x:Type controls:VertexControl}">
-        <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrushSecondGroup}"/>
+    <Style x:Key="ClinicGroupVertex" BasedOn="{StaticResource DefaultVertex}" TargetType="{x:Type controls:VertexControl}">
+        <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrushClinicGroup}"/>
+    </Style>
+
+    <Style x:Key="MedicGroupVertex" BasedOn="{StaticResource DefaultVertex}" TargetType="{x:Type controls:VertexControl}">
+        <Setter Property="BorderBrush" Value="{StaticResource VertexBorderBrushMedicGroup}"/>
     </Style>
 
     <!-- EDGE CONTROL -->
-    <Style x:Key="DefaultEdge" TargetType="{x:Type controls:EdgeControl}">
+    <!--<Style x:Key="Edge" TargetType="{x:Type controls:AttachableEdgeLabelControl}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:EdgeControl}">
+                <ControlTemplate TargetType="{x:Type controls:AttachableEdgeLabelControl}">
                     <Grid>
                         <Path Stroke="{StaticResource EdgeBrush}"
                           StrokeThickness="2" MinWidth="1" MinHeight="1"
-                          ToolTip="{TemplateBinding ToolTip}"
+                          ToolTip="{TemplateBinding ToolTip}" 
                           x:Name="PART_edgePath"/>
                         <controls:DefaultEdgePointer NeedRotation="true" x:Name="PART_EdgePointerForTarget" >
                             <Path Data="M0,0.5 L1,1 1,0" Fill="Black" Stretch="Uniform" Width="0" Height="0"/>
@@ -155,5 +163,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
+    
 </ResourceDictionary>

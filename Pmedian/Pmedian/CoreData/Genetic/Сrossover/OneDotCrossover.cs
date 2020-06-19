@@ -24,8 +24,6 @@ namespace Pmedian.CoreData.Genetic.Сrossover
 
         }
 
-        public List<int> nonp { get; set; }
-
         /// <summary>
         /// Одноточечный кроссовер.
         /// </summary>
@@ -37,17 +35,21 @@ namespace Pmedian.CoreData.Genetic.Сrossover
                 throw new NotImplementedException();
 
             List<Chromosome> childrenList = new List<Chromosome>();
-            nonp = new List<int>();
-            nonp.Clear();
-            
             int[] indexes = Utility.ShuffleIndexes(parents.Count);
             for (int i = 0; i < parents.Count; i += 2)
             {
+                                        
                 double probability = Utility.Rand.NextDouble();
+                if (parents.Count % 2 == 1 && i == parents.Count - 1)
+                    probability = 1;
                 if (probability <= Probability)
                 {
                     int[] firstParent = parents.ElementAt(indexes[i]).chromosomeArray;
-                    int[] secondParent = parents.ElementAt(indexes[i + 1]).chromosomeArray;
+                    int[] secondParent = null;
+                    if (parents.Count % 2 == 1 && i == parents.Count - 1)
+                        secondParent = parents.ElementAt(indexes[0]).chromosomeArray;
+                    else
+                        secondParent = parents.ElementAt(indexes[i + 1]).chromosomeArray;
                     int sizeChromosome = firstParent.Length;
 
                     int pointCrossover = Utility.Rand.Next(sizeChromosome - 1) + 1;
@@ -71,17 +73,14 @@ namespace Pmedian.CoreData.Genetic.Сrossover
 
                     childrenList.Add(new Chromosome(firstChild));
                     childrenList.Add(new Chromosome(secondChild));
-                }
-                else
-                {
-                    nonp.Add(indexes[i]);
-                    nonp.Add(indexes[i + 1]);
-                }
+                }               
             }
             
 
             return childrenList;
         }
+
+       
 
         public override Chromosome Crossover(Chromosome firstParent, Chromosome secondParent)
         {          

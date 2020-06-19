@@ -36,7 +36,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// </summary>
         /// <param name="graph"></param>
         /// <param name="problemData">Параметры задачи</param>
-        public abstract AdjacencyList GeneticAlgorithm(MainGraph graph, ProblemData problemData);
+        public abstract int GeneticAlgorithm(MainGraph graph, ProblemData problemData);
 
         public abstract AlgorithmInfo GetAlgorithmInfo();
         

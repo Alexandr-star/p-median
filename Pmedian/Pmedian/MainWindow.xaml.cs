@@ -88,7 +88,7 @@ namespace Pmedian
 
             graphArea.SetEdgesDashStyle(EdgeDashStyle.Solid);
             graphArea.ShowAllEdgesArrows(false);
-            graphArea.ShowAllEdgesLabels(true);
+            graphArea.ShowAllEdgesLabels(false);
 
             EnableSelectMode();
         }
@@ -132,13 +132,7 @@ namespace Pmedian
                         break;
                     case EditorOperationMode.CreateVillage:
                         CreateEdgeControl(args.VertexControl);
-                        break;
-                    case EditorOperationMode.CreateMedic:
-                        CreateEdgeControl(args.VertexControl);
-                        break;
-                    case EditorOperationMode.CreateClinic:
-                        CreateEdgeControl(args.VertexControl);
-                        break;
+                        break;                  
                     case EditorOperationMode.Delete:
                         SafeRemoveVertex(args.VertexControl);
                         break;
@@ -273,6 +267,7 @@ namespace Pmedian
         /// </summary>
         private void EnableCreateVillageMode()
         {
+            buttonCreateMode.IsChecked = false;
             buttonDeleteMode.IsChecked = false;
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.CreateVillage;
@@ -285,6 +280,7 @@ namespace Pmedian
         /// </summary>
         private void EnableDeleteMode()
         {
+            buttonCreateMode.IsChecked = false;
             buttonCreateVillageMode.IsChecked = false;
             zoomCtrl.Cursor = Cursors.Hand;
             operationMode = EditorOperationMode.Delete;
@@ -329,13 +325,7 @@ namespace Pmedian
         private VertexControl CreateVertexControl(Point position, VertexType vertexType)
         {
             double vertexCost = 0.0;
-            if (vertexType == VertexType.GroupeVillage)
-            {
-                var dlg = new AddVertexVillageDataCostDialog(this);
-                if (dlg.ShowDialog() == false) return null;
-                vertexCost = dlg.cost;
-            }            
-            else if (vertexType == VertexType.Unmarket)
+            if (vertexType == VertexType.Unmarket)
             {
                 var dlg = new AddVertexDataCostDialog(this);
                 if (dlg.ShowDialog() == false) return null;
@@ -361,7 +351,7 @@ namespace Pmedian
             switch (data.Color)
             {
                 case VertexColor.GroupeVillage:
-                    control.Style = App.Current.Resources["FirstGroupVertex"] as Style;
+                    control.Style = App.Current.Resources["VillageGroupVertex"] as Style;
                     break;
                 case VertexColor.Unmarked:
                     control.Style = App.Current.Resources["DefaultVertex"] as Style;
@@ -396,16 +386,12 @@ namespace Pmedian
             if (dlg.ShowDialog() == false) return;
 
             double weidthR = dlg.RoadLength;
-            double weidthA = dlg.tAmbulator;
-            double weidthM = dlg.tMedic;
-            
-            
-            var data = new DataEdge((DataVertex)sourceVertex.Vertex, (DataVertex)targetVertex.Vertex, weidthR, weidthA, weidthM);
-            var control = new EdgeControl(sourceVertex, targetVertex, data);
-            control.Style = App.Current.Resources["DefaultEdge"] as Style;
-            //control.Style = App.Current.Resources["DefaultEdge"] as Style;
-            graphArea.InsertEdgeAndData(data, control, 0, true);
 
+            var data = new DataEdge((DataVertex)sourceVertex.Vertex, (DataVertex)targetVertex.Vertex, weidthR);
+            var control = new EdgeControl(sourceVertex, targetVertex, data);
+            
+            graphArea.InsertEdgeAndData(data, control, 0, false);
+            
             HighlightBehaviour.SetHighlighted(sourceVertex, false);
             sourceVertex = null;
         }
@@ -443,8 +429,8 @@ namespace Pmedian
             }
             else
             {
-                var result = MessageBox.Show("This action will remove all vertices and edges from \nthe graph area. " +
-                    "Do you really want to continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                var result = MessageBox.Show("Это действие приведет к удалению всего графа. " +
+                    "Вы хотите продолжить?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -635,7 +621,6 @@ namespace Pmedian
             {
 
                 var result = dlg.GA.GeneticAlgorithm(graphArea.LogicCore.Graph as MainGraph, problemData);
-
                 VisualResult(result);
                 new AlgorithmDataWork(this).UpdateData(dlg.GA.GetAlgorithmInfo());
             }
@@ -651,71 +636,17 @@ namespace Pmedian
             }
         }
 
-        private void VisualResult(AdjacencyList result)
+        private void VisualResult(int result)
         {
-            try
+            if (result == 0)
             {
-                dataEdgeStore = new List<DataEdge>();
-                edgeControlStore = new List<EdgeControl>();
-                restoreGraphArea = graphArea.LogicCore.Graph as MainGraph;
-                var resultGraph = AdjacencyList.GenerateGraph(result);
-                var resultVertexlist = resultGraph.Vertices.ToList();
-                var resultEdgeList = resultGraph.Edges.ToList();
-                var vertexlist = graphArea.LogicCore.Graph.Vertices.ToList();
-                var edgeList = graphArea.LogicCore.Graph.Edges.ToList();
-                bool check = false;
-                foreach (var edge in edgeList)
-                {
-                    
-                    int source = vertexlist.IndexOf(edge.Source);
-                    int target = vertexlist.IndexOf(edge.Target);
-                    if (0 == result.adjacencyList[target].Count)
-                    {
-                        dataEdgeStore.Add(edge);
-                        edgeControlStore.Add(new EdgeControl(new VertexControl(edge.Source), new VertexControl(edge.Target), edge));
-                        graphArea.RemoveEdge(edge, true);
-                        continue;
-                    }
-
-                    for (int i = 0; i < result.VertexCount; i++)
-                    {
-                        foreach (int j in result.adjacencyList[i])
-                        {
-                            if (target == i && source == j)
-                            {
-                                check = true;
-                                break;
-                            }
-                        }
-                        if (check)
-                            break;
-
-                    }
-
-                    if (check)
-                        check = false;
-                    else
-                    {
-                        dataEdgeStore.Add(edge);
-                        edgeControlStore.Add(new EdgeControl(new VertexControl(edge.Source), new VertexControl(edge.Target), edge));
-                        graphArea.RemoveEdge(edge, true);
-                    }
-                }
+                MessageBox.Show("Алгоритм не нашел ответ.", "Нет ответа.");
+                return;
             }
-            catch (System.NullReferenceException)
+            else
             {
-                if (result == null)
-                {
-                    MessageBox.Show("Алгоритм не нашел ответ.", "Нет ответа.");
-                    return;
-                }
-                else
-                {
-                    MessageBox.Show("Что-то пошло не так, возможна ошибка в удалении лишних ребер.", "Нет ответа.");
-                    return;
-                }
-            }
-           
+                graphArea.UpdateVertexStyle();
+            }                      
         }
 
         private void menuSettingProblem_Click(object sender, RoutedEventArgs e)

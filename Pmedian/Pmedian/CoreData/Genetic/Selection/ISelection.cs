@@ -17,6 +17,6 @@ namespace Pmedian.CoreData.Genetic.Selection
         /// <param name="population">Популяция, т.е. список особей.</param>
         /// <param name="N">Количество отбираемых особей</param>
         /// <returns>Список отобранных особоей.</returns>
-        List<Chromosome> Selection(List<Chromosome> population);
+        List<Chromosome> Selection(Population population);
     }
 }

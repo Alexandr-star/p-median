@@ -14,7 +14,7 @@ namespace Pmedian.CoreData.Genetic.Selection
             this.countSelected = countSelected;
         }
 
-        public  abstract List<Chromosome> Selection(List<Chromosome> population);
+        public  abstract List<Chromosome> Selection(Population population);
         
     }
 }

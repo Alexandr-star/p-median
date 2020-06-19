@@ -19,12 +19,27 @@ namespace Pmedian.Model
         /// <summary>
         /// Тип вершины.
         /// </summary>
-        //[YAXSerializeAs("type")]
-        //[YAXAttributeFor("Vertex")]
         public VertexType Type { get; set; }
 
-        //[YAXSerializeAs("cost")]
-        //[YAXAttributeFor("Vertex")]
+        private bool _isVisited = false;
+        public bool IsVisited
+        {
+            get { return _isVisited; }
+            set
+            {
+                _isVisited = value;
+            }
+        }
+
+        private double _pointValue = double.MaxValue;
+        public double PointValue
+        {
+            get { return _pointValue; }
+            set { _pointValue = value; }
+        }
+
+        public DataVertex PredPoint { get; set; }
+
         public double vertexCost { get; set; }
 
         /// <summary>

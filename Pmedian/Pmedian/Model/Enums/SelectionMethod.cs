@@ -14,5 +14,7 @@ namespace Pmedian.Model.Enums
     {
         [Description("Tournament")]
         Tournament,
+        [Description("Proportion")]
+        Proportion
     }
 }

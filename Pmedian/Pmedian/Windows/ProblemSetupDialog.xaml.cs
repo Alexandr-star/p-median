@@ -43,6 +43,9 @@ namespace Pmedian.Windows
         /// </summary>
         private double timeAmbulaceCost => Math.Round(TimeAmbulanceCostUpDown.Value ?? 0, 3);
 
+        private double midSpeedMedic => Math.Round(MidSpeedMedicCostUpDown.Value ?? 0, 3);
+        private double midSpeedAmbulace => Math.Round(MidSpeedAmbCostUpDown.Value ?? 0, 3);
+
         public ProblemData problemData { get; private set; }
 
         public ProblemSetupDialog(Window owner)
@@ -59,7 +62,7 @@ namespace Pmedian.Windows
         {
             try
             {
-                problemData = new ProblemData(P, timeMedicCost, timeAmbulaceCost, roadCost);
+                problemData = new ProblemData(P, midSpeedMedic, timeMedicCost,midSpeedAmbulace, timeAmbulaceCost, roadCost);
             }
             catch (Exception ex)
             {

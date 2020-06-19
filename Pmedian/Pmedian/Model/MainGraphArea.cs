@@ -25,26 +25,18 @@ namespace Pmedian.Model
                         a.Value.Style = App.Current.Resources["SelectedVertex"] as Style;
                         break;
                     case VertexColor.GroupeVillage:
-                        a.Value.Style = App.Current.Resources["FirstGroupVertex"] as Style;
+                        a.Value.Style = App.Current.Resources["VillageGroupVertex"] as Style;
                         break;
                     case VertexColor.GroupeClinic:
-                        a.Value.Style = App.Current.Resources["SecondGroupVertex"] as Style;
+                        a.Value.Style = App.Current.Resources["ClinicGroupVertex"] as Style;
                         break;
                     case VertexColor.GroupeMedic:
+                        a.Value.Style = App.Current.Resources["MedicGroupVertex"] as Style;
+                        break;
+                    default:
                         a.Value.Style = App.Current.Resources["DefaultVertex"] as Style;
                         break;
-                    /*default:
-                        a.Value.Style = App.Current.Resources["DefaultVertex"] as Style;
-                        break;*/
                 }
-            });
-        }
-
-        public void UpdateEdgeStyle()
-        {
-            EdgesList.ToList().ForEach(a =>
-            {
-                a.Value.Style = App.Current.Resources["DefaultVertex"] as Style;
             });
         }
 

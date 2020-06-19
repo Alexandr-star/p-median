@@ -1,4 +1,5 @@
 ﻿using Pmedian.CoreData.Genetic.Mutation;
+using Pmedian.CoreData.Genetic.Selection;
 using Pmedian.CoreData.Genetic.Сrossover;
 using Pmedian.Model.Enums;
 using System;
@@ -53,6 +54,21 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             }
 
             return mutation;
+        }
+
+        public static AbstractSelection ChosenSelectionMethod(SelectionMethod selectionMethod, int countTour, int countSelect)
+        {
+            AbstractSelection selection = null;
+            switch (selectionMethod)
+            {
+                case SelectionMethod.Tournament:
+                    selection = new TournamentSelection(countTour, countSelect);
+                    break;
+                case SelectionMethod.Proportion:
+                    selection = new ProportionSelection(countSelect);
+                    break;
+            }
+            return selection;
         }
     }
 }

@@ -11,10 +11,26 @@ namespace Pmedian.CoreData.Genetic.Reduction
         public static List<Chromosome> Reduction(List<Chromosome> parentList, List<Chromosome> childList, int PopulationSize)
         {
             List<Chromosome> list = new List<Chromosome>();
-
+            //var childIdent = Enumerable.Repeat<int>(1, childList.Count).ToArray();
+            //var parantIdent = Enumerable.Repeat<int>(0, parentList.Count).ToArray();
+            //var ident = Enumerable.Repeat<int>(0, parentList.Count).ToArray().Concat(Enumerable.Repeat<int>(1, childList.Count).ToArray())                .ToArray();
+            
+            for (int i = 0; i < parentList.Count; i++)
+            {
+                if (childList.Count == 0)
+                    break;
+                for (int j = 0; j < childList.Count; j++)
+                {
+                    if (parentList[i].fitness == childList[j].fitness)
+                    {
+                        childList.RemoveAt(j);
+                    }
+                }
+            }
+            
             list.AddRange(parentList);
             list.AddRange(childList);
-            for (int i = 0; i < list.Count - 1; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 double min = list[i].fitness;
                 int minId = i;
@@ -36,16 +52,9 @@ namespace Pmedian.CoreData.Genetic.Reduction
 
             }
 
-            List<Chromosome> newPopulationList = list.GroupBy(ch => string.Join(string.Empty, ch.chromosomeArray)).Select(ch => ch.First()).ToList();
-            if (newPopulationList.Count < PopulationSize)
-            {
-                int diff = PopulationSize - newPopulationList.Count;
-                for (int i = 0; i < diff; i++)
-                    newPopulationList.Add(list[i]);
-            }
-            else
-                newPopulationList.RemoveRange(PopulationSize, newPopulationList.Count - PopulationSize);
-            return newPopulationList;
+            list.RemoveRange(parentList.Count, parentList.Count - childList.Count);
+            
+            return list;
         }
     }
 }

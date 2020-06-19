@@ -20,6 +20,7 @@ namespace Pmedian.CoreData.Genetic
         /// Ранг хромосомы.
         /// </summary>
         public double rank { get; set; }
+       
 
         /// <summary>
         /// Длинна хромосомы.

@@ -7,34 +7,33 @@ namespace Pmedian.CoreData.DataStruct
     public class CostEdge
     {
         /// <summary>
-        /// Время скорой помощи.
-        /// </summary>
-        public double timeAmbulance { get; private set; }
-
-        /// <summary>
-        /// Время фельдшеров
-        /// </summary>
-        public double timeMedic { get; private set; }
-
-        /// <summary>
         /// Расстояние между вершинами.
         /// </summary>
-        public double roadKm { get; private set; }
+        public double roadKm { get; set; }
 
-        public int fromTo { get; set; }
+        // время скорой
+        public double timeС { get; set; }
 
-        public bool EmptyCost { get; private set; }
+        // время фельдшеров
+        public double timeM { get; set; }
+
+        private double _roadKmUtoV;
+        public double RoadUtoV
+        { get { return _roadKmUtoV; }
+          set { _roadKmUtoV = value; } 
+        }
+
+        public bool EmptyCost { get; set; }
 
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
         /// <param name="timeAmbulance"></param>
         /// <param name="timeMedic"></param>
-        public CostEdge(double weidthRoad, double timeAmbulance, double timeMedic)
+        public CostEdge(double weidthRoad)
         {
             this.roadKm = weidthRoad;
-            this.timeAmbulance = timeAmbulance;
-            this.timeMedic = timeMedic;
+            this._roadKmUtoV = weidthRoad;
             this.EmptyCost = false;
         }
 

@@ -75,6 +75,7 @@ namespace Pmedian.Windows
         /// </summary>
         private int MinHemmingDistance => HemmingDist.Value ?? 0;
 
+        private SelectionMethod SMethod => (SelectionMethod)SelectionBox.SelectedValue;
         private int CountSelected => SizeSelected.Value ?? 2;
 
         private int CountTour => SizeTournament.Value ?? 2;
@@ -119,7 +120,8 @@ namespace Pmedian.Windows
                         GA = new ClassicGA(
                             IterationSize, PopulationSize,
                             CrossoverProbability, MutationProbability,
-                            CountSelected, CountTour);
+                            SMethod,
+                            CountSelected, CountTour) ;
                         break;
                     case GeneticAlgotithmMethod.GenitorGA:
                         ErrorMessageZeroIterationSize();
@@ -187,7 +189,7 @@ namespace Pmedian.Windows
                     MutationPanel.Visibility = Visibility.Collapsed;
                     ProbabilitiMutaPanel.Visibility = Visibility.Visible;
 
-                    SelectionPanel.Visibility = Visibility.Collapsed;
+                    SelectionPanel.Visibility = Visibility.Visible;
                     
                     break;
                 case GeneticAlgotithmMethod.GenitorGA:

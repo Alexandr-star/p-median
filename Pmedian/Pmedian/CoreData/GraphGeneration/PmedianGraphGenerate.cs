@@ -51,9 +51,7 @@ namespace Pmedian.CoreData.GraphGeneration
                     var source = graph.Vertices.ElementAt(v);
                     var target = graph.Vertices.ElementAt(c);
                     graph.AddEdge(new DataEdge(source, target,
-                        Utility.Rand.Next(1, 9999) + Math.Round(Utility.Rand.NextDouble(), 3),
-                        Utility.Rand.Next(0, 5) + Math.Round(Utility.Rand.NextDouble(), 3),
-                        Utility.Rand.Next(0, 5) + Math.Round(Utility.Rand.NextDouble(), 3)));
+                        Utility.Rand.Next(1, 9999) + Math.Round(Utility.Rand.NextDouble(), 3)));
                 }
                 
             }

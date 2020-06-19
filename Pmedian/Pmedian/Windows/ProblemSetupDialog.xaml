@@ -25,24 +25,24 @@
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="p" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:IntegerUpDown x:Name="PmedianCostUpDown" Style="{StaticResource DialogInputField}" Value="2" Minimum="1"/>
+            <xctk:IntegerUpDown x:Name="PmedianCostUpDown" Style="{StaticResource DialogInputField}" Value="3" Minimum="1"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Время фельдшера" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:DoubleUpDown x:Name="TimeMedicCostUpDown" Style="{StaticResource DialogInputField}" Value="100.0" Minimum="1.0" Maximum="10000.0" FormatString="F3"/>
+            <xctk:DoubleUpDown x:Name="TimeMedicCostUpDown" Style="{StaticResource DialogInputField}" Value="2.0" Minimum="1.0" Maximum="10000.0" FormatString="F3"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Время скорой помощи" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:DoubleUpDown x:Name="TimeAmbulanceCostUpDown" Style="{StaticResource DialogInputField}" Value="100.0" Minimum="1.0" Maximum="10000.0" FormatString="F3"/>
-        </StackPanel>
-        <!--<StackPanel Style="{StaticResource DialogStackPanel}">
-            <TextBlock Text="All clinic cost" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:DoubleUpDown Name="AllClinicCostUpDown" Style="{StaticResource DialogInputField}" Value="10.0" Minimum="1.0" Maximum="10000.0" />
+            <xctk:DoubleUpDown x:Name="TimeAmbulanceCostUpDown" Style="{StaticResource DialogInputField}" Value="1.7" Minimum="1.0" Maximum="10000.0" FormatString="F3"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
-            <TextBlock Text="All medic cost" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:DoubleUpDown Name="AllMedicCostUpDown" Style="{StaticResource DialogInputField}" Value="10.0" Minimum="1.0" Maximum="10000.0" />
-        </StackPanel>-->
+            <TextBlock Text="Средняя скорость Ф." Style="{StaticResource DialogInputLabel}"/>
+            <xctk:DoubleUpDown Name="MidSpeedMedicCostUpDown" Style="{StaticResource DialogInputField}" Value="80.0" Minimum="1.0" Maximum="10000.0" />
+        </StackPanel>
+        <StackPanel Style="{StaticResource DialogStackPanel}">
+            <TextBlock Text="Средняя скорость C." Style="{StaticResource DialogInputLabel}"/>
+            <xctk:DoubleUpDown Name="MidSpeedAmbCostUpDown" Style="{StaticResource DialogInputField}" Value="110.0" Minimum="1.0" Maximum="10000.0" />
+        </StackPanel>
 
         <StackPanel Style="{StaticResource DialogActionPanel}">
             <Button Click="buttonOk_Click" Style="{StaticResource DialogOKButton}"/>

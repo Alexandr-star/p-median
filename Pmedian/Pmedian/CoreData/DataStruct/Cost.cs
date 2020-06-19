@@ -13,10 +13,13 @@ namespace Pmedian.CoreData.DataStruct
     /// </summary>
     public class Cost
     {
+        private int ROUND = 3;
         /// <summary>
         /// Матрица затрат.
         /// </summary>
         public CostEdge[][] costEdgeArray { get; private set; }
+
+        public MainGraph mainGraph { get; set; }
 
         private List<int> villageArray = new List<int>();
         /// <summary>
@@ -27,6 +30,8 @@ namespace Pmedian.CoreData.DataStruct
 
         private List<List<int>> _costList = new List<List<int>>();
 
+        public List<int> unmarketVertex { get; set; }
+
         public List<List<int>> CostList
         {
             get => _costList;
@@ -35,7 +40,7 @@ namespace Pmedian.CoreData.DataStruct
         /// <summary>
         /// Массив затрат на постройку пунктов. 
         /// </summary>
-        public double[] costVertexArray { get; private set; }
+        public List<double> costVertexArray { get; private set; }
 
         /// <summary>
         /// Количество деревень в графе.
@@ -44,12 +49,17 @@ namespace Pmedian.CoreData.DataStruct
 
         public int vertexCount { get; private set; }
 
+        public double midSpeedClinic;
+        public double midSpeedMedic;
+
         /// <summary>
         /// Конструктор с параметрами.
         /// </summary>
         /// <param name="vertexCount">Количество вершин в графе</param>
-        public Cost(int vertexCount, int countVillage)
+        public Cost(int vertexCount, int countVillage, double midSpeedClinic, double midSpeedMedic)
         {
+            this.midSpeedClinic = midSpeedClinic;
+            this.midSpeedMedic = midSpeedMedic;
             this.countVillage = countVillage;
             this.vertexCount = vertexCount;
             InitializeList();
@@ -63,8 +73,9 @@ namespace Pmedian.CoreData.DataStruct
         {
             villageArray = new List<int>();
             _costList = new List<List<int>>();
+            unmarketVertex = new List<int>();
             costEdgeArray = new CostEdge[vertexCount - countVillage][];
-            costVertexArray = new double[vertexCount];
+            costVertexArray = new List<double>(vertexCount - countVillage);
             arrayX = new int[vertexCount - countVillage][];
             for (int i = 0; i < vertexCount - countVillage; i++)
             {
@@ -79,7 +90,7 @@ namespace Pmedian.CoreData.DataStruct
         }
 
 
-        public static Cost CreateCostArray(MainGraph graph)
+       public static Cost GanerateCostArray(MainGraph graph, ProblemData problemData)
         {           
             var vertices = graph.Vertices.ToList();
 
@@ -91,19 +102,21 @@ namespace Pmedian.CoreData.DataStruct
             }
             Console.WriteLine(countVillage); 
 
-            var cost = new Cost(graph.VertexCount, countVillage);
+            var cost = new Cost(graph.VertexCount, countVillage, problemData.MidSpeedMedic, problemData.MidSpeedAmbulance);
+            cost.mainGraph = graph;
             foreach (var vertex in vertices)
             {
                 int target = vertices.IndexOf(vertex);
-                Console.WriteLine($"vertex {target} type {vertex.Type} cost {vertex.vertexCost}");
-                if (vertex.Type != VertexType.GroupeVillage)
+                if (vertex.Type == VertexType.Unmarket)
                 {
-                    cost.AddCostVertex(target, vertex.vertexCost);                      
+                    cost.unmarketVertex.Add(target);
+                    cost.costVertexArray.Add(vertex.vertexCost);                    
                 } 
                 else
                 {
                     cost.villageArray.Add(target);
                 }
+                
             }
 
             int[][] tempX = new int[cost.vertexCount][];
@@ -115,53 +128,118 @@ namespace Pmedian.CoreData.DataStruct
                 for (int j = 0; j < cost.vertexCount; j++)
                     tempCost[i][j] = new CostEdge();
             }
+            // создали табицу весов
             foreach (var edge in graph.Edges)
             {
                 int source = vertices.IndexOf(edge.Source);
                 int target = vertices.IndexOf(edge.Target);
-
-                if (edge.Source.Type != edge.Target.Type)
-                {
-                    if (edge.Source.Type != VertexType.GroupeVillage && edge.Target.Type == VertexType.GroupeVillage)
-                    {
-                        CostEdge costEdge = new CostEdge(edge.Weight, edge.weigthA, edge.weigthM);
-                        tempCost[source][target] = costEdge;
-                        tempX[source][target] = 1;
-                    }
-                    else if (edge.Source.Type == VertexType.GroupeVillage && edge.Target.Type != VertexType.GroupeVillage)
-                    {
-                        CostEdge costEdge = new CostEdge(edge.Weight, edge.weigthA, edge.weigthM);
-                        tempCost[target][source] = costEdge;
-                        tempX[target][source] = 1;
-                    }
-                }
+               
+                CostEdge costEdge = new CostEdge(edge.Weight);
+                tempCost[source][target] = costEdge;
+                tempCost[target][source] = costEdge;
             }
-
-            try
-            {
-                int index = 0;
-                for (int i = 0; i < cost.vertexCount; i++)
-                {                                                                   
-                    if (cost.villageArray.Contains(i))
-                        continue;
-                    for (int j = 0; j < cost.vertexCount; j++)
-                    {
-                        cost.costEdgeArray[index][j] = tempCost[i][j];
-                            cost.arrayX[index][j] = tempX[i][j];
-                    }
-                    index++;
-                }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Console.WriteLine("Ошибка в индексации");
-            }
-
+            cost.PrintCost(tempCost);
+            cost.DDDDD(tempCost);
+           
             cost.PrintCost();
             cost.PrintArray();
+            cost.PrintVertexCost();
             return cost;
         }
 
+        private void PrintVertexCost()
+        {
+            foreach (var i in costVertexArray)
+            {
+                Console.Write($"{i}  ");
+            }
+            Console.WriteLine();
+        }
+
+        private void DDDDD(CostEdge[][] tempCost)
+        {
+            var vertices = mainGraph.Vertices.ToList();
+            int index = 0;
+            foreach (var vertex in vertices)
+            {
+
+                if (vertex.Type == VertexType.Unmarket)
+                {
+                    CreateCostArray(AlgD(vertex, tempCost[index], tempCost), index) ;
+                    index++;                   
+                }
+            }
+            
+        }
+
+        private void CreateCostArray(double[] vs, int index)
+        {
+            for (int i = 0; i < vertexCount; i++)
+            {
+                if (vs[i] == double.MaxValue)
+                    continue;
+                if (unmarketVertex.Contains(i))
+                    continue;
+
+                costEdgeArray[index][i].EmptyCost = false;
+                costEdgeArray[index][i].roadKm = vs[i];
+                costEdgeArray[index][i].timeС = Math.Round(vs[i] / midSpeedClinic, ROUND);
+                costEdgeArray[index][i].timeM = Math.Round(vs[i] / midSpeedMedic, ROUND);
+                arrayX[index][i] = 1;
+            }
+        }
+
+        private double[] AlgD(DataVertex startVertex, CostEdge[] costEdges, CostEdge[][] costs)
+        {
+            var vertices = mainGraph.Vertices.ToList();
+            double[] d = new double[vertexCount];
+            for (int i = 0; i < vertexCount; i++)
+            {
+                d[i] = double.MaxValue;
+                vertices[i].IsVisited = false;
+            }
+            d[vertices.IndexOf(startVertex)] = 0;
+            double min = double.MaxValue;
+            int minIndex = int.MaxValue;
+            do
+            {
+                min = double.MaxValue;
+                minIndex = int.MaxValue;
+
+                for (int i = 0; i < vertexCount; i++)
+                {
+
+                    
+                    // если вершину еще не обошли и вес меньше min
+                    if (!vertices.ElementAt(i).IsVisited && d[i] < min)
+                    {
+                        min = d[i];
+                        minIndex = i;
+                    }
+                }
+                // добавляем найденный минимальный вес к текущему весу вершины
+                // и сравниваем с текущим минимальным весом вершины
+                if (minIndex < int.MaxValue)
+                {
+                    for (int i = 0; i < vertices.Count; i++)
+                    {
+                        if (costs[minIndex][i].roadKm > 0)
+                        {
+                            double temp = min + costs[minIndex][i].roadKm;
+                            if (temp < d[i])
+                            {
+                                d[i] = temp;
+                            }
+                        }
+                    }
+                    vertices.ElementAt(minIndex).IsVisited = true;
+                }
+            } while (minIndex < int.MaxValue);
+            
+            return d;
+        }
+
+        
         /// <summary>
         /// Добавить расход ребра в массив расходов ребер.
         /// </summary>
@@ -183,8 +261,6 @@ namespace Pmedian.CoreData.DataStruct
             costVertexArray[index] = vertexCost;
         }
 
-
-
         /// <summary>
         /// Добавить ребро в список смежности затрат.
         /// </summary>
@@ -200,16 +276,15 @@ namespace Pmedian.CoreData.DataStruct
             Console.WriteLine("print cost array edge");
             for (int i = 0; i < costEdgeArray.Length; i++)
             {
-                Console.WriteLine($"vertex: {i}-{costVertexArray[i]}");
                 for (int j = 0; j < costEdgeArray[i].Length; j++)
                 {
 
                     if (costEdgeArray[i][j] != null)
                     {
                         Console.Write($"({i}, {j}) ");
-                        Console.Write($"{costEdgeArray[i][j].roadKm}; " +
-                            $"{costEdgeArray[i][j].timeAmbulance}; " +
-                            $"{costEdgeArray[i][j].timeMedic}");
+                        Console.Write($"km {costEdgeArray[i][j].roadKm};" +
+                            $"tm {costEdgeArray[i][j].timeM};" +
+                            $"tc {costEdgeArray[i][j].timeС}.");
                     }
                 }
                 Console.WriteLine();
@@ -221,18 +296,14 @@ namespace Pmedian.CoreData.DataStruct
             Console.WriteLine("print cost array edge");
             for (int i = 0; i < arr.Length; i++)
             {
-                Console.WriteLine($"vertex: {i}-{costVertexArray[i]}");
                 for (int j = 0; j < arr[i].Length; j++)
                 {
                     Console.Write($"({i}, {j}) ");
-                    Console.Write($"{arr[i][j].roadKm}; " +
-                        $"{arr[i][j].timeAmbulance}; " +
-                        $"{arr[i][j].timeMedic}");                    
+                    Console.Write($"{arr[i][j].roadKm};");                    
                 }
                 Console.WriteLine();
             }
         }
-
 
         private void PrintArray()
         {
@@ -260,6 +331,13 @@ namespace Pmedian.CoreData.DataStruct
                 }
                 Console.WriteLine();
             }
+        }
+
+        private void PrintMASS(double[] vs)
+        {
+            foreach (double i in vs)
+                Console.Write($" {i} ");
+            Console.WriteLine();
         }
     }
 }

@@ -25,6 +25,6 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// </summary>
         /// <param name="graph">Граф.</param>
         /// <param name="problemData">Параметры задачи</param>
-        AdjacencyList GeneticAlgorithm(MainGraph graph, ProblemData problemData);
+        int GeneticAlgorithm(MainGraph graph, ProblemData problemData);
     }
 }

@@ -8,12 +8,7 @@ namespace Pmedian.Windows
     /// </summary>
     public partial class AddEdgeWigthDialog : Window
     {
-
-        public double RoadLength => RoadUpDown.Value ?? 0;
-
-        public double tAmbulator => AmbulatorUpDown.Value ?? 0;
-
-        public double tMedic => MedicUpDown.Value ?? 0;
+        public double RoadLength => RoadUpDown.Value ?? 0;        
         public AddEdgeWigthDialog(Window owner)
         {
             Owner = owner;

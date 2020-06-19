@@ -28,13 +28,16 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// <param name="parents">Список родителей.</param>
         /// <returns>Список потомков.</returns>
         public abstract List<Chromosome> Crossover(List<Chromosome> parents);
-        
+       
+
         /// <summary>
         /// Кроссовера.
         /// </summary>
         /// <param name="firstParent">Первый родитель.</param>
         /// <param name="secondParent">Второй родитель.</param>
         /// <returns>Потомок.</returns>
-        public abstract Chromosome Crossover(Chromosome firstParent, Chromosome secondParent);      
+        public abstract Chromosome Crossover(Chromosome firstParent, Chromosome secondParent);
+
+        
     }   
 }

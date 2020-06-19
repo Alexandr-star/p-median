@@ -7,17 +7,17 @@
         xmlns:models="clr-namespace:Pmedian.Model"
         xmlns:local="clr-namespace:Pmedian.Windows"
         mc:Ignorable="d" 
-        Height="600"
-        Width="900"
-        MinHeight="300"
-        MinWidth="200"
-        Title="Задача о р-медиане"
+       
+    Title="Задача о р-медиане"
         Style="{StaticResource MainWindow}">
-    
-    <Window.Resources>
+    <!--Height="600"-->
+    <!--Width="900"-->
+    <!--MinHeight="300"-->
+    <!--MinWidth="200"-->
+    <!--<Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/Windows/Style/MainDictionary.xaml"/>
-    </Window.Resources>
-    
+    </Window.Resources>-->
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -57,7 +57,8 @@
         <controls:ZoomControl x:Name="zoomCtrl" Grid.Column="0" Grid.Row="1" MouseDown="zoomCtrl_MouseDown">
             <models:MainGraphArea x:Name="graphArea" VertexSelected="graphArea_VertexSelected" EdgeSelected="graphArea_EdgeSelected"/>
         </controls:ZoomControl>
-        <controls:EdgeControl Style="{StaticResource DefaultEdge}"></controls:EdgeControl>
+       
+        <!--<controls:EdgeControl Style="{StaticResource Edge}"></controls:EdgeControl> -->
         <DockPanel LastChildFill="False" Grid.Column="1" Grid.Row="1" Style="{StaticResource MainWindowDockPanel}">
             <Border Style="{StaticResource MainWindowDockPanelBorder}"/>
             <StackPanel Name="MainSidebar" Style="{StaticResource MainWindowStackPanel}">

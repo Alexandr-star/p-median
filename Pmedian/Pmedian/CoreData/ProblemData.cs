@@ -14,12 +14,14 @@ namespace Pmedian.CoreData
         /// <summary>
         /// Время приезда фельдшеров, ограниченное числом.
         /// </summary>
-        public double TimeMedic { get; }
+        public double MedicTime { get; }
+        public double MidSpeedMedic { get; }
 
         /// <summary>
         /// Время приезда скорой помощи, ограниченное числом.
         /// </summary>
-        public double TimeAmbulance { get; }
+        public double AmbulanceTime { get; }
+        public double MidSpeedAmbulance { get; }
 
         /// <summary>
         /// Затраты на 1 км пути.
@@ -33,12 +35,14 @@ namespace Pmedian.CoreData
         /// <param name="timeMedic">Время приезда фельдшеров, ограниченное числом.</param>
         /// <param name="timeAmbulance">Время приезда скорой помощи, ограниченное числом.</param>
         /// <param name="roadCost">Затраты на 1 км пути.</param>
-        public ProblemData(int p, double timeMedic, double timeAmbulance, double roadCost)
+        public ProblemData(int p, double midSpeedMedic, double medicTime, double midSpeedAmbulance, double ambilanceTime, double roadCost)
         {
             P = p;
-            TimeMedic = timeMedic;
-            TimeAmbulance = timeAmbulance;
+            MidSpeedMedic = midSpeedMedic;
+            MidSpeedAmbulance = midSpeedAmbulance;
             RoadCost = roadCost;
+            MedicTime = medicTime;
+            AmbulanceTime = ambilanceTime;
         }
     }
 }

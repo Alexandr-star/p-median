@@ -15,11 +15,11 @@ namespace Pmedian.CoreData.Genetic.Selection
             this.countTurnament = countTurnament;
         }
 
-        public override List<Chromosome> Selection(List<Chromosome> population)
+        public override List<Chromosome> Selection(Population population)
         {
             List<Chromosome> intermidatePopulation = new List<Chromosome>(countSelected);
             List<Chromosome> list = new List<Chromosome>();
-            list.AddRange(population);
+            list.AddRange(population.populationList);
             List<Chromosome> turnamentList = new List<Chromosome>(countTurnament);
 
             for (int i = 0; i < countSelected; i++)

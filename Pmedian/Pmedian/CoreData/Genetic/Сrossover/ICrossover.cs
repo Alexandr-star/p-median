@@ -18,6 +18,8 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// <returns>Список потомков</returns>
         List<Chromosome> Crossover(List<Chromosome> parents);
 
+      
+
         /// <summary>
         /// Кроссовер двух родителей.
         /// </summary

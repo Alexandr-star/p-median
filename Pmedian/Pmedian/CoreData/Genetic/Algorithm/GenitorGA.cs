@@ -92,13 +92,12 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// </summary>
         /// <param name="graph">Граф.</param>
         /// <param name="problemData">Параметры задачи</param>
-        public override AdjacencyList GeneticAlgorithm(MainGraph graph, ProblemData problemData)
+        public override int GeneticAlgorithm(MainGraph graph, ProblemData problemData)
         {
             this.algorithmInfo = new AlgorithmInfo();
             // Инициализация основных структур.
             adjacencyList = AdjacencyList.GenerateList(graph);
-            cost = Cost.CreateCostArray(graph);
-            ProblemData problem = problemData;
+            cost = Cost.GanerateCostArray(graph, problemData); ProblemData problem = problemData;
             
             var crossover = GeneticMethod.ChosenCrossoverMethod(crossoverMethod, 100, dotCrossover, minHemmingDistance);
             var mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, MutationProbability, dotMutation);
@@ -130,7 +129,6 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 // выбор двух хромосом для скрещивания
                 List<Chromosome> selectedChromosome = RandomSelection.Selection(population.populationList);
                 // полученный потомок после скрещивания
-
                 Chromosome child = crossover.Crossover(selectedChromosome[0], selectedChromosome[1]);
                
                 if (mutation != null)
@@ -138,7 +136,8 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     mutation.Mutation(child);
                 }
                 // вычесление ранга хромосомы.
-                population.Sort();
+
+                population.Sort();                
                 Ranking(population);
                 // пригодность потомка
                 child.fitness = Fitness.FunctionTrue(cost, problemData, child);
@@ -149,10 +148,12 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 else
                     bedChrom = population.OneOfChromosomesWithMinRank();
                 // замена худшей хромосомы на потомка
-
                 int index = population.populationList.IndexOf(bedChrom);
+
                 population.populationList.Insert(index, child);
+
                 population.populationList.RemoveAt(index + 1);
+
                 double tempMediumFitness = Solution.MediumFitnessPopulation(population);
 
                 double absFitness = Math.Abs(tempMediumFitness - MediumFitness);
@@ -175,16 +176,17 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                         }
                     }
                 }
-                
+
 
                 stepGA++;
             }
             stopwatch.Stop();
-
+            population.PrintPopulation();
             if (stepGA == IterateSize)
             {
                 bestChromosome = population.BestChromosome();
-                if (Solution.isAnswer(bestChromosome, cost, problemData))
+
+                if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                 {
                     algorithmInfo.Time = stopwatch.Elapsed;
                     algorithmInfo.BestFx = bestChromosome.fitness;
@@ -193,8 +195,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 
                 }
             }
-            else if (bestChromosome == null)
+            if (bestChromosome == null)
             {
+
                 while (population.populationList.Count != 0)
                 {
                     bestChromosome = population.BestChromosome();
@@ -218,6 +221,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 {
                     if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                     {
+
                         algorithmInfo.Time = stopwatch.Elapsed;
                         algorithmInfo.BestFx = bestChromosome.fitness;
                         algorithmInfo.Steps = stepGA;
@@ -228,7 +232,10 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     }
                     else
                     {
+
                         population.populationList.Remove(bestChromosome);
+                        if (population.populationList.Count == 0)
+                            break;
                         bestChromosome = population.BestChromosome();
                     }
                 }
@@ -240,7 +247,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             }
 
 
-            return AdjacencyList.GenerateList(bestChromosome, cost);
+            return Solution.Answer(cost, bestChromosome, problemData, graph);
 
         }
 

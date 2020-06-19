@@ -129,6 +129,7 @@
     <Compile Include="CoreData\Genetic\Reduction\ReductionForClassicGA.cs" />
     <Compile Include="CoreData\Genetic\Selection\AbstractSelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\ISelection.cs" />
+    <Compile Include="CoreData\Genetic\Selection\ProportionSelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\RandomSelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\RankingSelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\SelectionForCHC.cs" />
