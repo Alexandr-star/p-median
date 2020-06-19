@@ -13,7 +13,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
     class HUXCrossover : AbstractCrossover
     {
 
-        public int minHemmingDistanse { get;  set; }
+        public int Distanse { get;  set; }
 
         /// <summary>
         /// Конструктор с параметром.
@@ -21,7 +21,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
         /// <param name="probability">Вероятность кроссовера.</param>
         public HUXCrossover(int minHemmingDistanse, double probability) : base(probability)
         {
-            this.minHemmingDistanse = minHemmingDistanse;
+            this.Distanse = minHemmingDistanse;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
 
                 int hemmingDistance = HemmingDistance(firstChild, secondChild);
 
-                if (hemmingDistance <= minHemmingDistanse) continue;
+                if (hemmingDistance <= Distanse) continue;
 
                 List<int> res = H(firstChild, secondChild, firstChild.Length);
 

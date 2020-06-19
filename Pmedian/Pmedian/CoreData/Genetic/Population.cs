@@ -24,7 +24,7 @@ namespace Pmedian.CoreData.Genetic
         /// <summary>
         /// Размер хромосомы.
         /// </summary>
-        public int SizeChromosome { get; }
+        public int SizeChromosome { get; private set; }
 
         /// <summary>
         /// Популяция, предаставленная массивом хромомсом.
@@ -51,17 +51,13 @@ namespace Pmedian.CoreData.Genetic
         {
             this.SizePopulation = pop.Count;
             this.populationList = pop;
+            this.SizeChromosome = populationList[0].SizeChromosome;
         }
 
         private void initializePopulation(Cost cost)
         {
             this.populationList = new List<Chromosome>();
-            //int sizeChromosome = cost.countClinic + cost.countMedic;
-            //int sizeChromosome = 0;
-            //foreach (var list in cost.CostList)
-            //{
-            //    sizeChromosome += list.Count;
-            //}
+            this.SizeChromosome = cost.vertexCount - cost.countVillage;
             for (int i = 0; i < SizePopulation; i++)
             {
                 Chromosome chromosome = Chromosome.CreateChromosome(cost.vertexCount - cost.countVillage);
