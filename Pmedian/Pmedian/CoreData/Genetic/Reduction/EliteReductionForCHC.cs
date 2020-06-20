@@ -27,7 +27,8 @@ namespace Pmedian.CoreData.Genetic.Reduction
                     }
                 }
             }
-            
+            if (childList.Count == 0)
+                return parentList;
             list.AddRange(parentList);
             list.AddRange(childList);
             for (int i = 0; i < list.Count; i++)
@@ -51,8 +52,8 @@ namespace Pmedian.CoreData.Genetic.Reduction
                 list.RemoveAt(minId + 1);
 
             }
-
-            list.RemoveRange(parentList.Count, parentList.Count - childList.Count);
+            
+            list.RemoveRange(PopulationSize, list.Count - PopulationSize);
             
             return list;
         }
