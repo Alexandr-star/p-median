@@ -108,10 +108,11 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             double midBestFit = .0;
             int midIter = 0;
             int iter = 0;
+            int countAnswer = 0;
+
             while (iter < TESTITER)
             {
                 Population startPopulation = new Population(PopulationSize, cost);
-                Console.WriteLine($"fit {Fitness.FunctionTrue(cost, problemData, startPopulation.populationList[0])}");
 
                 var population = startPopulation;
 
@@ -174,6 +175,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                                 midTime += stopwatch.Elapsed.TotalSeconds;
                                 midBestFit += bestChromosome.fitness;
                                 midIter += stepGA;
+                                countAnswer++;
 
                                 algorithmInfo.Time = stopwatch.Elapsed;
                                 algorithmInfo.BestFx = bestChromosome.fitness;
@@ -194,70 +196,34 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 
                 if (stepGA == IterateSize)
                 {
-                    bestChromosome = population.BestChromosome();
-
-                    if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
-                    {
-                        midTime += stopwatch.Elapsed.TotalSeconds;
-                        midBestFit += bestChromosome.fitness;
-                        midIter += stepGA;
-                        algorithmInfo.Time = stopwatch.Elapsed;
-                        algorithmInfo.BestFx = bestChromosome.fitness;
-                        algorithmInfo.Steps = stepGA;
-                        Console.WriteLine(" ANSVER");
-
-
-                    }
-                }
-                if (bestChromosome == null)
-                {
-
-                    while (population.populationList.Count != 0)
-                    {
-                        bestChromosome = population.BestChromosome();
-                        if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
-                        {
-                            stopwatch.Stop();
-                            midTime += stopwatch.Elapsed.TotalSeconds;
-                            midBestFit += bestChromosome.fitness;
-                            midIter += stepGA;
-                            algorithmInfo.Time = stopwatch.Elapsed;
-                            algorithmInfo.BestFx = bestChromosome.fitness;
-                            algorithmInfo.Steps = stepGA;
-                            Console.WriteLine(" ANSVER");
-
-                            break;
-                        }
-                        else
-                            population.populationList.Remove(bestChromosome);
-                    }
-                }
-                else
-                {
                     bool answer = false;
+                    bestChromosome = population.BestChromosome();
                     while (population.populationList.Count != 0)
                     {
+
                         if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                         {
                             midTime += stopwatch.Elapsed.TotalSeconds;
                             midBestFit += bestChromosome.fitness;
                             midIter += stepGA;
+                            countAnswer++;
+
                             algorithmInfo.Time = stopwatch.Elapsed;
                             algorithmInfo.BestFx = bestChromosome.fitness;
                             algorithmInfo.Steps = stepGA;
-                            bestChromosome.PrintChromosome();
                             Console.WriteLine(" ANSVER");
+                            bestChromosome.PrintChromosome();
 
                             answer = true;
                             break;
                         }
                         else
                         {
-
                             population.populationList.Remove(bestChromosome);
                             if (population.populationList.Count == 0)
                                 break;
                             bestChromosome = population.BestChromosome();
+
                         }
                     }
                     if (!answer)
@@ -268,14 +234,14 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                         bestChromosome = null;
                         Console.WriteLine("NOT ANSVER");
 
-
                     }
-                }
+                }   
                 iter++;
             }
             Console.WriteLine($"mid time: {midTime / TESTITER}");
-            Console.WriteLine($"mid fit: {midBestFit / TESTITER}");
+            Console.WriteLine($"mid fit: b/iter {midBestFit / TESTITER}  b/answ {midBestFit / countAnswer}");
             Console.WriteLine($"mid iter: {midIter / TESTITER}");
+            Console.WriteLine($"count answer {2 * countAnswer}/{2 * TESTITER}");
 
             return Solution.Answer(cost, null, problemData, graph);
 

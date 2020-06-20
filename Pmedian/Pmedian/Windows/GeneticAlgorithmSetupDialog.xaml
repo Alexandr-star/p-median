@@ -54,7 +54,7 @@
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="ProbabilityCrossPanel">
             <TextBlock Text="Вероятность" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:DoubleUpDown Name="ProbabilitiCross" Style="{StaticResource DialogInputField}" Value="70.0" Minimum="0.001" Maximum="100.0" Increment="0.01" FormatString="F3"/>
+            <xctk:DoubleUpDown Name="ProbabilitiCross" Style="{StaticResource DialogInputField}" Value="90.0" Minimum="0.001" Maximum="100.0" Increment="0.01" FormatString="F3"/>
             <TextBlock Text="%" Style="{StaticResource DialogInputLabel}"/>
         </StackPanel>
         <Separator/>

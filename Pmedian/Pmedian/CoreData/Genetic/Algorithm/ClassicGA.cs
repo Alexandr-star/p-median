@@ -16,7 +16,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 {
     class ClassicGA : AbstractGeneticAlgorithm
     {
-        private int TESTITER = 500;
+        private int TESTITER = 100;
 
         public AlgorithmInfo algorithmInfo;
         private Stopwatch stopwatch;
@@ -67,8 +67,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             double midTime = .0;
             double midBestFit = .0;
             int midIter = 0;
-
-            
+            int countAnswer = 0;
 
             int iter = 0;
             while (iter < TESTITER)
@@ -112,6 +111,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                                 midTime += stopwatch.Elapsed.TotalSeconds;
                                 midBestFit += bestChromosome.fitness;
                                 midIter += stepGA;
+                                countAnswer++;
 
                                 algorithmInfo.Time = stopwatch.Elapsed;
                                 algorithmInfo.BestFx = bestChromosome.fitness;
@@ -128,60 +128,17 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 Console.WriteLine($"answer, step {stepGA}");
                 if (stepGA == IterateSize)
                 {
-                    bestChromosome = population.BestChromosome();
-                    if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
-                    {
-
-                        midTime += stopwatch.Elapsed.TotalSeconds;
-                        midBestFit += bestChromosome.fitness;
-                        midIter += stepGA;
-
-                        algorithmInfo.Time = stopwatch.Elapsed;
-                        algorithmInfo.BestFx = bestChromosome.fitness;
-                        algorithmInfo.Steps = stepGA;
-                        Console.WriteLine(" ANSVER");
-                        bestChromosome.PrintChromosome();
-                    }
-                }
-
-                if (bestChromosome == null)
-                {
-                    Console.WriteLine("Null best");
-                    while (population.populationList.Count != 0)
-                    {
-                        bestChromosome = population.BestChromosome();
-                        algorithmInfo.Time = stopwatch.Elapsed;
-                        algorithmInfo.BestFx = bestChromosome.fitness;
-                        algorithmInfo.Steps = stepGA;
-                        if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
-                        {
-                            midTime += stopwatch.Elapsed.TotalSeconds;
-                            midBestFit += bestChromosome.fitness;
-                            midIter += stepGA;
-
-                            algorithmInfo.Time = stopwatch.Elapsed;
-                            algorithmInfo.BestFx = bestChromosome.fitness;
-                            algorithmInfo.Steps = stepGA;
-                            Console.WriteLine(" ANSVER");
-                            bestChromosome.PrintChromosome();
-
-                            break;
-                        }
-                        else
-                            population.populationList.Remove(bestChromosome);
-                    }
-                }
-                else
-                {
                     bool answer = false;
+                    bestChromosome = population.BestChromosome();
                     while (population.populationList.Count != 0)
                     {
-                        bestChromosome = population.BestChromosome();
+                        
                         if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                         {
                             midTime += stopwatch.Elapsed.TotalSeconds;
                             midBestFit += bestChromosome.fitness;
                             midIter += stepGA;
+                            countAnswer++;
 
                             algorithmInfo.Time = stopwatch.Elapsed;
                             algorithmInfo.BestFx = bestChromosome.fitness;
@@ -195,6 +152,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                         else
                         {
                             population.populationList.Remove(bestChromosome);
+                            if (population.populationList.Count == 0)
+                                break;
+                            bestChromosome = population.BestChromosome();
 
                         }
                     }
@@ -216,9 +176,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 
 
             Console.WriteLine($"mid time: {midTime / TESTITER}");
-            Console.WriteLine($"mid fit: {midBestFit / TESTITER}");
+            Console.WriteLine($"mid fit: b/iter {midBestFit / TESTITER}  b/answ {midBestFit / countAnswer}");
             Console.WriteLine($"mid iter: {midIter / TESTITER}");
-
+            Console.WriteLine($"count answer {2*countAnswer}/{2*TESTITER}");
             return Solution.Answer(cost, null, problemData, graph);
 
         }
