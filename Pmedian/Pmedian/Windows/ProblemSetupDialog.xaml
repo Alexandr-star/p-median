@@ -29,11 +29,11 @@
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Время фельдшера" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:DoubleUpDown x:Name="TimeMedicCostUpDown" Style="{StaticResource DialogInputField}" Value="2.0" Minimum="1.0" Maximum="10000.0" FormatString="F3"/>
+            <xctk:DoubleUpDown x:Name="TimeMedicCostUpDown" Style="{StaticResource DialogInputField}" Value="1.0" Minimum="0.01" Maximum="10000.0" FormatString="F3"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Время скорой помощи" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:DoubleUpDown x:Name="TimeAmbulanceCostUpDown" Style="{StaticResource DialogInputField}" Value="1.7" Minimum="1.0" Maximum="10000.0" FormatString="F3"/>
+            <xctk:DoubleUpDown x:Name="TimeAmbulanceCostUpDown" Style="{StaticResource DialogInputField}" Value="1.0" Minimum="0.01" Maximum="10000.0" FormatString="F3"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Средняя скорость Ф." Style="{StaticResource DialogInputLabel}"/>
