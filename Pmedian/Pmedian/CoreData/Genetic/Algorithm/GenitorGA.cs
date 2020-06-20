@@ -15,6 +15,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 {
     class GenitorGA : AbstractGeneticAlgorithm
     {
+        private int TESTITER = 500;
         public AlgorithmInfo algorithmInfo;
 
         private Stopwatch stopwatch;
@@ -103,151 +104,180 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             var mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, MutationProbability, dotMutation);
             Chromosome bestChromosome = null;
             double MediumFitness = 0;
-
-
-            stopwatch = new Stopwatch();
-            stopwatch.Start();
-            Population startPopulation = new Population(PopulationSize, cost);
-            Console.WriteLine($"fit {Fitness.FunctionTrue(cost, problemData, startPopulation.populationList[0])}");
-
-            var population = startPopulation;
-           
-
-            int stepGA = 0;           
-
-            // вычесление пригодности хромосом.
-            //Console.WriteLine("fitness ");
-            for (int i = 0; i < PopulationSize; i++)
+            double midTime = .0;
+            double midBestFit = .0;
+            int midIter = 0;
+            int iter = 0;
+            while (iter < TESTITER)
             {
-                population.populationList[i].fitness = Fitness.FunctionTrue(cost, problemData, population.populationList[i]);
-                //Console.WriteLine(population.populationList[i].fitness);
-            }
-            MediumFitness = Solution.MediumFitnessPopulation(population);
+                Population startPopulation = new Population(PopulationSize, cost);
+                Console.WriteLine($"fit {Fitness.FunctionTrue(cost, problemData, startPopulation.populationList[0])}");
 
-            while (stepGA <= IterateSize)
-            {
-                // выбор двух хромосом для скрещивания
-                List<Chromosome> selectedChromosome = RandomSelection.Selection(population.populationList);
-                // полученный потомок после скрещивания
-                Chromosome child = crossover.Crossover(selectedChromosome[0], selectedChromosome[1]);
-               
-                if (mutation != null)
+                var population = startPopulation;
+
+
+                int stepGA = 0;
+
+                // вычесление пригодности хромосом.
+                //Console.WriteLine("fitness ");
+                for (int i = 0; i < PopulationSize; i++)
                 {
-                    mutation.Mutation(child);
+                    population.populationList[i].fitness = Fitness.FunctionTrue(cost, problemData, population.populationList[i]);
+                    //Console.WriteLine(population.populationList[i].fitness);
                 }
-                // вычесление ранга хромосомы.
+                MediumFitness = Solution.MediumFitnessPopulation(population);
+                stopwatch = new Stopwatch();
+                stopwatch.Start();
+                while (stepGA <= IterateSize)
+                {
+                    // выбор двух хромосом для скрещивания
+                    List<Chromosome> selectedChromosome = RandomSelection.Selection(population.populationList);
+                    // полученный потомок после скрещивания
+                    Chromosome child = crossover.Crossover(selectedChromosome[0], selectedChromosome[1]);
 
-                population.Sort();                
-                Ranking(population);
-                // пригодность потомка
-                child.fitness = Fitness.FunctionTrue(cost, problemData, child);
-                // поиск самой худщей хромосомы
-                Chromosome bedChrom = null;
-                if (stepGA == 0)
-                    bedChrom = population.ChromosomeWithMinRank();
-                else
-                    bedChrom = population.OneOfChromosomesWithMinRank();
-                // замена худшей хромосомы на потомка
-                int index = population.populationList.IndexOf(bedChrom);
+                    if (mutation != null)
+                    {
+                        mutation.Mutation(child);
+                    }
+                    // вычесление ранга хромосомы.
 
-                population.populationList.Insert(index, child);
+                    population.Sort();
+                    Ranking(population);
+                    // пригодность потомка
+                    child.fitness = Fitness.FunctionTrue(cost, problemData, child);
+                    // поиск самой худщей хромосомы
+                    Chromosome bedChrom = null;
+                    if (stepGA == 0)
+                        bedChrom = population.ChromosomeWithMinRank();
+                    else
+                        bedChrom = population.OneOfChromosomesWithMinRank();
+                    // замена худшей хромосомы на потомка
+                    int index = population.populationList.IndexOf(bedChrom);
 
-                population.populationList.RemoveAt(index + 1);
+                    population.populationList.Insert(index, child);
 
-                double tempMediumFitness = Solution.MediumFitnessPopulation(population);
+                    population.populationList.RemoveAt(index + 1);
 
-                double absFitness = Math.Abs(tempMediumFitness - MediumFitness);
-                MediumFitness = tempMediumFitness;
-                if (absFitness >= 0 && absFitness <= 1)
+                    double tempMediumFitness = Solution.MediumFitnessPopulation(population);
+
+                    double absFitness = Math.Abs(tempMediumFitness - MediumFitness);
+                    MediumFitness = tempMediumFitness;
+                    if (absFitness >= 0 && absFitness <= 1)
+                    {
+                        bestChromosome = population.BestChromosome();
+                        var worstChromosome = population.WorstChromosome();
+                        if (bestChromosome.fitness - worstChromosome.fitness <= 1 && bestChromosome.fitness - worstChromosome.fitness >= 0)
+                        {
+                            if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
+                            {
+                                stopwatch.Stop();
+                                midTime += stopwatch.Elapsed.TotalSeconds;
+                                midBestFit += bestChromosome.fitness;
+                                midIter += stepGA;
+
+                                algorithmInfo.Time = stopwatch.Elapsed;
+                                algorithmInfo.BestFx = bestChromosome.fitness;
+                                algorithmInfo.Steps = stepGA;
+                                Console.WriteLine(" ANSVER");
+
+
+                                break;
+                            }
+                        }
+                    }
+
+
+                    stepGA++;
+                }
+                stopwatch.Stop();
+                Console.WriteLine($"answer, step {stepGA}");
+
+                if (stepGA == IterateSize)
                 {
                     bestChromosome = population.BestChromosome();
-                    var worstChromosome = population.WorstChromosome();
-                    if (bestChromosome.fitness - worstChromosome.fitness <= 1 && bestChromosome.fitness - worstChromosome.fitness >= 0)
+
+                    if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                     {
+                        midTime += stopwatch.Elapsed.TotalSeconds;
+                        midBestFit += bestChromosome.fitness;
+                        midIter += stepGA;
+                        algorithmInfo.Time = stopwatch.Elapsed;
+                        algorithmInfo.BestFx = bestChromosome.fitness;
+                        algorithmInfo.Steps = stepGA;
+                        Console.WriteLine(" ANSVER");
+
+
+                    }
+                }
+                if (bestChromosome == null)
+                {
+
+                    while (population.populationList.Count != 0)
+                    {
+                        bestChromosome = population.BestChromosome();
                         if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                         {
                             stopwatch.Stop();
+                            midTime += stopwatch.Elapsed.TotalSeconds;
+                            midBestFit += bestChromosome.fitness;
+                            midIter += stepGA;
+                            algorithmInfo.Time = stopwatch.Elapsed;
+                            algorithmInfo.BestFx = bestChromosome.fitness;
+                            algorithmInfo.Steps = stepGA;
+                            Console.WriteLine(" ANSVER");
+
+                            break;
+                        }
+                        else
+                            population.populationList.Remove(bestChromosome);
+                    }
+                }
+                else
+                {
+                    bool answer = false;
+                    while (population.populationList.Count != 0)
+                    {
+                        if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
+                        {
+                            midTime += stopwatch.Elapsed.TotalSeconds;
+                            midBestFit += bestChromosome.fitness;
+                            midIter += stepGA;
                             algorithmInfo.Time = stopwatch.Elapsed;
                             algorithmInfo.BestFx = bestChromosome.fitness;
                             algorithmInfo.Steps = stepGA;
                             bestChromosome.PrintChromosome();
+                            Console.WriteLine(" ANSVER");
 
+                            answer = true;
                             break;
                         }
+                        else
+                        {
+
+                            population.populationList.Remove(bestChromosome);
+                            if (population.populationList.Count == 0)
+                                break;
+                            bestChromosome = population.BestChromosome();
+                        }
                     }
-                }
-
-
-                stepGA++;
-            }
-            stopwatch.Stop();
-            population.PrintPopulation();
-            if (stepGA == IterateSize)
-            {
-                bestChromosome = population.BestChromosome();
-
-                if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
-                {
-                    algorithmInfo.Time = stopwatch.Elapsed;
-                    algorithmInfo.BestFx = bestChromosome.fitness;
-                    algorithmInfo.Steps = stepGA;
-                    bestChromosome.PrintChromosome();
-
-                }
-            }
-            if (bestChromosome == null)
-            {
-
-                while (population.populationList.Count != 0)
-                {
-                    bestChromosome = population.BestChromosome();
-                    if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
+                    if (!answer)
                     {
-                        stopwatch.Stop();
+                        midTime += stopwatch.Elapsed.TotalSeconds;
+                        midBestFit += 0;
+                        midIter += stepGA;
+                        bestChromosome = null;
+                        Console.WriteLine("NOT ANSVER");
 
-                        algorithmInfo.Time = stopwatch.Elapsed;
-                        algorithmInfo.BestFx = bestChromosome.fitness;
-                        algorithmInfo.Steps = stepGA;
-                        break;
+
                     }
-                    else
-                        population.populationList.Remove(bestChromosome);
                 }
+                iter++;
             }
-            else
-            {
-                bool answer = false;
-                while (population.populationList.Count != 0)
-                {
-                    if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
-                    {
+            Console.WriteLine($"mid time: {midTime / TESTITER}");
+            Console.WriteLine($"mid fit: {midBestFit / TESTITER}");
+            Console.WriteLine($"mid iter: {midIter / TESTITER}");
 
-                        algorithmInfo.Time = stopwatch.Elapsed;
-                        algorithmInfo.BestFx = bestChromosome.fitness;
-                        algorithmInfo.Steps = stepGA;
-                        bestChromosome.PrintChromosome();
-
-                        answer = true;
-                        break;
-                    }
-                    else
-                    {
-
-                        population.populationList.Remove(bestChromosome);
-                        if (population.populationList.Count == 0)
-                            break;
-                        bestChromosome = population.BestChromosome();
-                    }
-                }
-                if (!answer)
-                {
-                    bestChromosome = null;
-
-                }
-            }
-
-
-            return Solution.Answer(cost, bestChromosome, problemData, graph);
+            return Solution.Answer(cost, null, problemData, graph);
 
         }
 
