@@ -111,7 +111,6 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             while (iter < TESTITER)
             {
                 Population startPopulation = new Population(PopulationSize, cost);
-                Console.WriteLine($"fit {Fitness.FunctionTrue(cost, problemData, startPopulation.populationList[0])}");
 
                 var population = startPopulation;
 

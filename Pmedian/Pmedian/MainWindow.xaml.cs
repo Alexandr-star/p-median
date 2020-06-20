@@ -565,8 +565,7 @@ namespace Pmedian
 
             // Fix auto-generated labels (maybe there is a better way, but who cares lol)
             graphArea.VertexList.Values.ToList().ForEach(v => v.DetachLabel());
-            graphArea.UpdateAllEdges();
-            graphArea.UpdateVertexStyle();
+
             EnableSelectMode();
             graphArea.RelayoutGraph();
             zoomCtrl.ZoomToFill();

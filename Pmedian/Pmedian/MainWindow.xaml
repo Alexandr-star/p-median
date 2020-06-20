@@ -40,7 +40,7 @@
                 <MenuItem Header="Выход" Click="menuFileExit_Click"/>
             </MenuItem>
             <MenuItem Header="Инструменты">
-                <!--<MenuItem Header="Сгенерировать Граф" Click="menuGenerateGraph_Click"/>-->
+                <MenuItem Header="Сгенерировать Граф" Click="menuGenerateGraph_Click"/>
                 <MenuItem Header="Перерисовать Граф" Click="menuRedrawGraph_Click"/>
                 <Separator/>
                 <MenuItem Header="Настройки ГА" Click="menuSettingGeneticAlgoritm_Click"/>
