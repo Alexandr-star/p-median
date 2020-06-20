@@ -16,7 +16,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 {
     class ClassicGA : AbstractGeneticAlgorithm
     {
-        private int TESTITER = 1000;
+        private int TESTITER = 500;
 
         public AlgorithmInfo algorithmInfo;
         private Stopwatch stopwatch;
