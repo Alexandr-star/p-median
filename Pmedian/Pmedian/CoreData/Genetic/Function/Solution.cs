@@ -92,6 +92,8 @@ namespace Pmedian.CoreData.Genetic.Function
               
         public static bool isAnswerTrue(Chromosome chromosome, Cost cost, ProblemData problemData)
         {
+            if (chromosome.fitness == double.MaxValue)
+                return false;
             double fitness = 0;
             int sumMedian = 0;
             int constant = 1;
@@ -106,7 +108,7 @@ namespace Pmedian.CoreData.Genetic.Function
                     if (cost.costEdgeArray[i][j].EmptyCost)
                         continue;
 
-                    if (X[i][j] > chromosome.chromosomeArray[i])
+                    if (!(X[i][j] <= chromosome.chromosomeArray[i]))
                     {
                         return false;
                     }
@@ -122,21 +124,13 @@ namespace Pmedian.CoreData.Genetic.Function
                         constant++;
                     }
 
-                    fitness += (
-                      
-                        cost.costEdgeArray[i][j].roadKm * problemData.RoadCost +
-                        cost.costVertexArray[i]
-                        ) * X[i][j];
+                    
                 }
 
             }
-            if (sumMedian == problemData.P)
-            {
-            }
-            else
-            {
+            if (sumMedian != problemData.P)
+            {           
                 return false;
-
             }            
 
             return true;

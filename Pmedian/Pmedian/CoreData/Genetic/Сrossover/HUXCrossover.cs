@@ -89,11 +89,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             int[] firstChild = firstParent.chromosomeArray;
             int[] secondChild = secondParent.chromosomeArray;
 
-            firstParent.PrintChromosome();
-            secondParent.PrintChromosome();
-
             
-
             if (probability <= Probability)
             {
                 List<int> res = H(firstParent.chromosomeArray, secondParent.chromosomeArray, sizeChromosome);
@@ -113,8 +109,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
 
             Chromosome child = new Chromosome(firstChild);
             Chromosome c = new Chromosome(secondChild);
-            child.PrintChromosome();
-            c.PrintChromosome();
+ 
             return child;
         }
 

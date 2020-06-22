@@ -117,6 +117,8 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                                 algorithmInfo.BestFx = bestChromosome.fitness;
                                 algorithmInfo.Steps = stepGA;
                                 Console.WriteLine(" ANSVER");
+                                Console.WriteLine($"best {bestChromosome.fitness}");
+
                                 break;
                             }
                         }
@@ -144,7 +146,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                             algorithmInfo.BestFx = bestChromosome.fitness;
                             algorithmInfo.Steps = stepGA;
                             Console.WriteLine(" ANSVER");
-                            bestChromosome.PrintChromosome();
+                            Console.WriteLine($"best {bestChromosome.fitness}");
 
                             answer = true;
                             break;
@@ -168,17 +170,17 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 
                     }
                 }
-               
+                Console.WriteLine($"iter {iter}");
+
                 iter++;
             }
 
            
 
-
             Console.WriteLine($"mid time: {midTime / TESTITER}");
             Console.WriteLine($"mid fit: b/iter {midBestFit / TESTITER}  b/answ {midBestFit / countAnswer}");
             Console.WriteLine($"mid iter: {midIter / TESTITER}");
-            Console.WriteLine($"count answer {2*countAnswer}/{2*TESTITER}");
+            Console.WriteLine($"count answer {10*countAnswer}/{10*TESTITER}");
             return Solution.Answer(cost, null, problemData, graph);
 
         }

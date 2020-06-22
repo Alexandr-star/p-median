@@ -15,7 +15,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 {
     class GenitorGA : AbstractGeneticAlgorithm
     {
-        private int TESTITER = 500;
+        private int TESTITER = 100;
         public AlgorithmInfo algorithmInfo;
 
         private Stopwatch stopwatch;
@@ -129,7 +129,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 MediumFitness = Solution.MediumFitnessPopulation(population);
                 stopwatch = new Stopwatch();
                 stopwatch.Start();
-                while (stepGA <= IterateSize)
+                while (stepGA < IterateSize)
                 {
                     // выбор двух хромосом для скрещивания
                     List<Chromosome> selectedChromosome = RandomSelection.Selection(population.populationList);
@@ -181,6 +181,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                                 algorithmInfo.BestFx = bestChromosome.fitness;
                                 algorithmInfo.Steps = stepGA;
                                 Console.WriteLine(" ANSVER");
+                                Console.WriteLine($"best {bestChromosome.fitness}");
 
 
                                 break;
@@ -212,7 +213,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                             algorithmInfo.BestFx = bestChromosome.fitness;
                             algorithmInfo.Steps = stepGA;
                             Console.WriteLine(" ANSVER");
-                            bestChromosome.PrintChromosome();
+                            Console.WriteLine($"best {bestChromosome.fitness}");
 
                             answer = true;
                             break;
@@ -235,13 +236,14 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                         Console.WriteLine("NOT ANSVER");
 
                     }
-                }   
+                }
+                Console.WriteLine($"iter {iter}");
                 iter++;
             }
             Console.WriteLine($"mid time: {midTime / TESTITER}");
             Console.WriteLine($"mid fit: b/iter {midBestFit / TESTITER}  b/answ {midBestFit / countAnswer}");
             Console.WriteLine($"mid iter: {midIter / TESTITER}");
-            Console.WriteLine($"count answer {2 * countAnswer}/{2 * TESTITER}");
+            Console.WriteLine($"count answer {10 * countAnswer}/{10 * TESTITER}");
 
             return Solution.Answer(cost, null, problemData, graph);
 

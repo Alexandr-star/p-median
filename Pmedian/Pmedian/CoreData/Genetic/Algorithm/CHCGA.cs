@@ -18,7 +18,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 {
     class CHCGA : AbstractGeneticAlgorithm
     {
-        private int TESTITER = 500;
+        private int TESTITER = 100;
         public AlgorithmInfo algorithmInfo;
         private Stopwatch stopwatch;
 
@@ -90,12 +90,8 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             adjacencyList = AdjacencyList.GenerateList(graph);
             cost = Cost.GanerateCostArray(graph, problemData);
             problem = problemData;
-            Chromosome bestChromosome = null;
-            Population startPopulation = new Population(PopulationSize, cost);
-            var population = startPopulation;
-            HUXCrossover crossover = new HUXCrossover(population.SizeChromosome / 4, CrossoverProbability);
+            
             //double MediumFitness = Solution.MediumFitnessPopulation(population);
-            int stepGA = 0;
 
             double midTime = .0;
             double midBestFit = .0;
@@ -104,6 +100,11 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 
             int iter = 0;
             while (iter < TESTITER){
+                Chromosome bestChromosome = null;
+                Population startPopulation = new Population(PopulationSize, cost);
+                var population = startPopulation;
+                HUXCrossover crossover = new HUXCrossover(population.SizeChromosome / 4, CrossoverProbability);
+                int stepGA = 0;
 
                 stopwatch = new Stopwatch();
                 stopwatch.Start();
@@ -157,6 +158,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                             algorithmInfo.Steps = stepGA;
                             Console.WriteLine(" ANSVER");
                             bestChromosome.PrintChromosome();
+                            Console.WriteLine($" {bestChromosome.fitness}") ;
 
                             answer = true;
                             break;
@@ -180,13 +182,14 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 
                     }
                 }
+                Console.WriteLine($"iter {iter}");
 
                 iter++;
             }
             Console.WriteLine($"mid time: {midTime / TESTITER}");
             Console.WriteLine($"mid fit: b/iter {midBestFit / TESTITER}  b/answ {midBestFit / countAnswer}");
             Console.WriteLine($"mid iter: {midIter / TESTITER}");
-            Console.WriteLine($"count answer {2 * countAnswer}/{2 * TESTITER}");
+            Console.WriteLine($"count answer {10 * countAnswer}/{10 * TESTITER}");
             return Solution.Answer(cost, null, problemData, graph);
         }
         /// <summary>
