@@ -449,8 +449,8 @@ namespace Pmedian
                 MessageBox.Show("Что-то пошло не так", "Ошибка");
                 return;
             }
-            var result = MessageBox.Show("This action will remove all vertices and edges from \nthe graph area. " +
-                   "Do you really want to continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var result = MessageBox.Show("Это действие приведет к удалению всего графа. " +
+                    "Вы хотите продолжить?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (result == MessageBoxResult.Yes)
             {
@@ -514,7 +514,7 @@ namespace Pmedian
             }
             catch (Exception)
             {
-                MessageBox.Show("Ошибка загрузки графа.", "Error");
+                MessageBox.Show("Ошибка загрузки графа.", "Ошибка");
             }
         }
 
@@ -534,7 +534,7 @@ namespace Pmedian
             }
             catch (Exception)
             {
-                MessageBox.Show("Ошибка загрузки графа.", "Error");
+                MessageBox.Show("Ошибка загрузки графа.", "Ошибка");
             }
         }
 
@@ -565,8 +565,7 @@ namespace Pmedian
 
             // Fix auto-generated labels (maybe there is a better way, but who cares lol)
             graphArea.VertexList.Values.ToList().ForEach(v => v.DetachLabel());
-            graphArea.UpdateAllEdges();
-            graphArea.UpdateVertexStyle();
+
             EnableSelectMode();
             graphArea.RelayoutGraph();
             zoomCtrl.ZoomToFill();
@@ -608,7 +607,7 @@ namespace Pmedian
         {
             if (graphArea.VertexList.Count < 3)
             {
-                MessageBox.Show("Алгоритм не может быть начат. Граф должен содержать хотябы три вершины", "Error");
+                MessageBox.Show("Алгоритм не может быть начат. Граф должен содержать хотябы три вершины", "Ошибка");
                 return;
             }
 
@@ -626,12 +625,12 @@ namespace Pmedian
             }
             catch (GeneticAlgorithmException ex)
             {
-                MessageBox.Show(ex.Message, "Error");
+                MessageBox.Show(ex.Message, "Ошибка");
                 return;
             }
             catch (Exception)
             {
-                MessageBox.Show("Что-то пошло не так.", "Error");
+                MessageBox.Show("Что-то пошло не так.", "Ошибка");
                 return;
             }
         }
@@ -649,6 +648,32 @@ namespace Pmedian
             }                      
         }
 
+        private void menuMatrixRoad_Click(object sender, RoutedEventArgs e)
+        {
+            try {                
+                if (problemData.RoadCost == 0 || graphArea.VertexList.Count < 3)
+                {
+                    MessageBox.Show("Не может быть начато. Должен содержать хотя бы три вершины.", "Ошибка");
+                    return;
+                }
+                Cost cost = Cost.GanerateCostArray(graphArea.LogicCore.Graph as MainGraph, problemData);
+                var dlg = new MatrixRoadDialog(this, cost, problemData, graphArea.LogicCore.Graph as MainGraph);
+                if (dlg.ShowDialog() != true) return;
+                EnableSelectMode();
+            }
+            catch (GeneticAlgorithmException ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+                return;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Ошибка");
+                return;
+            }
+
+        }
+
         private void menuSettingProblem_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new ProblemSetupDialog(this);
@@ -662,7 +687,7 @@ namespace Pmedian
                 
                 if (dlg.P > countPoint)
                 {
-                    MessageBox.Show("Не может быть начато. Должен содержать хотя бы одну вершину.", "Error");
+                    MessageBox.Show("Не может быть начато. Должен содержать хотя бы одну вершину.", "Ошибка");
                     return;
                 }
             }

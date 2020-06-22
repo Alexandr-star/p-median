@@ -12,7 +12,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
     /// </summary>
     class HUXCrossover : AbstractCrossover
     {
-
+        List<int> res = new List<int>();
         public int Distanse { get;  set; }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             int[] indexes = Utility.ShuffleIndexes(parents.Count);
             for (int p = 0; p < parents.Count; p += 2)
             {
-                
-                
+
+                res = new List<int>();
                 int[] firstChild = parents.ElementAt(indexes[p]).chromosomeArray;
                 int[] secondChild = null;
                 if (parents.Count % 2 == 1 && p == parents.Count - 1)
@@ -49,21 +49,20 @@ namespace Pmedian.CoreData.Genetic.Сrossover
 
                 int hemmingDistance = HemmingDistance(firstChild, secondChild);
 
-                if (hemmingDistance <= Distanse) continue;
+                if (hemmingDistance <= Distanse) continue;                
 
-                List<int> res = H(firstChild, secondChild, firstChild.Length);
-
-                int halfDistance =  hemmingDistance / 2;
-
+                int halfDistance = hemmingDistance / 2;
+                
                 for (int i = 0; i < halfDistance; i++)
                 {
                     int indexBitInList = Utility.Rand.Next(res.Count);
                     int indexBit = res.ElementAt(indexBitInList);
 
-                     Utility.Swap<int>(ref firstChild[indexBit], ref secondChild[indexBit]);
-                     res.RemoveAt(indexBitInList);
+                    Utility.Swap<int>(ref firstChild[indexBit], ref secondChild[indexBit]);
+                    res.RemoveAt(indexBitInList);
                 }
-
+                
+                
                 childrenList.Add(new Chromosome(firstChild));
                 childrenList.Add(new Chromosome(secondChild));
             }           
@@ -84,16 +83,15 @@ namespace Pmedian.CoreData.Genetic.Сrossover
                 throw new NotImplementedException();
 
             double probability = Utility.Rand.NextDouble();
-
             int sizeChromosome = firstParent.SizeChromosome;
             int[] firstChild = firstParent.chromosomeArray;
             int[] secondChild = secondParent.chromosomeArray;
 
+            res = new List<int>();
+
             
             if (probability <= Probability)
-            {
-                List<int> res = H(firstParent.chromosomeArray, secondParent.chromosomeArray, sizeChromosome);
-                
+            {                               
                 int halfDistance = HemmingDistance(firstParent.chromosomeArray, secondParent.chromosomeArray) / 2;
                
 
@@ -115,21 +113,20 @@ namespace Pmedian.CoreData.Genetic.Сrossover
 
         private int HemmingDistance(int[] first, int[] second)
         {
-            int distance = first.Zip(second, (f, s) => new { f, s }).Count(m => m.f != m.s);
+            int distance = 0;
 
+            for (int i = 0; i < first.Length; i++)
+            {
+                if (first[i] != second[i])
+                {
+                    res.Add(i);
+                    distance++;
+                }
+            }
+           
             return distance;
         }
 
-        private List<int> H(int[] first, int[] second, int size)
-        {
-            List<int> res = new List<int>();
-            for (int i = 0; i < size; i++)
-            {
-                if (first[i] != second[i])
-                    res.Add(i);
-            }
-
-            return res;
-        }
+        
     }
 }

@@ -90,7 +90,6 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             adjacencyList = AdjacencyList.GenerateList(graph);
             cost = Cost.GanerateCostArray(graph, problemData);
             problem = problemData;
-            
             //double MediumFitness = Solution.MediumFitnessPopulation(population);
 
             double midTime = .0;
@@ -98,53 +97,65 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             int midIter = 0;
             int countAnswer = 0;
 
+
             int iter = 0;
             while (iter < TESTITER){
-                Chromosome bestChromosome = null;
+
                 Population startPopulation = new Population(PopulationSize, cost);
-                var population = startPopulation;
+                Population population = startPopulation;
                 HUXCrossover crossover = new HUXCrossover(population.SizeChromosome / 4, CrossoverProbability);
+                
+                Chromosome bestChromosome = null;
                 int stepGA = 0;
 
                 stopwatch = new Stopwatch();
                 stopwatch.Start();
+                Stopwatch stopwatchtest = new Stopwatch();
+                stopwatchtest.Start();
                 while (stepGA < IterateSize)
                 {
+                    
                     FitnessCalculation(population.populationList);
+
                     List<Chromosome> childList = crossover.Crossover(population.populationList);
 
 
                     if (crossover.Distanse == 0)
-                    {
+                    {                   
                         CatacliysmicMutation(population);
                         crossover.Distanse = population.SizeChromosome / 4;
                         stepGA++;
-
                         continue;
                     }
                     if (childList.Count == 0)
-                    {
+                    {                    
                         crossover.Distanse--;
                         stepGA++;
-
                         continue;
                     }
+
                     FitnessCalculation(childList);
-                    //TODO изменить элитарный отбор.
+
                     List<Chromosome> newPopulation = EliteReductionForCHC.Reduction(population.populationList, childList, PopulationSize);
+                   
 
                     population.populationList = newPopulation;
-
+                
                     stepGA++;
+                    stopwatchtest.Stop();
                 }
+                Console.WriteLine($"time it {stopwatchtest.Elapsed}");
                 stopwatch.Stop();
                 Console.WriteLine($"answer, step {stepGA}");
+                Console.WriteLine($"pop {population.populationList.Count}");
                 if (stepGA == IterateSize)
                 {
                     bool answer = false;
                     bestChromosome = population.BestChromosome();
                     while (population.populationList.Count != 0)
                     {
+                        if (population.populationList.Count == 0)
+                            break;
 
                         if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                         {
@@ -225,7 +236,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         private void CatacliysmicMutation(Population population)
         {
             Chromosome bestChromosome = population.BestChromosome();
-            int bitsMutation = (int)(population.SizeChromosome / 2);
+            int bitsMutation = (int)(population.SizeChromosome * 0.7);
             AbstractMutation mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, 100, bitsMutation);
             
             foreach (var chromosome in population.populationList)

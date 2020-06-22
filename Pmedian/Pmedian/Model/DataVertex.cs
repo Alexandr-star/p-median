@@ -87,7 +87,7 @@ namespace Pmedian.Model
         /// <summary>
         /// Конструктор без параметров для совместимости с сериализацией.
         /// </summary>
-        public DataVertex() : this(VertexColor.Unmarked, VertexType.GroupeVillage)
+        public DataVertex() : this(VertexColor.GroupeVillage, VertexType.GroupeVillage)
         {
         }
     }

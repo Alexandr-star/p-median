@@ -40,12 +40,13 @@
                 <MenuItem Header="Выход" Click="menuFileExit_Click"/>
             </MenuItem>
             <MenuItem Header="Инструменты">
-                <!--<MenuItem Header="Сгенерировать Граф" Click="menuGenerateGraph_Click"/>-->
+                <MenuItem Header="Сгенерировать Граф" Click="menuGenerateGraph_Click"/>
                 <MenuItem Header="Перерисовать Граф" Click="menuRedrawGraph_Click"/>
                 <Separator/>
                 <MenuItem Header="Настройки ГА" Click="menuSettingGeneticAlgoritm_Click"/>
                 <Separator/>
                 <MenuItem Header="Параметры задачи" Click="menuSettingProblem_Click"/>
+                <MenuItem Header="Матрица путей" Click="menuMatrixRoad_Click"/>
                 <Separator/>
                 <MenuItem Header="Сохранить как PNG" Click="menuSaveAsPng_Click"/>
             </MenuItem>
@@ -62,8 +63,8 @@
         <DockPanel LastChildFill="False" Grid.Column="1" Grid.Row="1" Style="{StaticResource MainWindowDockPanel}">
             <Border Style="{StaticResource MainWindowDockPanelBorder}"/>
             <StackPanel Name="MainSidebar" Style="{StaticResource MainWindowStackPanel}">
-                <ToggleButton Name="buttonCreateMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="ADD" ToolTip="Vertex/Edge Creation Mode"/>
-                <ToggleButton Name="buttonCreateVillageMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Деревня" ToolTip="Создать Вершину/Ребро"/>
+                <ToggleButton Name="buttonCreateMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Пунк постройки" ToolTip="Vertex/Edge Creation Mode"/>
+                <ToggleButton Name="buttonCreateVillageMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Пунк" ToolTip="Создать Вершину/Ребро"/>
                 <!--<ToggleButton Name="buttonCreateClinicMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Скорая" ToolTip="Создать Вершину/Ребро"/>-->
                 <!--<ToggleButton Name="buttonCreateMedicMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Фельшеры" ToolTip="Создать Вершину/Ребро"/>-->
                 <ToggleButton Name="buttonDeleteMode" Style="{StaticResource MainWindowStackPanelToggleButton}" Checked="ToolbarButton_Checked" Unchecked="ToolbarButton_Unchecked" Content="Удалить" ToolTip="Удалить Вершину/Ребро"/>

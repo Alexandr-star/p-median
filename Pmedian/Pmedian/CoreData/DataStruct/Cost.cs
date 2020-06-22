@@ -135,6 +135,8 @@ namespace Pmedian.CoreData.DataStruct
                 int target = vertices.IndexOf(edge.Target);
                
                 CostEdge costEdge = new CostEdge(edge.Weight);
+                costEdge.EmptyCost = false;
+                costEdge.CostRoad = edge.Weight * problemData.RoadCost;
                 tempCost[source][target] = costEdge;
                 tempCost[target][source] = costEdge;
             }

@@ -17,10 +17,10 @@ namespace Pmedian.CoreData.DataStruct
         // время фельдшеров
         public double timeM { get; set; }
 
-        private double _roadKmUtoV;
-        public double RoadUtoV
-        { get { return _roadKmUtoV; }
-          set { _roadKmUtoV = value; } 
+        private double _costRoad;
+        public double CostRoad
+        { get { return _costRoad; }
+          set { _costRoad = value; } 
         }
 
         public bool EmptyCost { get; set; }
@@ -33,7 +33,6 @@ namespace Pmedian.CoreData.DataStruct
         public CostEdge(double weidthRoad)
         {
             this.roadKm = weidthRoad;
-            this._roadKmUtoV = weidthRoad;
             this.EmptyCost = false;
         }
 

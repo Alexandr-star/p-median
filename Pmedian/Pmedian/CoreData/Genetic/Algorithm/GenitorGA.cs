@@ -99,7 +99,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             // Инициализация основных структур.
             adjacencyList = AdjacencyList.GenerateList(graph);
             cost = Cost.GanerateCostArray(graph, problemData); ProblemData problem = problemData;
-            
+
             var crossover = GeneticMethod.ChosenCrossoverMethod(crossoverMethod, 100, dotCrossover, minHemmingDistance);
             var mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, MutationProbability, dotMutation);
             Chromosome bestChromosome = null;
@@ -110,8 +110,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             int iter = 0;
             int countAnswer = 0;
 
-            while (iter < TESTITER)
-            {
+            while (iter < TESTITER) {
                 Population startPopulation = new Population(PopulationSize, cost);
 
                 var population = startPopulation;
@@ -238,14 +237,16 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     }
                 }
                 Console.WriteLine($"iter {iter}");
+
                 iter++;
             }
+        
             Console.WriteLine($"mid time: {midTime / TESTITER}");
             Console.WriteLine($"mid fit: b/iter {midBestFit / TESTITER}  b/answ {midBestFit / countAnswer}");
             Console.WriteLine($"mid iter: {midIter / TESTITER}");
             Console.WriteLine($"count answer {10 * countAnswer}/{10 * TESTITER}");
 
-            return Solution.Answer(cost, null, problemData, graph);
+            return Solution.Answer(cost, bestChromosome, problemData, graph);
 
         }
 
@@ -254,15 +255,15 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// </summary>
         /// <param name="population">Популяция.</param>
         private void Ranking(Population population)
-        {           
+        {
             for (int i = 0; i < PopulationSize; i++)
             {
-                population.populationList[i].rank = i + 1;                
+                population.populationList[i].rank = i + 1;
             }
-            
+
             int count = 0;
             double sumRank = 0;
-            bool isDuplo = false;            
+            bool isDuplo = false;
             for (int i = 0; i < PopulationSize; i++)
             {
                 if (i == PopulationSize - 1)
@@ -296,31 +297,15 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     sumRank = 0;
                     count = 0;
                     isDuplo = false;
-                }               
-            }                                  
-        }
-
-        /// <summary>
-        /// Проверка ранга.
-        /// </summary>
-        /// <param name="population">Популяция.</param>
-        /// <returns></returns>
-        private bool checkRank(Population population)
-        {
-            
-            double n = PopulationSize * (PopulationSize + 1) / 2;
-            double N = 0;
-            foreach (var ch in population.populationList)
-                N += ch.rank;
-            if (n == N)
-                return true;
-            else
-                return false;      
+                }
+            }
         }
 
         public override AlgorithmInfo GetAlgorithmInfo()
         {
             return algorithmInfo;
         }
-    }
+    } 
+      
 }
+
