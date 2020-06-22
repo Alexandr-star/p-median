@@ -110,8 +110,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             int iter = 0;
             int countAnswer = 0;
 
-            while (iter < TESTITER)
-            {
+           
                 Population startPopulation = new Population(PopulationSize, cost);
 
                 var population = startPopulation;
@@ -129,7 +128,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                 MediumFitness = Solution.MediumFitnessPopulation(population);
                 stopwatch = new Stopwatch();
                 stopwatch.Start();
-                while (stepGA <= IterateSize)
+                while (stepGA < IterateSize)
                 {
                     // выбор двух хромосом для скрещивания
                     List<Chromosome> selectedChromosome = RandomSelection.Selection(population.populationList);
@@ -235,15 +234,12 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                         Console.WriteLine("NOT ANSVER");
 
                     }
-                }   
-                iter++;
-            }
-            Console.WriteLine($"mid time: {midTime / TESTITER}");
-            Console.WriteLine($"mid fit: b/iter {midBestFit / TESTITER}  b/answ {midBestFit / countAnswer}");
-            Console.WriteLine($"mid iter: {midIter / TESTITER}");
-            Console.WriteLine($"count answer {2 * countAnswer}/{2 * TESTITER}");
+                }
+                Console.WriteLine($"iter {iter}");
 
-            return Solution.Answer(cost, null, problemData, graph);
+            
+
+            return Solution.Answer(cost, bestChromosome, problemData, graph);
 
         }
 

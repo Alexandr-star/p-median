@@ -242,9 +242,9 @@ namespace Pmedian.CoreData.DataStruct
             AdjacencyList.PrintGraph(list);
             MainGraph graph = new MainGraph();
 
-            for (int i = 0; i < 110; i++)
+            for (int i = 0; i < 60; i++)
                 graph.AddVertex(new DataVertex());
-            for (int i = 110; i < 200; i++)
+            for (int i = 60; i < 100; i++)
             {
                 graph.AddVertex(new DataVertex(VertexColor.Unmarked, VertexType.Unmarket, Utility.Rand.Next(999) + 1));
             }

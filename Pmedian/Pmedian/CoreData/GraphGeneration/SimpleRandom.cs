@@ -28,7 +28,7 @@ namespace Pmedian.CoreData.GraphGeneration
             if (vertexCount < 1)
                 throw new ArgumentOutOfRangeException(null, "Graph should contain at least one vertex.");
 
-            this.vertexCount = 200;
+            this.vertexCount = 100;
         }
 
         /// <summary>

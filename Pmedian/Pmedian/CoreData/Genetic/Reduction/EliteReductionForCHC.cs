@@ -52,7 +52,8 @@ namespace Pmedian.CoreData.Genetic.Reduction
                 list.RemoveAt(minId + 1);
 
             }
-            
+            if (list.Count == PopulationSize)
+                return list;
             list.RemoveRange(PopulationSize, list.Count - PopulationSize);
             
             return list;

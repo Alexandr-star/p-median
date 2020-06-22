@@ -151,6 +151,7 @@
     <Compile Include="Exceptions\GeneticAlgorithmException.cs" />
     <Compile Include="FileSeralization\FileServiceProviderWPF.cs" />
     <Compile Include="Model\DataEdge.cs" />
+    <Compile Include="Model\DataTable.cs" />
     <Compile Include="Model\DataVertex.cs" />
     <Compile Include="Model\Enums\AlgorithmExecutionMode.cs" />
     <Compile Include="Model\Enums\CrossoverMethod.cs" />
@@ -178,11 +179,15 @@
     <Compile Include="Windows\AlgorithmDataWork.xaml.cs">
       <DependentUpon>AlgorithmDataWork.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Content.cs" />
     <Compile Include="Windows\GeneticAlgorithmSetupDialog.xaml.cs">
       <DependentUpon>GeneticAlgorithmSetupDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\GraphGeneratorDialog.xaml.cs">
       <DependentUpon>GraphGeneratorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MatrixRoadDialog.xaml.cs">
+      <DependentUpon>MatrixRoadDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ProblemSetupDialog.xaml.cs">
       <DependentUpon>ProblemSetupDialog.xaml</DependentUpon>
@@ -220,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\GraphGeneratorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MatrixRoadDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
