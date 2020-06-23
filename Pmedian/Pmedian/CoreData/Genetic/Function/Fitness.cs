@@ -11,12 +11,7 @@ namespace Pmedian.CoreData.Genetic.Function
         public static double FunctionTrue(Cost cost, ProblemData problemData, Chromosome chromosome)
         {                                   
             double fitness = 0;
-            int sumMedian = 0;
-            int constant = 1;
-            int xcrit = 0;
-            int t1crit = 0;
-            int t2crit = 0;
-            int pcrit = 0;
+            int sumMedian = 0;           
             int[][] X = XMultiplicationChromosome(cost.arrayX, chromosome.chromosomeArray);
 
             for (int i = 0 ; i < chromosome.SizeChromosome; i++)
@@ -31,8 +26,7 @@ namespace Pmedian.CoreData.Genetic.Function
                     if (!(X[i][j] <= chromosome.chromosomeArray[i]))
                     {
                         return 1.0 / cost.SumAll;
-                    }                    
-                        
+                    }                                            
                     
                     if (cost.costEdgeArray[i][j].timeM > problemData.MedicTime)
                     {
@@ -41,9 +35,7 @@ namespace Pmedian.CoreData.Genetic.Function
                     }
                     if (cost.costEdgeArray[i][j].timeС > problemData.AmbulanceTime)
                     {
-
                         return 1.0 / cost.SumAll;
-
                     }
 
                     fitness += (
@@ -56,7 +48,6 @@ namespace Pmedian.CoreData.Genetic.Function
             if (sumMedian != problemData.P)
             {
                 return 1.0 / cost.SumAll;
-
             }
 
             return 1.0 / fitness;

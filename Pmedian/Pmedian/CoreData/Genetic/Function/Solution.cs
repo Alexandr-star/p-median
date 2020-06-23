@@ -15,15 +15,10 @@ namespace Pmedian.CoreData.Genetic.Function
     /// </summary>
     public static class Solution
     {    
-
-
         public static int Answer(Cost cost, Chromosome chromosome, ProblemData problemData, MainGraph graph)
         {
             if (chromosome == null || chromosome.fitness == double.MaxValue)
                 return 0;
-            List<List<int>> answerList = new List<List<int>>();
-            List<int> clinicList = new List<int>();
-            List<int> medicList = new List<int>();
             List<int> array = new List<int>();
             
             for (int i = 0; i < chromosome.SizeChromosome; i++)
@@ -33,7 +28,6 @@ namespace Pmedian.CoreData.Genetic.Function
                     array.Add(cost.unmarketVertex[i]);                    
                 }
             }
-
 
             if (array.Count == 1)
                 graph.Vertices.ElementAt(array.First()).Color = VertexColor.GroupeClinic;
@@ -50,9 +44,7 @@ namespace Pmedian.CoreData.Genetic.Function
                     graph.Vertices.ElementAt(array[i]).Color = VertexColor.GroupeMedic;
             }
             for (int i = 0, j = array.Count - 1; i < array.Count / 2; i++, j--)
-            {
-                
-
+            {                
                 if (graph.Vertices.ElementAt(array[i]).vertexCost < graph.Vertices.ElementAt(array[j]).vertexCost)
                 {
                     graph.Vertices.ElementAt(array[i]).Color = VertexColor.GroupeMedic;
@@ -62,7 +54,6 @@ namespace Pmedian.CoreData.Genetic.Function
                     graph.Vertices.ElementAt(array[i]).Color = VertexColor.GroupeClinic;
                     graph.Vertices.ElementAt(array[j]).Color = VertexColor.GroupeMedic;
                 }
-
             }
             return 1;       
         }
@@ -107,8 +98,6 @@ namespace Pmedian.CoreData.Genetic.Function
                     if (cost.costEdgeArray[i][j].EmptyCost)
                         continue;
 
-
-
                     fitness += (
                         (cost.costEdgeArray[i][j].roadKm * problemData.RoadCost) * X[i][j]);
                 }
@@ -124,7 +113,6 @@ namespace Pmedian.CoreData.Genetic.Function
         {
             if (chromosome.fitness == double.MaxValue)
                 return false;
-            double fitness = 0;
             int sumMedian = 0;
             int[][] X = XMultiplicationChromosome(cost.arrayX, chromosome.chromosomeArray);
 
@@ -149,9 +137,7 @@ namespace Pmedian.CoreData.Genetic.Function
                     if (cost.costEdgeArray[i][j].timeС > problemData.AmbulanceTime)
                     {
                         return false;
-                    }
-
-                    
+                    }                    
                 }
 
             }
