@@ -46,14 +46,7 @@ namespace Pmedian.CoreData.Genetic
             this.SizePopulation = sizePopulation;
             initializePopulation(costArray);
         }
-
-        public Population(List<Chromosome> pop)
-        {
-            this.SizePopulation = pop.Count;
-            this.populationList = pop;
-            this.SizeChromosome = populationList[0].SizeChromosome;
-        }
-
+        
         private void initializePopulation(Cost cost)
         {
             this.populationList = new List<Chromosome>();
@@ -64,30 +57,14 @@ namespace Pmedian.CoreData.Genetic
                 populationList.Add(chromosome);
             }
         }
-
-        public void PrintPopulation()
-        {
-            Console.WriteLine($"Population - {SizePopulation}");
-            for (int i = 0; i < populationList.Count; i++)
-            {
-                for (int j = 0; j < populationList[i].chromosomeArray.Length; j++)
-                {
-                    Console.Write($"{populationList[i].chromosomeArray[j]}");
-                }
-                
-                Console.WriteLine();
-                Console.WriteLine($"fit {populationList[i].fitness}");
-                Console.WriteLine($"rank {populationList[i].rank}");
-            }
-        }
-
+      
         public Chromosome BestChromosome()
         {
             var bestChromosome = populationList[0];
 
             foreach( var chromosome in populationList)
             {
-                if (chromosome.fitness < bestChromosome.fitness)
+                if (chromosome.fitness > bestChromosome.fitness)
                     bestChromosome = chromosome;
             }
 
@@ -100,7 +77,7 @@ namespace Pmedian.CoreData.Genetic
 
             foreach (var chromosome in populationList)
             {
-                if (chromosome.fitness > worstChromosome.fitness)
+                if (chromosome.fitness < worstChromosome.fitness)
                     worstChromosome = chromosome;
             }
 
@@ -160,28 +137,7 @@ namespace Pmedian.CoreData.Genetic
 
         public void Sort()
         {           
-            populationList.Sort((first, second) => first.fitness.CompareTo(second.fitness));
-            /*for (int i = 0; i < SizePopulation - 1; i++)
-            {
-                double min = populationList[i].fitness;
-                int minId = i;
-                for (int j = i + 1; j < SizePopulation; j++)
-                {
-                    double temp = populationList[j].fitness;
-                    if (temp > min)
-                    {
-                        min = temp;
-                        minId = j;
-                    }
-                }
-
-                Chromosome tempChromosome = populationList[i];
-                populationList.Insert(i, populationList[minId]);
-                populationList.RemoveAt(i + 1);
-                populationList.Insert(minId, tempChromosome);
-                populationList.RemoveAt(minId + 1);
-
-            }*/
+            populationList.Sort((first, second) => first.fitness.CompareTo(second.fitness));           
         }
     }
 }

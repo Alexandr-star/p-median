@@ -101,7 +101,6 @@
     </ApplicationDefinition>
     <Compile Include="CoreData\DataStruct\AdjacencyList.cs" />
     <Compile Include="CoreData\DataStruct\CostEdge.cs" />
-    <Compile Include="CoreData\DataStruct\CostVertex.cs" />
     <Compile Include="CoreData\Genetic\Algorithm\AbstractGeneticAlgorithm.cs" />
     <Compile Include="CoreData\Genetic\Algorithm\AlgorithmInfo.cs" />
     <Compile Include="CoreData\Genetic\Algorithm\CHCGA.cs" />
@@ -121,9 +120,6 @@
     <Compile Include="CoreData\Genetic\Mutation\SwapMutation.cs" />
     <Compile Include="CoreData\Genetic\Mutation\TranslocationMutation.cs" />
     <Compile Include="CoreData\Genetic\Population.cs" />
-    <Compile Include="CoreData\Genetic\Reduction\AbstaractReduction.cs" />
-    <Compile Include="CoreData\Genetic\Reduction\BolzmanReduction.cs" />
-    <Compile Include="CoreData\Genetic\Reduction\EliteReduction.cs" />
     <Compile Include="CoreData\Genetic\Reduction\EliteReductionForCHC.cs" />
     <Compile Include="CoreData\Genetic\Reduction\IReduction.cs" />
     <Compile Include="CoreData\Genetic\Reduction\ReductionForClassicGA.cs" />
