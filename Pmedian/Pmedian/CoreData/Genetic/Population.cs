@@ -159,8 +159,9 @@ namespace Pmedian.CoreData.Genetic
         }
 
         public void Sort()
-        {
-            for (int i = 0; i < SizePopulation - 1; i++)
+        {           
+            populationList.Sort((first, second) => first.fitness.CompareTo(second.fitness));
+            /*for (int i = 0; i < SizePopulation - 1; i++)
             {
                 double min = populationList[i].fitness;
                 int minId = i;
@@ -180,7 +181,7 @@ namespace Pmedian.CoreData.Genetic
                 populationList.Insert(minId, tempChromosome);
                 populationList.RemoveAt(minId + 1);
 
-            }
+            }*/
         }
     }
 }

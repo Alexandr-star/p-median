@@ -59,6 +59,11 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         /// </summary>
         private int dotMutation;
 
+        private SelectionMethod selectionMethod;
+        private int CountSelected;
+
+        private int CountTour;
+
         /// <summary>
         /// Минимальное хеминговое расстояние.
         /// </summary>
@@ -76,7 +81,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         public GenitorGA(int IterationSize, int PopulationSize,
             CrossoverMethod crossoverMethod, double CrossoverProbability, int dotCrossover,
             MutationMethod mutationMethod, double MutationProbability, int dotMutation,
-            int minHemmingDistance)
+            SelectionMethod selectionMethod, int CountSelected, int CountTour)
             : base(IterationSize, PopulationSize)
         {
             this.crossoverMethod = crossoverMethod;
@@ -85,7 +90,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             this.MutationProbability = MutationProbability;
             this.dotCrossover = dotCrossover;
             this.dotMutation = dotMutation;
-            this.minHemmingDistance = minHemmingDistance;
+            this.selectionMethod = SelectionMethod.Proportion;
+            this.CountSelected = CountSelected;
+            this.CountTour = CountTour;
         }
 
         /// <summary>
@@ -100,8 +107,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             adjacencyList = AdjacencyList.GenerateList(graph);
             cost = Cost.GanerateCostArray(graph, problemData); ProblemData problem = problemData;
 
-            var crossover = GeneticMethod.ChosenCrossoverMethod(crossoverMethod, 100, dotCrossover, minHemmingDistance);
+            var crossover = GeneticMethod.ChosenCrossoverMethod(crossoverMethod, 100, dotCrossover);
             var mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, MutationProbability, dotMutation);
+            var selection = GeneticMethod.ChosenSelectionMethod(selectionMethod, CountTour, CountSelected);
             Chromosome bestChromosome = null;
             double MediumFitness = 0;
             double midTime = .0;
@@ -125,16 +133,16 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     population.populationList[i].fitness = Fitness.FunctionTrue(cost, problemData, population.populationList[i]);
                     //Console.WriteLine(population.populationList[i].fitness);
                 }
+                RandomSelection randomSelection = new RandomSelection();
                 MediumFitness = Solution.MediumFitnessPopulation(population);
                 stopwatch = new Stopwatch();
                 stopwatch.Start();
                 while (stepGA < IterateSize)
                 {
-                    // выбор двух хромосом для скрещивания
-                    List<Chromosome> selectedChromosome = RandomSelection.Selection(population.populationList);
-                    // полученный потомок после скрещивания
-                    Chromosome child = crossover.Crossover(selectedChromosome[0], selectedChromosome[1]);
-
+                    List<Chromosome> midPopulation = selection.Selection(population);
+                    List<Chromosome> parentPopulation = randomSelection.Selection(midPopulation);                   
+                    Chromosome child = crossover.Crossover(parentPopulation[0], parentPopulation[1]);
+                    
                     if (mutation != null)
                     {
                         mutation.Mutation(child);
@@ -151,15 +159,13 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                         bedChrom = population.ChromosomeWithMinRank();
                     else
                         bedChrom = population.OneOfChromosomesWithMinRank();
+                    
                     // замена худшей хромосомы на потомка
                     int index = population.populationList.IndexOf(bedChrom);
-
                     population.populationList.Insert(index, child);
-
                     population.populationList.RemoveAt(index + 1);
 
                     double tempMediumFitness = Solution.MediumFitnessPopulation(population);
-
                     double absFitness = Math.Abs(tempMediumFitness - MediumFitness);
                     MediumFitness = tempMediumFitness;
                     if (absFitness >= 0 && absFitness <= 1)
@@ -171,8 +177,10 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                             if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                             {
                                 stopwatch.Stop();
+                                double sol = Solution.isAnswer(bestChromosome, cost, problemData);
+
                                 midTime += stopwatch.Elapsed.TotalSeconds;
-                                midBestFit += bestChromosome.fitness;
+                                midBestFit += sol;
                                 midIter += stepGA;
                                 countAnswer++;
 
@@ -180,8 +188,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                                 algorithmInfo.BestFx = bestChromosome.fitness;
                                 algorithmInfo.Steps = stepGA;
                                 Console.WriteLine(" ANSVER");
+                                bestChromosome.PrintChromosome();
+                                Console.WriteLine($"F = {sol}");
                                 Console.WriteLine($"best {bestChromosome.fitness}");
-
 
                                 break;
                             }
@@ -203,8 +212,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 
                         if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                         {
+                            double sol = Solution.isAnswer(bestChromosome, cost, problemData);
                             midTime += stopwatch.Elapsed.TotalSeconds;
-                            midBestFit += bestChromosome.fitness;
+                            midBestFit += sol;
                             midIter += stepGA;
                             countAnswer++;
 
@@ -212,6 +222,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                             algorithmInfo.BestFx = bestChromosome.fitness;
                             algorithmInfo.Steps = stepGA;
                             Console.WriteLine(" ANSVER");
+                            bestChromosome.PrintChromosome();
+
+                            Console.WriteLine($"F = {sol}");
                             Console.WriteLine($"best {bestChromosome.fitness}");
 
                             answer = true;
@@ -236,6 +249,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 
                     }
                 }
+                
                 Console.WriteLine($"iter {iter}");
 
                 iter++;
@@ -244,9 +258,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             Console.WriteLine($"mid time: {midTime / TESTITER}");
             Console.WriteLine($"mid fit: b/iter {midBestFit / TESTITER}  b/answ {midBestFit / countAnswer}");
             Console.WriteLine($"mid iter: {midIter / TESTITER}");
-            Console.WriteLine($"count answer {10 * countAnswer}/{10 * TESTITER}");
+            Console.WriteLine($"count answer {countAnswer}/{TESTITER}");
 
-            return Solution.Answer(cost, bestChromosome, problemData, graph);
+            return Solution.Answer(cost, null, problemData, graph);
 
         }
 

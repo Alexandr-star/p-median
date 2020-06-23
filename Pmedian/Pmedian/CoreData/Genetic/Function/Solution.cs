@@ -89,14 +89,43 @@ namespace Pmedian.CoreData.Genetic.Function
 
             return MFP;
         }
-              
+
+
+        public static double isAnswer(Chromosome chromosome, Cost cost, ProblemData problemData)
+        {
+            
+            double fitness = 0;
+            int sumMedian = 0;
+            int[][] X = XMultiplicationChromosome(cost.arrayX, chromosome.chromosomeArray);
+
+            for (int i = 0; i < chromosome.SizeChromosome; i++)
+            {
+                sumMedian += chromosome.chromosomeArray[i];
+
+                for (int j = 0; j < cost.vertexCount; j++)
+                {
+                    if (cost.costEdgeArray[i][j].EmptyCost)
+                        continue;
+
+
+
+                    fitness += (
+                        (cost.costEdgeArray[i][j].roadKm * problemData.RoadCost) * X[i][j]);
+                }
+                fitness += cost.costVertexArray[i] * chromosome.chromosomeArray[i];
+
+            }
+            
+
+            return fitness;
+        }
+
         public static bool isAnswerTrue(Chromosome chromosome, Cost cost, ProblemData problemData)
         {
             if (chromosome.fitness == double.MaxValue)
                 return false;
             double fitness = 0;
             int sumMedian = 0;
-            int constant = 1;
             int[][] X = XMultiplicationChromosome(cost.arrayX, chromosome.chromosomeArray);
 
             for (int i = 0; i < chromosome.SizeChromosome; i++)
@@ -116,12 +145,10 @@ namespace Pmedian.CoreData.Genetic.Function
                     if (cost.costEdgeArray[i][j].timeM > problemData.MedicTime)
                     {
                         return false;
-                        constant++;
                     }
                     if (cost.costEdgeArray[i][j].timeС > problemData.AmbulanceTime)
                     {
                         return false;
-                        constant++;
                     }
 
                     

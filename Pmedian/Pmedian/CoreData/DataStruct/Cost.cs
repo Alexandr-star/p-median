@@ -19,6 +19,7 @@ namespace Pmedian.CoreData.DataStruct
         /// </summary>
         public CostEdge[][] costEdgeArray { get; private set; }
 
+        public double SumAll { get; set; }
         public MainGraph mainGraph { get; set; }
 
         private List<int> villageArray = new List<int>();
@@ -110,7 +111,8 @@ namespace Pmedian.CoreData.DataStruct
                 if (vertex.Type == VertexType.Unmarket)
                 {
                     cost.unmarketVertex.Add(target);
-                    cost.costVertexArray.Add(vertex.vertexCost);                    
+                    cost.costVertexArray.Add(vertex.vertexCost);
+                    cost.SumAll += vertex.vertexCost;
                 } 
                 else
                 {
@@ -136,7 +138,7 @@ namespace Pmedian.CoreData.DataStruct
                
                 CostEdge costEdge = new CostEdge(edge.Weight);
                 costEdge.EmptyCost = false;
-                costEdge.CostRoad = edge.Weight * problemData.RoadCost;
+                costEdge.CostRoad = edge.Weight * problemData.RoadCost;               
                 tempCost[source][target] = costEdge;
                 tempCost[target][source] = costEdge;
             }
@@ -185,6 +187,7 @@ namespace Pmedian.CoreData.DataStruct
 
                 costEdgeArray[index][i].EmptyCost = false;
                 costEdgeArray[index][i].roadKm = vs[i];
+                SumAll += vs[i];
                 costEdgeArray[index][i].timeС = Math.Round(vs[i] / midSpeedClinic, ROUND);
                 costEdgeArray[index][i].timeM = Math.Round(vs[i] / midSpeedMedic, ROUND);
                 arrayX[index][i] = 1;

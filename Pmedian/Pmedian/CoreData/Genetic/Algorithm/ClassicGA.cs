@@ -26,9 +26,35 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         private Cost cost;
         private ProblemData problem;
 
+        /// <summary>
+        /// Вариант кроссовера. 
+        /// </summary>
+        private CrossoverMethod crossoverMethod;
+
+        /// <summary>
+        /// Вероятность кроссовера.
+        /// </summary>
         private double CrossoverProbability;
 
+        /// <summary>
+        /// Точек в кроссовере.
+        /// </summary>
+        private int dotCrossover;
+
+        /// <summary>
+        /// Вариант мутации.
+        /// </summary>
+        private MutationMethod mutationMethod;
+
+        /// <summary>
+        /// Вероятность мутации.
+        /// </summary>
         private double MutationProbability;
+
+        /// <summary>
+        /// Точек в мутации.
+        /// </summary>
+        private int dotMutation;
 
         private SelectionMethod selectionMethod;
 
@@ -37,14 +63,17 @@ namespace Pmedian.CoreData.Genetic.Algorithm
         private int CountTour;
 
         public ClassicGA(int IterationSize, int PopulationSize,
-            double CrossoverProbability,
-            double MutationProbability,
-            SelectionMethod selectionMethod,
+            CrossoverMethod crossoverMethod, double CrossoverProbability, int dotCrossover,
+            MutationMethod mutationMethod, double MutationProbability, int dotMutation, SelectionMethod selectionMethod,
             int CountSelected, int CountTour) 
             : base (IterationSize, PopulationSize) 
         {
+            this.crossoverMethod = crossoverMethod;
             this.CrossoverProbability = CrossoverProbability;
+            this.mutationMethod = mutationMethod;
             this.MutationProbability = MutationProbability;
+            this.dotCrossover = dotCrossover;
+            this.dotMutation = dotMutation;
             this.selectionMethod = selectionMethod;
             this.CountSelected = CountSelected;
             this.CountTour = CountTour;
@@ -59,8 +88,8 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             Console.WriteLine(problem.P);
             Console.WriteLine(problem.RoadCost);
 
-            OneDotCrossover crossover = new OneDotCrossover(CrossoverProbability);
-            ReplaceMutaion mutaion = new ReplaceMutaion(MutationProbability, 1);
+            var crossover = GeneticMethod.ChosenCrossoverMethod(crossoverMethod, CrossoverProbability, dotCrossover);
+            var mutation = GeneticMethod.ChosenMutationMethod(mutationMethod, MutationProbability, dotMutation);
             var selection = GeneticMethod.ChosenSelectionMethod(selectionMethod, CountTour, CountSelected);
             ReductionForClassicGA reduction = new ReductionForClassicGA();
             
@@ -73,28 +102,28 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             while (iter < TESTITER)
             {
                 Chromosome bestChromosome = null;
-
-
                 Population startPopulation = new Population(PopulationSize, cost);
-
                 var population = startPopulation;
                 int stepGA = 0;
 
                 double MediumFitness = Solution.MediumFitnessPopulation(population);
-
+                RandomSelection randomSelection = new RandomSelection();
                 FitnessCalculation(population.populationList);
                 stopwatch = new Stopwatch();
                 stopwatch.Start();
                 while (stepGA < IterateSize)
                 {
                     List<Chromosome> midPopulation = selection.Selection(population);
-                    List<Chromosome> parentPopulation = RandomSelection.Selection(midPopulation);
+                    List<Chromosome> parentPopulation = randomSelection.Selection(midPopulation, selection.indexSelectChrom);
                     List<Chromosome> childList = crossover.Crossover(parentPopulation);
                     if (childList.Count == 0)
                         continue;
-                    mutaion.Mutation(childList);
+                    mutation.Mutation(childList);
                     FitnessCalculation(childList);
-                    reduction.Reduction(childList, parentPopulation, population.populationList);
+                    
+
+                    reduction.Reduction(childList, randomSelection.indexTwoParant, population.populationList);
+
                     double tempMediumFitness = Solution.MediumFitnessPopulation(population);
                     double absFitness = Math.Abs(tempMediumFitness - MediumFitness);
                     MediumFitness = tempMediumFitness;
@@ -102,31 +131,35 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     {
                         bestChromosome = population.BestChromosome();
                         var worstChromosome = population.WorstChromosome();
-                        if (bestChromosome.fitness - worstChromosome.fitness <= 1 && bestChromosome.fitness - worstChromosome.fitness >= 0)
-                        {
+                        //if (bestChromosome.fitness - worstChromosome.fitness <= 1 && bestChromosome.fitness - worstChromosome.fitness >= 0)
+                        //{
                             if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                             {
                                 stopwatch.Stop();
+                                double sol = Solution.isAnswer(bestChromosome, cost, problemData);
 
                                 midTime += stopwatch.Elapsed.TotalSeconds;
-                                midBestFit += bestChromosome.fitness;
+                                midBestFit += sol;
                                 midIter += stepGA;
                                 countAnswer++;
 
                                 algorithmInfo.Time = stopwatch.Elapsed;
                                 algorithmInfo.BestFx = bestChromosome.fitness;
                                 algorithmInfo.Steps = stepGA;
+
                                 Console.WriteLine(" ANSVER");
+                                Console.WriteLine($"F = {sol}");
+                                bestChromosome.PrintChromosome();
+
                                 Console.WriteLine($"best {bestChromosome.fitness}");
 
                                 break;
                             }
-                        }
+                        //}
                     }
                     stepGA++;
                 }
                 stopwatch.Stop();
-
                 Console.WriteLine($"answer, step {stepGA}");
                 if (stepGA == IterateSize)
                 {
@@ -137,8 +170,10 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                         
                         if (Solution.isAnswerTrue(bestChromosome, cost, problemData))
                         {
+                            double sol = Solution.isAnswer(bestChromosome, cost, problemData);
+
                             midTime += stopwatch.Elapsed.TotalSeconds;
-                            midBestFit += bestChromosome.fitness;
+                            midBestFit += sol;
                             midIter += stepGA;
                             countAnswer++;
 
@@ -146,6 +181,9 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                             algorithmInfo.BestFx = bestChromosome.fitness;
                             algorithmInfo.Steps = stepGA;
                             Console.WriteLine(" ANSVER");
+                            Console.WriteLine($"F = {sol}");
+                            bestChromosome.PrintChromosome();
+
                             Console.WriteLine($"best {bestChromosome.fitness}");
 
                             answer = true;
@@ -180,7 +218,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             Console.WriteLine($"mid time: {midTime / TESTITER}");
             Console.WriteLine($"mid fit: b/iter {midBestFit / TESTITER}  b/answ {midBestFit / countAnswer}");
             Console.WriteLine($"mid iter: {midIter / TESTITER}");
-            Console.WriteLine($"count answer {10*countAnswer}/{10*TESTITER}");
+            Console.WriteLine($"count answer {countAnswer}/{TESTITER}");
             return Solution.Answer(cost, null, problemData, graph);
 
         }

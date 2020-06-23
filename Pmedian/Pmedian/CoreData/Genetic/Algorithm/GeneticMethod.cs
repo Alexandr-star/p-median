@@ -12,17 +12,14 @@ namespace Pmedian.CoreData.Genetic.Algorithm
 {
     public static class GeneticMethod
     {
-        public static AbstractCrossover ChosenCrossoverMethod(CrossoverMethod crossoverMethod, double CrossoverProbability, int dots, int hemmingDistance)
+        public static AbstractCrossover ChosenCrossoverMethod(CrossoverMethod crossoverMethod, double CrossoverProbability, int dots)
         {
             AbstractCrossover crossover = null;
             switch (crossoverMethod)
             {
                 case CrossoverMethod.OneDot:
                     crossover = new OneDotCrossover(CrossoverProbability);
-                    break;
-                case CrossoverMethod.HUX:
-                    crossover = new HUXCrossover(hemmingDistance, CrossoverProbability);
-                    break;
+                    break;                
                 case CrossoverMethod.NDot:
                     crossover = new NDotCrossover(dots, CrossoverProbability);
                     break;
@@ -62,7 +59,7 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             switch (selectionMethod)
             {
                 case SelectionMethod.Tournament:
-                    selection = new TournamentSelection(countTour, countSelect);
+                    selection = new TournamentSelection(countSelect, countTour);
                     break;
                 case SelectionMethod.Proportion:
                     selection = new ProportionSelection(countSelect);

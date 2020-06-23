@@ -94,10 +94,10 @@ namespace Pmedian.Windows
             Owner = owner;
             InitializeComponent();
 
-            AlgorithmBox.SelectionChanged += AlgorithmBox_SelectionChanged;
-            AlgorithmBox_SelectionChanged(this, null);
-            CrossoverBox.SelectionChanged += CrossoverBox_SelectionChanged;
-            CrossoverBox_SelectionChanged(this, null);
+            //AlgorithmBox.SelectionChanged += AlgorithmBox_SelectionChanged;
+            //AlgorithmBox_SelectionChanged(this, null);
+            //CrossoverBox.SelectionChanged += CrossoverBox_SelectionChanged;
+            //CrossoverBox_SelectionChanged(this, null);
         }
 
 
@@ -119,9 +119,9 @@ namespace Pmedian.Windows
                         ErrorMessageZeroIterationSize();
                         GA = new ClassicGA(
                             IterationSize, PopulationSize,
-                            CrossoverProbability, MutationProbability,
-                            SMethod,
-                            CountSelected, CountTour) ;
+                            CMethod, CrossoverProbability, DotCrossover,
+                            MMethod, MutationProbability, DotMutation,
+                            SMethod, CountSelected, CountTour);
                         break;
                     case GeneticAlgotithmMethod.GenitorGA:
                         ErrorMessageZeroIterationSize();
@@ -129,7 +129,7 @@ namespace Pmedian.Windows
                             IterationSize, PopulationSize,
                             CMethod, CrossoverProbability, DotCrossover,
                             MMethod, MutationProbability, DotMutation,
-                            MinHemmingDistance);
+                            SMethod, CountSelected, CountTour);
                         break;
                     case GeneticAlgotithmMethod.CHCGA:
                         ErrorMessageZeroIterationSize();

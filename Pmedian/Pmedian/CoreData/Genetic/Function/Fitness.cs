@@ -30,38 +30,36 @@ namespace Pmedian.CoreData.Genetic.Function
 
                     if (!(X[i][j] <= chromosome.chromosomeArray[i]))
                     {
-                        constant++;
+                        return 1.0 / cost.SumAll;
                     }                    
                         
                     
                     if (cost.costEdgeArray[i][j].timeM > problemData.MedicTime)
                     {
 
-                        constant++;
+                        return 1.0 / cost.SumAll;
                     }
                     if (cost.costEdgeArray[i][j].timeС > problemData.AmbulanceTime)
                     {
 
-                        constant++;
+                        return 1.0 / cost.SumAll;
 
                     }
 
                     fitness += (
-                        cost.costEdgeArray[i][j].roadKm * problemData.RoadCost *
-                        cost.costVertexArray[i]
-                        ) * X[i][j];
+                        (cost.costEdgeArray[i][j].roadKm * problemData.RoadCost) * X[i][j]);
                 }
-                
-            }
+                fitness += cost.costVertexArray[i] * chromosome.chromosomeArray[i];
+        }
             if (sumMedian == 0)
-                return double.MaxValue;
+                return 1.0/ cost.SumAll;
             if (sumMedian != problemData.P)
             {
-                return double.MaxValue;
+                return 1.0 / cost.SumAll;
 
             }
 
-            return fitness * (constant );
+            return 1.0 / fitness;
         }
 
         private static int[][] XMultiplicationChromosome(int[][] arrayX, int[] chromosomeArray)

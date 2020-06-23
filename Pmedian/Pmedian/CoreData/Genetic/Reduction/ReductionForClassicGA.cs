@@ -14,22 +14,13 @@ namespace Pmedian.CoreData.Genetic.Reduction
 
         }
 
-        public void Reduction (List<Chromosome> childPopulationList, List<Chromosome> parentPopulationList, List<Chromosome> populationList)
+        public void Reduction (List<Chromosome> childPopulationList, int[] parentIndex, List<Chromosome> populationList)
         {                       
-            for (int i = 0; i < parentPopulationList.Count; i++)
-            {
-                for (int j = 0; j < populationList.Count; j++)
-                {
-                    if (populationList[j].Equals(parentPopulationList[i]))
-                    {                        
-                        populationList.RemoveAt(j);
-                        populationList.Insert(j, childPopulationList[i]); 
-                        break;                       
-                    }
-                }
-            } 
-            
-
+            for (int i = 0; i < parentIndex.Length; i++)
+            {                                                          
+                populationList.RemoveAt(parentIndex[i]);
+                populationList.Insert(parentIndex[i], childPopulationList[i]);                                     
+            }             
         }
 
     }
