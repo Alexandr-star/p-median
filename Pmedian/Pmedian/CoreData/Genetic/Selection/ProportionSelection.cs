@@ -9,15 +9,11 @@ namespace Pmedian.CoreData.Genetic.Selection
     class ProportionSelection : AbstractSelection
     {
 
-        public ProportionSelection(int countSelected) : base(countSelected)
-        {
-
-        }
+        public ProportionSelection(int countSelected) : base(countSelected) { }
         public override List<Chromosome> Selection(Population population)
         {
            
             List<Chromosome> midPop = new List<Chromosome>();
-            //double sumfit = SumAllFitness(population);
             double sumfit = 0.0;
             foreach (var ch in population.populationList)
             {
@@ -51,11 +47,6 @@ namespace Pmedian.CoreData.Genetic.Selection
                 }
             }
             return midPop;   
-        }
-
-        /*private double SumAllFitness(List<Chromosome> population)
-        {
-            
-        }*/
+        }       
     }
 }

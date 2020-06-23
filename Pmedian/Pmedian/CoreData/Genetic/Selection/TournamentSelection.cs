@@ -22,7 +22,6 @@ namespace Pmedian.CoreData.Genetic.Selection
             list.AddRange(population.populationList);
             List<Chromosome> turnamentList = new List<Chromosome>(countTurnament);
 
-            //Dictionary<int, Chromosome> turnamentDic = new Dictionary<int, Chromosome>();
             for (int i = 0; i < countSelected; i++)
             {                
                 int tempi = 0;
@@ -34,16 +33,12 @@ namespace Pmedian.CoreData.Genetic.Selection
                         index = Utility.Rand.Next(list.Count);
                     }
                     turnamentList.Add(list[index]);
-                    //turnamentDic.Add(index, list[index]);
                     tempi = index;
                 }
                 turnamentList.Sort((first, second) => first.fitness.CompareTo(second.fitness));
-                //var t = turnamentDic.ToList();
-                //t.Sort((first, second) => first.Value.fitness.CompareTo(second.Value.fitness));
                 intermidatePopulation.Add(turnamentList.First());
                 indexSelectChrom[i] = population.populationList.IndexOf(turnamentList.First());
                 turnamentList.Clear();
-                //turnamentDic.Clear();
             }
             return intermidatePopulation;
         }

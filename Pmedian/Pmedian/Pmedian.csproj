@@ -127,7 +127,6 @@
     <Compile Include="CoreData\Genetic\Selection\ISelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\ProportionSelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\RandomSelection.cs" />
-    <Compile Include="CoreData\Genetic\Selection\RankingSelection.cs" />
     <Compile Include="CoreData\Genetic\Selection\SelectionForCHC.cs" />
     <Compile Include="CoreData\Genetic\Selection\SelectionPressure.cs" />
     <Compile Include="CoreData\Genetic\Selection\TournamentSelection.cs" />
