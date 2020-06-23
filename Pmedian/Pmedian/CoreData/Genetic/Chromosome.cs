@@ -38,8 +38,6 @@ namespace Pmedian.CoreData.Genetic
             this.chromosomeArray = chromosome;
         }
 
-        public Chromosome() { }
-
         public static Chromosome CreateChromosome(int sizeChromosome)
         {           
             int[] chromosomeArray = new int[sizeChromosome];
@@ -54,15 +52,6 @@ namespace Pmedian.CoreData.Genetic
             Chromosome chromosome = new Chromosome(chromosomeArray);
 
             return chromosome;
-        }
-
-        public void PrintChromosome()
-        {
-            foreach (int i in chromosomeArray)
-            {
-                Console.Write(i); 
-            }
-            Console.WriteLine();
-        }
+        }        
     }
 }

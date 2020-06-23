@@ -88,8 +88,7 @@ namespace Pmedian.CoreData.Genetic.Сrossover
             int[] secondChild = secondParent.chromosomeArray;
 
             res = new List<int>();
-
-            
+           
             if (probability <= Probability)
             {                               
                 int halfDistance = HemmingDistance(firstParent.chromosomeArray, secondParent.chromosomeArray) / 2;

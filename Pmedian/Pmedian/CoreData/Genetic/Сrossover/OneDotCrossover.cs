@@ -14,15 +14,11 @@ namespace Pmedian.CoreData.Genetic.Сrossover
     /// </summary>
     class OneDotCrossover : AbstractCrossover
     {   
-
         /// <summary>
         /// Конструктор с параметрами.
         /// </summary>
         /// <param name="probability"></param>
-        public OneDotCrossover(double probability) : base(probability)
-        {
-
-        }
+        public OneDotCrossover(double probability) : base(probability) { }
 
         /// <summary>
         /// Одноточечный кроссовер.
@@ -76,7 +72,6 @@ namespace Pmedian.CoreData.Genetic.Сrossover
                 }               
             }
             
-
             return childrenList;
         }
 
