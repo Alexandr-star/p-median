@@ -12,8 +12,6 @@ namespace Pmedian.Model
         /// <summary>
         /// Цвет вершины.
         /// </summary>
-        //[YAXSerializeAs("color")]
-        //[YAXAttributeFor("Vertex")]
         public VertexColor Color { get; set; }
 
         /// <summary>

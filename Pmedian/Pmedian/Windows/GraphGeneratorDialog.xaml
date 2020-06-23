@@ -12,34 +12,25 @@
       MinHeight="100"
       WindowStyle="SingleBorderWindow"
       ResizeMode="CanMinimize"
-      Title="Generate Graph" WindowStartupLocation="CenterScreen">
+      Title="Сгенерировать граф" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/Windows/Style/DialogWindowDictionary.xaml"/>
     </Window.Resources>
 
     <StackPanel Style="{StaticResource DialogMainPanel}">
-        <StackPanel Style="{StaticResource DialogStackPanel}">
-            <TextBlock Text="Method" Style="{StaticResource DialogInputLabel}"/>
-            <ComboBox Name="MethodBox" Style="{StaticResource DialogInputField}" HorizontalContentAlignment="Right"
-                ItemsSource="{Binding Source={model:Enumeration {x:Type model:GraphGenerationMethod}}}" DisplayMemberPath="Description"
-                SelectedValuePath="Value" SelectedIndex="0"/>
-        </StackPanel>
+        
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="VerticesPanel">
-            <TextBlock Text="Vertices" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:IntegerUpDown Name="VerticesUpDown" Style="{StaticResource DialogInputField}" Value="200" Minimum="2" Maximum="200"/>
+            <TextBlock Text="Вершины" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:IntegerUpDown Name="VerticesUpDown" Style="{StaticResource DialogInputField}" Value="10" Minimum="3" Maximum="100"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="EdgesPanel">
-            <TextBlock Text="Edges" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:IntegerUpDown Name="EdgesUpDown" Style="{StaticResource DialogInputField}" Value="10" Minimum="1" Maximum="5000"/>
+            <TextBlock Text="Муд. пункты" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:IntegerUpDown Name="MedUpDown" Style="{StaticResource DialogInputField}" Value="2" Minimum="1" Maximum="100"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogStackPanel}" Name="DegreePanel">
-            <TextBlock Text="Mean Degree" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:IntegerUpDown Name="DegreeUpDown" Style="{StaticResource DialogInputField}" Value="2" Minimum="2" Maximum="10" Increment="2"/>
-        </StackPanel>
-        <StackPanel Style="{StaticResource DialogStackPanel}" Name="ProbabilityPanel">
-            <TextBlock Text="Probability" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:DoubleUpDown Name="ProbabilityUpDown" Style="{StaticResource DialogInputField}" Value="0.5" Minimum="0.0" Maximum="1.0" Increment="0.1"/>
+            <TextBlock Text="Деревни" Style="{StaticResource DialogInputLabel}"/>
+            <xctk:IntegerUpDown Name="VillUpDown" Style="{StaticResource DialogInputField}" Value="10" Minimum="2" Maximum="100" Increment="1"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogActionPanel}">
             <Button Click="buttonOK_Click" Style="{StaticResource DialogOKButton}"/>

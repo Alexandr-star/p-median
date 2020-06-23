@@ -29,12 +29,7 @@ namespace Pmedian.CoreData.GraphGeneration
         {
             var list = new AdjacencyList(vertexCount);
             int size = vertexClinic + vertexAmbulator;
-
-            /*for (int i = 0; i < vertexVillage; i++)
-            {
-                for (int j = vertexVillage; j < vertexCount; j++)
-                    list.AddEdge(i, j);
-            }*/
+            
             MainGraph graph = new MainGraph();
             for (int i = 0; i < vertexVillage; i++)
                 graph.AddVertex(new DataVertex(VertexColor.GroupeVillage, VertexType.GroupeVillage, Utility.Rand.Next(50, 10000)));

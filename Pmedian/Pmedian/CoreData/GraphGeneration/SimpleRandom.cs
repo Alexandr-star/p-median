@@ -17,18 +17,28 @@ namespace Pmedian.CoreData.GraphGeneration
         /// Количество вершин в графе.
         /// </summary>
         private int vertexCount;
+        private int medCount;
+        private int villCount;
 
         /// <summary>
         /// Конструктор с параметром.
         /// </summary>
         /// <param name="vertexCount">Количество вершин в графе.</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public SimpleRandom(int vertexCount)
+        public SimpleRandom(int vertexCount, int medCount, int villCount)
         {
-            if (vertexCount < 1)
-                throw new ArgumentOutOfRangeException(null, "Graph should contain at least one vertex.");
+            if (vertexCount < 3)
+                throw new ArgumentOutOfRangeException(null, "Граф не может быть из двух вершин для этой задачи.");
+            if (vertexCount <= medCount)
+                throw new ArgumentOutOfRangeException(null, "Граф не может быть постоен. Слишком много мед. пунктов.");
+            if (vertexCount <= villCount)
+                throw new ArgumentOutOfRangeException(null, "Граф не может быть постоен. Слишком много пунктов.");
+            if (vertexCount != villCount + medCount)
+                throw new ArgumentOutOfRangeException(null, "Граф не может быть постоен. Неаерное количество вершин.");
 
-            this.vertexCount = 100;
+            this.vertexCount = vertexCount;
+            this.medCount = medCount;
+            this.villCount = villCount;
         }
 
         /// <summary>
@@ -44,7 +54,7 @@ namespace Pmedian.CoreData.GraphGeneration
                 list.AddEdge(i, Utility.Rand.Next(0, i - 1));
 
             if (vertexCount < 3)
-                return AdjacencyList.GenerateGraph(list);
+                return AdjacencyList.GenerateGraph(list, medCount, villCount);
 
             // Добавление новых ребер для создания циклов
             int new_edges = Utility.Rand.Next(0, vertexCount * (vertexCount - 1) / 2 - vertexCount);
@@ -58,7 +68,7 @@ namespace Pmedian.CoreData.GraphGeneration
                     list.AddEdge(i, j);
             }
 
-            return AdjacencyList.GenerateGraph(list);
+            return AdjacencyList.GenerateGraph(list, medCount, villCount);
         }
     }
 }

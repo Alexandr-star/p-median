@@ -21,7 +21,7 @@
     <StackPanel Style="{StaticResource DialogMainPanel}">
         <StackPanel Style="{StaticResource DialogStackPanel}">
             <TextBlock Text="Затраты на постройку" Style="{StaticResource DialogInputLabel}"/>
-            <xctk:DoubleUpDown Name="CostUpDown" Style="{StaticResource DialogInputField}" Value="1.0" Minimum="0.1" Maximum="10000.0" Increment="0.1"/>
+            <xctk:DoubleUpDown Name="CostUpDown" Style="{StaticResource DialogInputField}" Value="200.0" Minimum="1.0" Maximum="10000.0" Increment="10.0"/>
         </StackPanel>
         <StackPanel Style="{StaticResource DialogActionPanel}">
             <Button Click="buttonOK_Click" Style="{StaticResource DialogOKButton}"/>

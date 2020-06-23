@@ -133,15 +133,15 @@ namespace Pmedian.CoreData.DataStruct
         /// </summary>
         /// <param name="list">Исходный список смежности.</param>
         /// <returns>Новый экземпляр графа.</returns>
-        public static MainGraph GenerateGraph(AdjacencyList list)
+        public static MainGraph GenerateGraph(AdjacencyList list, int medCount, int villCount)
         {
             if (list == null)
                 return null;
             MainGraph graph = new MainGraph();
 
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < villCount; i++)
                 graph.AddVertex(new DataVertex());
-            for (int i = 60; i < 100; i++)
+            for (int i = villCount; i < list.VertexCount; i++)
             {
                 graph.AddVertex(new DataVertex(VertexColor.Unmarked, VertexType.Unmarket, Utility.Rand.Next(999) + 1));
             }

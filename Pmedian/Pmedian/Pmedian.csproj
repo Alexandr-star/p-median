@@ -110,7 +110,6 @@
     <Compile Include="CoreData\Genetic\Algorithm\GenitorGA.cs" />
     <Compile Include="CoreData\Genetic\Algorithm\IGeneticAlgorithm.cs" />
     <Compile Include="CoreData\Genetic\Chromosome.cs" />
-    <Compile Include="CoreData\Genetic\DistinctChromosome.cs" />
     <Compile Include="CoreData\Genetic\Function\Fitness.cs" />
     <Compile Include="CoreData\Genetic\Function\Solution.cs" />
     <Compile Include="CoreData\Genetic\Mutation\AbstractMutation.cs" />
@@ -135,18 +134,13 @@
     <Compile Include="CoreData\Genetic\Сrossover\NDotCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\OneDotCrossover.cs" />
     <Compile Include="CoreData\Genetic\Сrossover\ICrossover.cs" />
-    <Compile Include="CoreData\Genetic\Сrossover\TwoDotCrossover.cs" />
-    <Compile Include="CoreData\GraphGeneration\ErdosRenyi.cs" />
     <Compile Include="CoreData\GraphGeneration\IGraphGenerator.cs" />
     <Compile Include="CoreData\GraphGeneration\PmedianGraphGenerate.cs" />
-    <Compile Include="CoreData\GraphGeneration\SimplePrecise.cs" />
     <Compile Include="CoreData\GraphGeneration\SimpleRandom.cs" />
-    <Compile Include="CoreData\GraphGeneration\WattsStrogatz.cs" />
     <Compile Include="CoreData\ProblemData.cs" />
     <Compile Include="Exceptions\GeneticAlgorithmException.cs" />
     <Compile Include="FileSeralization\FileServiceProviderWPF.cs" />
     <Compile Include="Model\DataEdge.cs" />
-    <Compile Include="Model\DataTable.cs" />
     <Compile Include="Model\DataVertex.cs" />
     <Compile Include="Model\Enums\AlgorithmExecutionMode.cs" />
     <Compile Include="Model\Enums\CrossoverMethod.cs" />

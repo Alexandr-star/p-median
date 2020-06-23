@@ -360,7 +360,6 @@ namespace Pmedian
 
             control.SetPosition(position);
            
-            //control.Style = App.Current.Resources["DefaultVertex"] as Style;
             graphArea.AddVertexAndData(data, control, true);
             ClearCreateMode();
             return control;
@@ -553,23 +552,23 @@ namespace Pmedian
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void menuGenerateGraph_Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new GraphGeneratorDialog(this);
-            if (dlg.ShowDialog() == false) return;
+        //private void menuGenerateGraph_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var dlg = new GraphGeneratorDialog(this);
+        //    if (dlg.ShowDialog() == false) return;
 
-            graphArea.ClearLayout();
+        //    graphArea.ClearLayout();
 
-            // Supplied graph will be automaticaly be assigned to GraphArea::LogicCore.Graph property
-            graphArea.GenerateGraph(dlg.Generator.Generate());
+        //    // Supplied graph will be automaticaly be assigned to GraphArea::LogicCore.Graph property
+        //    graphArea.GenerateGraph(dlg.Generator.Generate());
+        //    graphArea.UpdateVertexStyle();
+        //    // Fix auto-generated labels (maybe there is a better way, but who cares lol)
+        //    graphArea.VertexList.Values.ToList().ForEach(v => v.DetachLabel());
 
-            // Fix auto-generated labels (maybe there is a better way, but who cares lol)
-            graphArea.VertexList.Values.ToList().ForEach(v => v.DetachLabel());
-
-            EnableSelectMode();
-            graphArea.RelayoutGraph();
-            zoomCtrl.ZoomToFill();
-        }
+        //    EnableSelectMode();
+        //    graphArea.RelayoutGraph();
+        //    zoomCtrl.ZoomToFill();
+        //}
 
         /// <summary>
         /// Метод, вызываемый после клика на пункт меню "Redraw Graph".
