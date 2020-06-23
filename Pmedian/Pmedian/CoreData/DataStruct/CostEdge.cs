@@ -23,6 +23,9 @@ namespace Pmedian.CoreData.DataStruct
           set { _costRoad = value; } 
         }
 
+        /// <summary>
+        /// Если затраты пустые.
+        /// </summary>
         public bool EmptyCost { get; set; }
 
         /// <summary>
