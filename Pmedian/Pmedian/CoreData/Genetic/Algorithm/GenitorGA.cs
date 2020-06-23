@@ -7,6 +7,7 @@ using QuickGraph;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Navigation;
@@ -149,16 +150,15 @@ namespace Pmedian.CoreData.Genetic.Algorithm
                     }
                     // вычесление ранга хромосомы.
 
-                    population.Sort();
-                    Ranking(population);
+                    //population.Sort();
+                    Ranking2(population);
                     // пригодность потомка
                     child.fitness = Fitness.FunctionTrue(cost, problemData, child);
                     // поиск самой худщей хромосомы
                     Chromosome bedChrom = null;
-                    if (stepGA == 0)
-                        bedChrom = population.ChromosomeWithMinRank();
-                    else
-                        bedChrom = population.OneOfChromosomesWithMinRank();
+                    
+                    bedChrom = population.populationList.First();
+                    
                     
                     // замена худшей хромосомы на потомка
                     int index = population.populationList.IndexOf(bedChrom);
@@ -261,6 +261,17 @@ namespace Pmedian.CoreData.Genetic.Algorithm
             Console.WriteLine($"count answer {countAnswer}/{TESTITER}");
 
             return Solution.Answer(cost, null, problemData, graph);
+
+        }
+
+        private void Ranking2(Population population)
+        {           
+            population.populationList.Sort((first, second) => first.fitness.CompareTo(second.fitness));
+            double selectedPress = SelectionPressure.S(population.populationList.Last(), population);
+            for (int i = 0; i < population.populationList.Count; i++)
+            {
+                population.populationList[i].rank = 2.0 - selectedPress + 2.0 * (selectedPress - 1.0) * ((i + 1.0 - 1.0) / (population.SizePopulation - 1.0));
+            }
 
         }
 

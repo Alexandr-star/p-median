@@ -113,11 +113,11 @@ namespace Pmedian.CoreData.Genetic
 
             foreach (var chromosome in populationList)
             {
-                if (chromosome.rank < minRankChromosome.rank)
+                if (chromosome.rank > minRankChromosome.rank)
                     minRankChromosome = chromosome;
             }
             MinRankChromosome = minRankChromosome.rank;
-            return minRankChromosome;
+            return populationList.First();
         }
 
 
@@ -125,10 +125,10 @@ namespace Pmedian.CoreData.Genetic
         {
            
             List<Chromosome> list = new List<Chromosome>();
-            MinRankChromosome = populationList[SizePopulation - 1].rank;
+            MinRankChromosome = populationList.Last().rank;
             foreach (var chromosome in populationList)
             {
-                if (chromosome.rank < MinRankChromosome)
+                if (chromosome.rank > MinRankChromosome)
                     MinRankChromosome = chromosome.rank;
             }
             Chromosome ch = populationList[0];
