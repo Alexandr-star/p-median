@@ -29,8 +29,15 @@ namespace Pmedian.CoreData.DataStruct
         /// </summary>
         public int[][] arrayX;
 
+        private List<List<int>> _costList = new List<List<int>>();
+
         public List<int> unmarketVertex { get; set; }
-     
+
+        public List<List<int>> CostList
+        {
+            get => _costList;
+        }
+
         /// <summary>
         /// Массив затрат на постройку пунктов. 
         /// </summary>
@@ -66,12 +73,14 @@ namespace Pmedian.CoreData.DataStruct
         private void InitializeList()
         {
             villageArray = new List<int>();
+            _costList = new List<List<int>>();
             unmarketVertex = new List<int>();
             costEdgeArray = new CostEdge[vertexCount - countVillage][];
             costVertexArray = new List<double>(vertexCount - countVillage);
             arrayX = new int[vertexCount - countVillage][];
             for (int i = 0; i < vertexCount - countVillage; i++)
             {
+                _costList.Add(new List<int>());
                 costEdgeArray[i] = new CostEdge[vertexCount];
                 arrayX[i] = new int[vertexCount];
                 for (int j = 0; j < vertexCount; j++)
@@ -81,12 +90,7 @@ namespace Pmedian.CoreData.DataStruct
             }                            
         }
 
-        /// <summary>
-        /// Созадет матрицу затрат на основе заданного графа.
-        /// </summary>
-        /// <param name="graph">Граф.</param>
-        /// <param name="problemData">Параметры задачи.</param>
-        /// <returns></returns>
+
        public static Cost GanerateCostArray(MainGraph graph, ProblemData problemData)
         {           
             var vertices = graph.Vertices.ToList();
@@ -138,11 +142,24 @@ namespace Pmedian.CoreData.DataStruct
                 tempCost[source][target] = costEdge;
                 tempCost[target][source] = costEdge;
             }
+            cost.PrintCost(tempCost);
             cost.DDDDD(tempCost);
            
+            cost.PrintCost();
+            cost.PrintArray();
+            cost.PrintVertexCost();
             return cost;
         }
-      
+
+        private void PrintVertexCost()
+        {
+            foreach (var i in costVertexArray)
+            {
+                Console.Write($"{i}  ");
+            }
+            Console.WriteLine();
+        }
+
         private void DDDDD(CostEdge[][] tempCost)
         {
             var vertices = mainGraph.Vertices.ToList();
@@ -225,6 +242,107 @@ namespace Pmedian.CoreData.DataStruct
             } while (minIndex < int.MaxValue);
             
             return d;
-        }                                       
+        }
+
+        
+        /// <summary>
+        /// Добавить расход ребра в массив расходов ребер.
+        /// </summary>
+        /// <param name="source">Индекс деревни.</param>
+        /// <param name="target">Индекс пункта.</param>
+        /// <param name="costEdge">Расход ребра.</param>
+        private void AddCostEdge(int indexVillage, int indexPoin, CostEdge costEdge)
+        {
+            costEdgeArray[indexVillage][indexPoin] = costEdge;
+        }
+
+        /// <summary>
+        /// Добавить расход вершины в массив расходов вершин.
+        /// </summary>
+        /// <param name="index">Индекс вершины.</param>
+        /// <param name="vertexCost">Расход вершины.</param>
+        private void AddCostVertex(int index, double vertexCost)
+        {
+            costVertexArray[index] = vertexCost;
+        }
+
+        /// <summary>
+        /// Добавить ребро в список смежности затрат.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        private void AddEdge(int source, int target)
+        {
+            _costList[source].Add(target);
+        }
+
+        private void PrintCost()
+        {
+            Console.WriteLine("print cost array edge");
+            for (int i = 0; i < costEdgeArray.Length; i++)
+            {
+                for (int j = 0; j < costEdgeArray[i].Length; j++)
+                {
+
+                    if (costEdgeArray[i][j] != null)
+                    {
+                        Console.Write($"({i}, {j}) ");
+                        Console.Write($"km {costEdgeArray[i][j].roadKm};" +
+                            $"tm {costEdgeArray[i][j].timeM};" +
+                            $"tc {costEdgeArray[i][j].timeС}.");
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private void PrintCost(CostEdge[][] arr)
+        {
+            Console.WriteLine("print cost array edge");
+            for (int i = 0; i < arr.Length; i++)
+            {
+                for (int j = 0; j < arr[i].Length; j++)
+                {
+                    Console.Write($"({i}, {j}) ");
+                    Console.Write($"{arr[i][j].roadKm};");                    
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private void PrintArray()
+        {
+            Console.WriteLine("print array");
+            for (int i = 0; i < arrayX.Length; i++)
+            {
+                Console.Write($"{i} - ");
+                for(int j = 0; j < arrayX[i].Length; j++)
+                {
+                    Console.Write($"{arrayX[i][j]} ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private void PrintArray(int[][] arr)
+        {
+            Console.WriteLine("print array");
+            for (int i = 0; i < arr.Length; i++)
+            {
+                Console.Write($"{i} - ");
+                for (int j = 0; j < arr[i].Length; j++)
+                {
+                    Console.Write($"{arr[i][j]} ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private void PrintMASS(double[] vs)
+        {
+            foreach (double i in vs)
+                Console.Write($" {i} ");
+            Console.WriteLine();
+        }
     }
 }
